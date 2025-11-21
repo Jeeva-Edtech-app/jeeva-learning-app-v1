@@ -10,6 +10,7 @@ import {
   ScrollView,
   Animated,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -144,7 +145,11 @@ export default function JeevaBotScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.heroAvatar}>
-        <Ionicons name="chatbubble-ellipses" size={40} color={DesignSystem.colors.primary.main} />
+        <Image 
+          source={require('@/assets/images/splash-icon.png')} 
+          style={styles.heroImage}
+          resizeMode="contain"
+        />
       </View>
       <Text style={styles.heroSubtitle}>
         Ask me anything about your lessons!
@@ -188,26 +193,36 @@ export default function JeevaBotScreen() {
           <View style={styles.headerContent}>
             <Text style={styles.headerTitle}>JeevaBot</Text>
           </View>
-          <TouchableOpacity 
-            style={styles.headerIcon} 
-            activeOpacity={0.7}
-            onPress={() => setShowMenu(!showMenu)}
-          >
-            <Ionicons name="ellipsis-vertical" size={22} color={DesignSystem.colors.text.primary} />
+          <View style={styles.menuContainer}>
+            <TouchableOpacity 
+              style={styles.headerIcon} 
+              activeOpacity={0.7}
+              onPress={() => setShowMenu(!showMenu)}
+            >
+              <Ionicons name="ellipsis-vertical" size={22} color={DesignSystem.colors.text.primary} />
+            </TouchableOpacity>
             {showMenu && (
               <View style={styles.menuDropdown}>
-                <TouchableOpacity style={styles.menuItem} onPress={handleClearChat}>
+                <TouchableOpacity 
+                  style={styles.menuItem} 
+                  onPress={handleClearChat}
+                  activeOpacity={0.7}
+                >
                   <Ionicons name="trash-outline" size={18} color={DesignSystem.colors.text.primary} />
                   <Text style={styles.menuItemText}>Clear Chat</Text>
                 </TouchableOpacity>
                 <View style={styles.menuDivider} />
-                <TouchableOpacity style={styles.menuItem} onPress={handleExit}>
+                <TouchableOpacity 
+                  style={styles.menuItem} 
+                  onPress={handleExit}
+                  activeOpacity={0.7}
+                >
                   <Ionicons name="exit-outline" size={18} color={DesignSystem.colors.semantic.error} />
                   <Text style={[styles.menuItemText, { color: DesignSystem.colors.semantic.error }]}>Exit</Text>
                 </TouchableOpacity>
               </View>
             )}
-          </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.body}>
@@ -267,6 +282,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: DesignSystem.colors.ui.border,
     backgroundColor: '#FFFFFF',
+    position: 'relative',
+    zIndex: 100,
   },
   headerIcon: {
     width: 36,
@@ -322,8 +339,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  heroEmoji: {
-    fontSize: 40,
+  heroImage: {
+    width: 80,
+    height: 80,
   },
   heroSubtitle: {
     fontSize: 16,
@@ -332,19 +350,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginBottom: 24,
   },
+  menuContainer: {
+    position: 'relative',
+  },
   menuDropdown: {
     position: 'absolute',
-    top: 40,
+    top: 45,
     right: 0,
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-    minWidth: 150,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+    minWidth: 160,
     zIndex: 1000,
+    overflow: 'visible',
   },
   menuItem: {
     flexDirection: 'row',
