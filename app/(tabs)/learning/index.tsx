@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ScrollView,
@@ -11,6 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
 import { LEARNING_STRUCTURE } from '@/api/constants';
+import { useTrialMode } from '@/context/TrialContext';
+import { LockedTopicOverlay } from '@/components/LockedTopicOverlay';
 
 type TopicStatus = 'locked' | 'available' | 'in_progress' | 'completed';
 
@@ -84,6 +86,8 @@ function TopicCard({
   locked,
   completedSubtopics,
 }: TopicCardProps) {
+  const { isContentLocked, isTrialUser } = useTrialMode();
+  const trialLocked = isContentLocked('learning', title);
   const config = STATUS_CONFIG[status];
   const hasSubtopics = subtopics > 0;
   const completionRatio = hasSubtopics ? Math.min(completedSubtopics / subtopics, 1) : 1;
@@ -92,17 +96,22 @@ function TopicCard({
 
   return (
     <TouchableOpacity
-      style={[styles.topicCard, locked && styles.topicCardLocked]}
+      style={[styles.topicCard, (locked || trialLocked) && styles.topicCardLocked]}
       activeOpacity={0.85}
       onPress={onPress}
-      disabled={locked}
+      disabled={locked || trialLocked}
     >
       <View style={styles.topicHeaderRow}>
         <View style={styles.topicIconBadge}>
           <Text style={styles.topicIconEmoji}>{icon}</Text>
         </View>
         <View style={styles.topicHeaderCopy}>
-          <Text style={styles.topicTitle}>{title}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Text style={styles.topicTitle}>{title}</Text>
+            {(locked || trialLocked) && (
+              <Ionicons name="lock-closed" size={16} color="#EF4444" />
+            )}
+          </View>
           <Text style={styles.topicDescription}>{description}</Text>
         </View>
         <View style={[styles.statusPill, { backgroundColor: config.background }]}>
