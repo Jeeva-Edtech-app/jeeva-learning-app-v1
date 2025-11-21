@@ -82,17 +82,25 @@ interface TopicChipProps {
   label: string;
   selected: boolean;
   onPress: () => void;
+  isLocked?: boolean;
 }
 
-function TopicChip({ label, selected, onPress }: TopicChipProps) {
+function TopicChip({ label, selected, onPress, isLocked }: TopicChipProps) {
   return (
     <TouchableOpacity
-      style={[styles.topicChip, selected && styles.topicChipSelected]}
+      style={[styles.topicChip, selected && styles.topicChipSelected, isLocked && styles.topicChipLocked]}
       onPress={onPress}
       activeOpacity={0.85}
+      disabled={isLocked}
     >
-      <Text style={[styles.topicChipLabel, selected && styles.topicChipLabelSelected]}>{label}</Text>
-      {selected && <Ionicons name="checkmark-circle" size={16} color={Colors.primary.main} />}
+      <Text style={[styles.topicChipLabel, selected && styles.topicChipLabelSelected, isLocked && styles.topicChipLabelLocked]}>
+        {label}
+      </Text>
+      {isLocked ? (
+        <Ionicons name="lock-closed" size={14} color="#EF4444" />
+      ) : selected ? (
+        <Ionicons name="checkmark-circle" size={16} color={Colors.primary.main} />
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -212,14 +220,22 @@ export default function PracticeModuleScreen() {
             </View>
 
             <View style={styles.topicGrid}>
-              {subdivisions.map((option) => (
-                <TopicChip
-                  key={option.id}
-                  label={option.label}
-                  selected={selectedSubdivision?.id === option.id}
-                  onPress={() => setSelectedSubdivision(option)}
-                />
-              ))}
+              {subdivisions.map((option) => {
+                const isLocked = isContentLocked('practice', option.id);
+                return (
+                  <TopicChip
+                    key={option.id}
+                    label={option.label}
+                    selected={selectedSubdivision?.id === option.id}
+                    isLocked={isLocked}
+                    onPress={() => {
+                      if (!isLocked) {
+                        setSelectedSubdivision(option);
+                      }
+                    }}
+                  />
+                );
+              })}
             </View>
           </>
         )}
@@ -424,6 +440,14 @@ const styles = StyleSheet.create({
   },
   topicChipLabelSelected: {
     color: Colors.primary.main,
+  },
+  topicChipLocked: {
+    opacity: 0.6,
+    borderColor: '#E5E7EB',
+    backgroundColor: '#F9FAFB',
+  },
+  topicChipLabelLocked: {
+    color: '#9CA3AF',
   },
   summaryCard: {
     backgroundColor: Colors.background.card,

@@ -73,6 +73,7 @@ interface TopicCardProps {
   onPress: () => void;
   locked: boolean;
   completedSubtopics: number;
+  trialLocked: boolean;
 }
 
 function TopicCard({
@@ -85,9 +86,8 @@ function TopicCard({
   onPress,
   locked,
   completedSubtopics,
+  trialLocked,
 }: TopicCardProps) {
-  const { isContentLocked, isTrialUser } = useTrialMode();
-  const trialLocked = isContentLocked('learning', title);
   const config = STATUS_CONFIG[status];
   const hasSubtopics = subtopics > 0;
   const completionRatio = hasSubtopics ? Math.min(completedSubtopics / subtopics, 1) : 1;
@@ -305,29 +305,33 @@ export default function LearningOverviewScreen() {
         </View>
 
         <View style={styles.topicsStack}>
-          {topicsWithStatus.map((topic) => (
-            <TopicCard
-              key={topic.id}
-              title={topic.title}
-              icon={topic.icon}
-              description={topic.description}
-              subtopics={topic.subtopics}
-              status={topic.status}
-              latestScore={topic.latestScore}
-              completedSubtopics={topic.completedSubtopics}
-              locked={topic.locked}
-              onPress={() => {
-                if (isContentLocked('learning', topic.title)) {
-                  setSelectedLockedTopic(topic.title)
-                } else {
-                  router.push({
-                    pathname: '/learning/lesson',
-                    params: { topicId: topic.id, topicTitle: topic.title },
-                  })
-                }
-              }}
-            />
-          ))}
+          {topicsWithStatus.map((topic) => {
+            const trialLocked = isContentLocked('learning', topic.title);
+            return (
+              <TopicCard
+                key={topic.id}
+                title={topic.title}
+                icon={topic.icon}
+                description={topic.description}
+                subtopics={topic.subtopics}
+                status={topic.status}
+                latestScore={topic.latestScore}
+                completedSubtopics={topic.completedSubtopics}
+                locked={topic.locked}
+                trialLocked={trialLocked}
+                onPress={() => {
+                  if (trialLocked) {
+                    setSelectedLockedTopic(topic.title)
+                  } else {
+                    router.push({
+                      pathname: '/learning/lesson',
+                      params: { topicId: topic.id, topicTitle: topic.title },
+                    })
+                  }
+                }}
+              />
+            );
+          })}
         </View>
       </ScrollView>
 
