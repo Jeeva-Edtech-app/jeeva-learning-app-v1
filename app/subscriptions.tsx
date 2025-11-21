@@ -9,26 +9,10 @@ import {
   Text,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { Colors, DesignSystem } from '@/constants/DesignSystem'
-import { useTheme } from '@/context/ThemeContext'
-
-// Theme-aware color mappings
-const getThemeColors = (colorScheme: 'light' | 'dark' | null) => {
-  const isDark = colorScheme === 'dark'
-  return {
-    background: isDark ? '#111827' : '#F5F7FA',
-    card: isDark ? '#1F2937' : '#FFFFFF',
-    cardAlt: isDark ? '#111827' : '#F9FAFB',
-    text: isDark ? '#F3F4F6' : '#111827',
-    textSecondary: isDark ? '#D1D5DB' : '#6B7280',
-    border: isDark ? '#374151' : '#E5E7EB',
-    badgeBg: isDark ? '#1E293B' : '#EEF2FF',
-  }
-}
 
 type PlanTier = 'starter' | 'growth' | 'pro' | 'enterprise'
 
@@ -153,11 +137,6 @@ const faqs = [
 ]
 
 export default function SubscriptionPlansScreen() {
-  const systemColorScheme = useColorScheme()
-  const { colorScheme } = useTheme()
-  const activeColorScheme = colorScheme || systemColorScheme
-  const themeColors = getThemeColors(activeColorScheme)
-  
   const [loadingPlan, setLoadingPlan] = useState<PlanTier | null>(null)
   const [openFaqId, setOpenFaqId] = useState<string | null>(faqs[0]?.question ?? null)
 
@@ -192,46 +171,46 @@ export default function SubscriptionPlansScreen() {
   )
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.background }]} edges={['top']}>
-      <View style={[styles.header, { backgroundColor: themeColors.card, borderBottomColor: themeColors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} style={[styles.backButton, { backgroundColor: themeColors.cardAlt }]} activeOpacity={0.85}>
-          <Ionicons name='arrow-back' size={20} color={themeColors.text} />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton} activeOpacity={0.85}>
+          <Ionicons name='arrow-back' size={20} color={Colors.text.primary} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: themeColors.text }]}>Subscription plans</Text>
+        <Text style={styles.headerTitle}>Subscription plans</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
       <ScrollView
-        style={[styles.container, { backgroundColor: themeColors.background }]}
+        style={styles.container}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.heroCard, { backgroundColor: themeColors.card, borderColor: themeColors.border }]}>
+        <View style={styles.heroCard}>
           <View style={styles.heroHeaderRow}>
             <View style={styles.heroHeaderLeft}>
-              <View style={[styles.heroBadge, { backgroundColor: themeColors.badgeBg }]}>
+              <View style={styles.heroBadge}>
                 <Ionicons name='ribbon-outline' size={16} color={Colors.primary.main} />
-                <Text style={[styles.heroBadgeText, { color: Colors.primary.main }]}>Tailored for NMC CBT success</Text>
+                <Text style={styles.heroBadgeText}>Tailored for NMC CBT success</Text>
               </View>
-              <Text style={[styles.heroTitle, { color: themeColors.text }]}>Choose the plan that matches your revision sprint</Text>
-              <Text style={[styles.heroSubtitle, { color: themeColors.textSecondary }]}>
+              <Text style={styles.heroTitle}>Choose the plan that matches your revision sprint</Text>
+              <Text style={styles.heroSubtitle}>
                 Lessons, flashcards, mock exams, and JeevaBot support are included in every subscription. Scale up when you need deeper analytics or mentor guidance.
               </Text>
             </View>
-            <View style={[styles.heroAside, { backgroundColor: themeColors.cardAlt, borderColor: themeColors.border }]}>
-              <Text style={[styles.heroAsideHeading, { color: themeColors.text }]}>Every plan includes</Text>
+            <View style={styles.heroAside}>
+              <Text style={styles.heroAsideHeading}>Every plan includes</Text>
               <View style={styles.heroAsideList}>
                 <View style={styles.heroAsideItem}>
                   <Ionicons name='checkmark-circle' size={16} color={Colors.primary.main} />
-                  <Text style={[styles.heroAsideText, { color: themeColors.textSecondary }]}>Structured learning pathways</Text>
+                  <Text style={styles.heroAsideText}>Structured learning pathways</Text>
                 </View>
                 <View style={styles.heroAsideItem}>
                   <Ionicons name='checkmark-circle' size={16} color={Colors.primary.main} />
-                  <Text style={[styles.heroAsideText, { color: themeColors.textSecondary }]}>Unlimited flashcards & quizzes</Text>
+                  <Text style={styles.heroAsideText}>Unlimited flashcards & quizzes</Text>
                 </View>
                 <View style={styles.heroAsideItem}>
                   <Ionicons name='checkmark-circle' size={16} color={Colors.primary.main} />
-                  <Text style={[styles.heroAsideText, { color: themeColors.textSecondary }]}>Progress analytics & reminders</Text>
+                  <Text style={styles.heroAsideText}>Progress analytics & reminders</Text>
                 </View>
               </View>
             </View>
@@ -240,8 +219,8 @@ export default function SubscriptionPlansScreen() {
           <View style={styles.heroMetricsRow}>
             {heroMetrics.map((metric) => (
               <View key={metric.label} style={styles.heroMetric}>
-                <Text style={[styles.heroMetricValue, { color: themeColors.text }]}>{metric.value}</Text>
-                <Text style={[styles.heroMetricLabel, { color: themeColors.textSecondary }]}>{metric.label}</Text>
+                <Text style={styles.heroMetricValue}>{metric.value}</Text>
+                <Text style={styles.heroMetricLabel}>{metric.label}</Text>
               </View>
             ))}
           </View>
@@ -249,7 +228,7 @@ export default function SubscriptionPlansScreen() {
 
         <View style={styles.planStack}>
           {plans.map((plan) => (
-            <View key={plan.id} style={[styles.planCard, { backgroundColor: themeColors.card, borderColor: plan.badge ? Colors.primary.main : themeColors.border }, plan.badge ? styles.planCardEmphasis : null]}>
+            <View key={plan.id} style={[styles.planCard, plan.badge ? styles.planCardEmphasis : null]}>
               {plan.badge && (
                 <View
                   style={[
@@ -270,12 +249,12 @@ export default function SubscriptionPlansScreen() {
 
               <View style={styles.planHeader}>
                 <View style={styles.planTitleBlock}>
-                  <Text style={[styles.planName, { color: themeColors.text }]}>{plan.name}</Text>
-                  <Text style={[styles.planHeadline, { color: themeColors.textSecondary }]}>{plan.headline}</Text>
+                  <Text style={styles.planName}>{plan.name}</Text>
+                  <Text style={styles.planHeadline}>{plan.headline}</Text>
                 </View>
                 <View style={[styles.planPriceBadge, { backgroundColor: plan.color }]}>
-                  <Text style={[styles.planPrice, { color: themeColors.text }]}>₹{plan.price}</Text>
-                  <Text style={[styles.planDuration, { color: themeColors.text }]}>{plan.duration}</Text>
+                  <Text style={styles.planPrice}>₹{plan.price}</Text>
+                  <Text style={styles.planDuration}>{plan.duration}</Text>
                 </View>
               </View>
 
@@ -283,7 +262,7 @@ export default function SubscriptionPlansScreen() {
                 {plan.features.map((feature) => (
                   <View key={feature} style={styles.featureRow}>
                     <Ionicons name='checkmark-circle' size={18} color={Colors.primary.main} />
-                    <Text style={[styles.featureText, { color: themeColors.textSecondary }]}>{feature}</Text>
+                    <Text style={styles.featureText}>{feature}</Text>
                   </View>
                 ))}
               </View>
@@ -312,59 +291,59 @@ export default function SubscriptionPlansScreen() {
 
         <View style={styles.benefitsSection}>
           <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: themeColors.text }]}>Why learners choose Jeeva</Text>
-            <Text style={[styles.sectionSubtitle, { color: themeColors.textSecondary }]}>
+            <Text style={styles.sectionTitle}>Why learners choose Jeeva</Text>
+            <Text style={styles.sectionSubtitle}>
               Everything is tuned for the UK NMC CBT—from lessons to AI support.
             </Text>
           </View>
 
           <View style={styles.benefitGrid}>
             {benefitBlocks.map((benefit) => (
-              <View key={benefit.title} style={[styles.benefitCard, { backgroundColor: themeColors.card, borderColor: themeColors.border }]}>
-                <View style={[styles.benefitIcon, { backgroundColor: themeColors.badgeBg }]}>
+              <View key={benefit.title} style={styles.benefitCard}>
+                <View style={styles.benefitIcon}>
                   <Ionicons name={benefit.icon} size={20} color={Colors.primary.main} />
                 </View>
-                <Text style={[styles.benefitTitle, { color: themeColors.text }]}>{benefit.title}</Text>
-                <Text style={[styles.benefitCopy, { color: themeColors.textSecondary }]}>{benefit.copy}</Text>
+                <Text style={styles.benefitTitle}>{benefit.title}</Text>
+                <Text style={styles.benefitCopy}>{benefit.copy}</Text>
               </View>
             ))}
           </View>
         </View>
 
         <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: themeColors.text }]}>Frequently asked questions</Text>
+          <Text style={styles.sectionTitle}>Frequently asked questions</Text>
         </View>
         <View style={styles.faqStack}>
           {faqs.map((faq) => {
             const isOpen = openFaqId === faq.question
             return (
-              <View key={faq.question} style={[styles.faqCard, { backgroundColor: themeColors.card, borderColor: themeColors.border }]}>
+              <View key={faq.question} style={styles.faqCard}>
                 <Pressable style={styles.faqHeader} onPress={() => setOpenFaqId(isOpen ? null : faq.question)}>
-                  <Text style={[styles.faqQuestion, { color: themeColors.text }]}>{faq.question}</Text>
+                  <Text style={styles.faqQuestion}>{faq.question}</Text>
                   <Ionicons
                     name={isOpen ? 'chevron-up' : 'chevron-down'}
                     size={18}
-                    color={themeColors.textSecondary}
+                    color={Colors.text.secondary}
                   />
                 </Pressable>
-                {isOpen && <Text style={[styles.faqAnswer, { color: themeColors.textSecondary }]}>{faq.answer}</Text>}
+                {isOpen && <Text style={styles.faqAnswer}>{faq.answer}</Text>}
               </View>
             )
           })}
         </View>
 
-        <View style={[styles.supportCard, { backgroundColor: themeColors.card, borderColor: themeColors.border }]}>
+        <View style={styles.supportCard}>
           <View style={styles.supportHeader}>
             <Ionicons name='help-buoy-outline' size={20} color={Colors.primary.main} />
             <View style={styles.supportHeaderCopy}>
-              <Text style={[styles.supportTitle, { color: themeColors.text }]}>Need a custom plan?</Text>
-              <Text style={[styles.supportSubtitle, { color: themeColors.textSecondary }]}>
+              <Text style={styles.supportTitle}>Need a custom plan?</Text>
+              <Text style={styles.supportSubtitle}>
                 Chat with our support team for cohort pricing or mentor bundles.
               </Text>
             </View>
           </View>
           <Pressable style={styles.supportButton} onPress={() => Alert.alert('Support', 'We will connect you soon!')}>
-            <Text style={[styles.supportButtonText, { color: Colors.primary.main }]}>Contact support</Text>
+            <Text style={styles.supportButtonText}>Contact support</Text>
             <Ionicons name='arrow-forward' size={16} color={Colors.primary.main} />
           </Pressable>
         </View>
@@ -376,6 +355,7 @@ export default function SubscriptionPlansScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: Colors.background.main,
   },
   header: {
     flexDirection: 'row',
@@ -383,7 +363,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 14,
+    backgroundColor: Colors.background.card,
     borderBottomWidth: 1,
+    borderBottomColor: Colors.ui.border,
   },
   backButton: {
     width: 40,
@@ -391,17 +373,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: Colors.background.secondary,
   },
   headerTitle: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
+    color: Colors.text.primary,
   },
   headerPlaceholder: {
     width: 40,
   },
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -409,8 +392,10 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   heroCard: {
+    backgroundColor: Colors.background.card,
     borderRadius: 20,
     borderWidth: 1,
+    borderColor: Colors.ui.border,
     padding: 24,
     gap: 16,
     ...DesignSystem.platformShadows.sm,
@@ -432,21 +417,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 999,
+    backgroundColor: '#EEF2FF',
   },
   heroBadgeText: {
     fontFamily: 'Inter_500Medium',
     fontSize: 12,
+    color: Colors.primary.main,
   },
   heroAside: {
     flex: 1.2,
+    backgroundColor: Colors.background.secondary,
     borderRadius: 16,
     borderWidth: 1,
+    borderColor: Colors.ui.border,
     padding: 16,
     gap: 10,
   },
   heroAsideHeading: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 14,
+    color: Colors.text.primary,
   },
   heroAsideList: {
     gap: 8,
@@ -459,15 +449,18 @@ const styles = StyleSheet.create({
   heroAsideText: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
   },
   heroTitle: {
     fontFamily: 'Inter_700Bold',
     fontSize: 20,
+    color: Colors.text.primary,
     lineHeight: 26,
   },
   heroSubtitle: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   heroMetricsRow: {
@@ -483,17 +476,21 @@ const styles = StyleSheet.create({
   heroMetricValue: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 18,
+    color: Colors.text.primary,
   },
   heroMetricLabel: {
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
+    color: Colors.text.secondary,
   },
   planStack: {
     gap: 16,
   },
   planCard: {
+    backgroundColor: Colors.background.card,
     borderRadius: 20,
     borderWidth: 1.5,
+    borderColor: Colors.ui.border,
     padding: 20,
     gap: 16,
     ...DesignSystem.platformShadows.sm,
@@ -538,10 +535,12 @@ const styles = StyleSheet.create({
   planName: {
     fontFamily: 'Inter_700Bold',
     fontSize: 18,
+    color: Colors.text.primary,
   },
   planHeadline: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
     marginTop: 6,
   },
@@ -556,10 +555,12 @@ const styles = StyleSheet.create({
   planPrice: {
     fontFamily: 'Inter_700Bold',
     fontSize: 18,
+    color: Colors.text.primary,
   },
   planDuration: {
     fontFamily: 'Inter_500Medium',
     fontSize: 12,
+    color: Colors.text.primary,
     opacity: 0.75,
   },
   planFeatures: {
@@ -574,6 +575,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   planButton: {
@@ -599,10 +601,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
+    color: Colors.text.primary,
   },
   sectionSubtitle: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   benefitGrid: {
@@ -612,8 +616,10 @@ const styles = StyleSheet.create({
   },
   benefitCard: {
     flexBasis: '48%',
+    backgroundColor: Colors.background.card,
     borderRadius: 16,
     borderWidth: 1,
+    borderColor: Colors.ui.border,
     padding: 16,
     gap: 8,
   },
@@ -621,24 +627,29 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
+    backgroundColor: '#EEF2FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   benefitTitle: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 14,
+    color: Colors.text.primary,
   },
   benefitCopy: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   faqStack: {
     gap: 12,
   },
   faqCard: {
+    backgroundColor: Colors.background.card,
     borderRadius: 16,
     borderWidth: 1,
+    borderColor: Colors.ui.border,
     paddingHorizontal: 18,
     paddingVertical: 14,
   },
@@ -652,17 +663,21 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Inter_600SemiBold',
     fontSize: 14,
+    color: Colors.text.primary,
   },
   faqAnswer: {
     marginTop: 8,
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   supportCard: {
     marginTop: 8,
+    backgroundColor: Colors.background.card,
     borderRadius: 18,
     borderWidth: 1,
+    borderColor: Colors.ui.border,
     padding: 18,
     gap: 14,
     ...DesignSystem.platformShadows.sm,
@@ -679,10 +694,12 @@ const styles = StyleSheet.create({
   supportTitle: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 14,
+    color: Colors.text.primary,
   },
   supportSubtitle: {
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
+    color: Colors.text.secondary,
   },
   supportButton: {
     flexDirection: 'row',
@@ -692,5 +709,6 @@ const styles = StyleSheet.create({
   supportButtonText: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 13,
+    color: Colors.primary.main,
   },
 })
