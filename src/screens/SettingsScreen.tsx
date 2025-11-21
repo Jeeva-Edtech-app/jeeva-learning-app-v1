@@ -469,9 +469,9 @@ export default function SettingsScreen() {
               <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
             </Pressable>
 
-            <Pressable style={styles.row} onPress={sendEmail}>
+            <Pressable style={styles.row} onPress={() => router.push('/(tabs)/support' as any)}>
               <View style={styles.rowLeft}>
-                <Ionicons name="mail-outline" size={20} color={Colors.text.primary} />
+                <Ionicons name="help-circle-outline" size={20} color={Colors.text.primary} />
                 <Text style={styles.rowText}>Contact Support</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
