@@ -541,3 +541,44 @@ docs/
 **App**: Jeeva Learning App (for NMC CBT preparation)
 **Last Updated**: November 21, 2025
 **Maintained By**: Development Team
+
+---
+
+## Notifications System Implementation
+
+### Overview
+Two-layer notification system:
+1. **Push Notifications** - Expo-based for app-wide alerts (even when closed)
+2. **In-App Notifications** - Database-backed inbox (like email)
+
+### Implementation Status
+- ✅ Notification types defined
+- ✅ API module created with Supabase queries
+- ✅ React Query hooks ready (`useNotifications`, `useNotificationPreferences`)
+- ✅ Push token manager created
+- 🔄 UI screens in progress (inbox, preferences)
+- 🔄 Integration with app root pending
+
+### Key Files
+- `docs/MOBILE_NOTIFICATIONS_IMPLEMENTATION_GUIDE.md` - Complete specification
+- `docs/NOTIFICATION_IMPLEMENTATION_PLAN.md` - Phase-by-phase roadmap
+- `src/types/notifications.ts` - TypeScript interfaces
+- `src/api/notifications.ts` - Supabase queries
+- `src/hooks/useNotifications.ts` - React Query hooks
+- `src/lib/PushTokenManager.ts` - Push token management
+
+### Database Tables
+- ✅ notifications - In-app notifications
+- ✅ notification_preferences - User settings
+- ✅ push_tokens - Device tokens
+- ✅ notification_targets - Delivery tracking
+
+### Next Steps
+1. Register push token on user login
+2. Create notification inbox screen
+3. Setup notification listeners in app root
+4. Add badge count to tab navigation
+5. Create notification preferences UI
+6. Test push notifications with test keys
+
+---
