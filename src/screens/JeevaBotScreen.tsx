@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -36,12 +37,15 @@ export default function JeevaBotScreen() {
     canSend,
     voice,
     applyLessonContext,
+    resetConversation,
   } = useChatbot();
 
   const router = useRouter();
   const params = useLocalSearchParams<{ ctx?: string; prompt?: string }>();
   const appliedContextRef = useRef<string | null>(null);
   const appliedPromptRef = useRef<string | null>(null);
+
+  const [showMenu, setShowMenu] = useState(false);
 
   const listRef = useRef<FlatList>(null);
   const errorOpacity = useRef(new Animated.Value(0)).current;
@@ -100,6 +104,25 @@ export default function JeevaBotScreen() {
     }
   };
 
+  const handleClearChat = () => {
+    setShowMenu(false);
+    Alert.alert('Clear Chat', 'Are you sure you want to clear all messages?', [
+      { text: 'Cancel', onPress: () => {} },
+      {
+        text: 'Clear',
+        onPress: () => {
+          resetConversation();
+        },
+        style: 'destructive',
+      },
+    ]);
+  };
+
+  const handleExit = () => {
+    setShowMenu(false);
+    router.back();
+  };
+
   const renderMessage = ({ item }: { item: any }) => <ChatBubble message={item} />;
 
   const renderFooter = () =>
@@ -121,11 +144,10 @@ export default function JeevaBotScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.heroAvatar}>
-        <Text style={styles.heroEmoji}>🤖</Text>
+        <Ionicons name="chatbubble-ellipses" size={40} color={DesignSystem.colors.primary.main} />
       </View>
-      <Text style={styles.heroTitle}>Hi! I&apos;m JeevaBot</Text>
       <Text style={styles.heroSubtitle}>
-        Your AI study assistant for UK NMC CBT prep. Ask me anything about your lessons!
+        Ask me anything about your lessons!
       </Text>
     </ScrollView>
   );
@@ -166,8 +188,25 @@ export default function JeevaBotScreen() {
           <View style={styles.headerContent}>
             <Text style={styles.headerTitle}>JeevaBot</Text>
           </View>
-          <TouchableOpacity style={styles.headerIcon} activeOpacity={0.7}>
-            <Ionicons name="ellipsis-horizontal" size={22} color={DesignSystem.colors.text.primary} />
+          <TouchableOpacity 
+            style={styles.headerIcon} 
+            activeOpacity={0.7}
+            onPress={() => setShowMenu(!showMenu)}
+          >
+            <Ionicons name="ellipsis-vertical" size={22} color={DesignSystem.colors.text.primary} />
+            {showMenu && (
+              <View style={styles.menuDropdown}>
+                <TouchableOpacity style={styles.menuItem} onPress={handleClearChat}>
+                  <Ionicons name="trash-outline" size={18} color={DesignSystem.colors.text.primary} />
+                  <Text style={styles.menuItemText}>Clear Chat</Text>
+                </TouchableOpacity>
+                <View style={styles.menuDivider} />
+                <TouchableOpacity style={styles.menuItem} onPress={handleExit}>
+                  <Ionicons name="exit-outline" size={18} color={DesignSystem.colors.semantic.error} />
+                  <Text style={[styles.menuItemText, { color: DesignSystem.colors.semantic.error }]}>Exit</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </TouchableOpacity>
         </View>
 
@@ -286,18 +325,42 @@ const styles = StyleSheet.create({
   heroEmoji: {
     fontSize: 40,
   },
-  heroTitle: {
-    fontSize: 24,
-    fontFamily: 'Inter_700Bold',
-    color: DesignSystem.colors.text.primary,
-    marginBottom: 10,
-  },
   heroSubtitle: {
     fontSize: 16,
     color: DesignSystem.colors.text.secondary,
     textAlign: 'center',
     fontFamily: 'Inter_400Regular',
     marginBottom: 24,
+  },
+  menuDropdown: {
+    position: 'absolute',
+    top: 40,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+    minWidth: 150,
+    zIndex: 1000,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  menuItemText: {
+    fontSize: 14,
+    fontFamily: 'Inter_500Medium',
+    color: DesignSystem.colors.text.primary,
+  },
+  menuDivider: {
+    height: 1,
+    backgroundColor: DesignSystem.colors.ui.border,
   },
   suggestionList: {
     width: '100%',
