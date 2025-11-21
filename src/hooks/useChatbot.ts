@@ -10,6 +10,12 @@ import {
 } from '@/types/chat';
 import { useVoiceInput } from './useVoiceInput';
 
+const EMPTY_STATE_SUGGESTIONS = [
+  '📚 Explain a concept',
+  '💡 Practice tips',
+  '🎯 Study strategy',
+];
+
 export interface LessonContextPayload {
   lessonId?: string;
   lessonTitle?: string;
