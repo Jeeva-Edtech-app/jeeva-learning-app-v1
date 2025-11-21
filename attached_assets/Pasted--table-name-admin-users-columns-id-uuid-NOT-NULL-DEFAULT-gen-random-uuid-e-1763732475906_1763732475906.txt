@@ -1,0 +1,198 @@
+[
+  {
+    "table_name": "admin_users",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), email text NOT NULL, password_hash text, full_name text, role text NOT NULL, is_active boolean NOT NULL DEFAULT true, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "ai_recommendations",
+    "columns": "id integer NOT NULL DEFAULT nextval('ai_recommendations_id_seq'::regclass), user_id uuid NOT NULL, recommendation_type text NOT NULL, reference_id integer NOT NULL, score double precision, created_at timestamp with time zone NOT NULL DEFAULT now(), expires_at timestamp with time zone"
+  },
+  {
+    "table_name": "ai_usage_stats",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, date date NOT NULL DEFAULT CURRENT_DATE, message_count integer DEFAULT 0, total_tokens integer DEFAULT 0, total_cost numeric DEFAULT 0.0000, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "analytics_sessions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, session_start timestamp without time zone NOT NULL DEFAULT now(), session_end timestamp without time zone, duration_seconds integer, created_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "app_settings",
+    "columns": "key text NOT NULL, value jsonb NOT NULL, description text, updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "chat_conversations",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, title text DEFAULT 'New Conversation'::text, context_data jsonb DEFAULT '{}'::jsonb, is_active boolean DEFAULT true, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "chat_messages",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), conversation_id uuid NOT NULL, role text NOT NULL, content text NOT NULL, metadata jsonb DEFAULT '{}'::jsonb, created_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "content_approvals",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), resource_id uuid NOT NULL, resource_type text NOT NULL, resource_title text NOT NULL, status text NOT NULL DEFAULT 'pending'::text, submitted_by uuid NOT NULL, reviewed_by uuid, review_comments text, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone DEFAULT now(), reviewed_at timestamp with time zone"
+  },
+  {
+    "table_name": "daily_stats",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), date date NOT NULL, total_signups integer DEFAULT 0, total_conversions integer DEFAULT 0, active_users integer DEFAULT 0, total_sessions integer DEFAULT 0, avg_session_duration numeric DEFAULT 0, total_revenue numeric DEFAULT 0, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "dashboard_hero",
+    "columns": "id integer NOT NULL DEFAULT nextval('dashboard_hero_id_seq'::regclass), image_url text NOT NULL, headline text NOT NULL, subheadline text, button_text text NOT NULL, button_link text NOT NULL, is_active boolean NOT NULL DEFAULT true, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now(), display_order integer DEFAULT 0"
+  },
+  {
+    "table_name": "discount_coupons",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), code text NOT NULL, description text, discount_type text NOT NULL, discount_value numeric NOT NULL, applicable_plans ARRAY, usage_limit integer, usage_count integer DEFAULT 0, valid_from timestamp with time zone NOT NULL, valid_until timestamp with time zone NOT NULL, is_active boolean DEFAULT true, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "email_templates",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), template_name text NOT NULL, subject text NOT NULL, html_content text NOT NULL, variables jsonb, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "flashcards",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), lesson_id uuid, front text NOT NULL, back text NOT NULL, category character varying, image_url text, is_active boolean DEFAULT true, display_order integer DEFAULT 0, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "flashcards_backup",
+    "columns": "id uuid, topic_id uuid, front_text text, back_text text, category character varying, image_url text, is_active boolean, display_order integer, created_at timestamp without time zone, updated_at timestamp without time zone"
+  },
+  {
+    "table_name": "hero_sections",
+    "columns": "id integer, image_url text, title text, subtitle text, cta_text text, cta_link text, is_active boolean, display_order integer, created_at timestamp with time zone, updated_at timestamp with time zone"
+  },
+  {
+    "table_name": "learning_completions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, lesson_id uuid NOT NULL, is_completed boolean DEFAULT false, completed_at timestamp with time zone, time_spent_minutes integer DEFAULT 0, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "learning_paths",
+    "columns": "id integer NOT NULL DEFAULT nextval('learning_paths_id_seq'::regclass), user_id uuid NOT NULL, path_type text NOT NULL, details jsonb NOT NULL, current_index integer NOT NULL DEFAULT 0, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "lesson_quiz_results",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, lesson_id uuid NOT NULL, score_percentage integer NOT NULL, passed boolean NOT NULL, completed_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "lesson_quizzes",
+    "columns": "id integer NOT NULL DEFAULT nextval('lesson_quizzes_id_seq'::regclass), lesson_id integer NOT NULL, question_id integer NOT NULL, position integer NOT NULL DEFAULT 0, created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "lessons",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), topic_id uuid NOT NULL, title character varying NOT NULL, content text NOT NULL, video_url text, audio_url text, lesson_type character varying DEFAULT 'text'::character varying, passing_score_percentage integer DEFAULT 80, category character varying, duration integer DEFAULT 0, is_active boolean DEFAULT true, display_order integer DEFAULT 0, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now(), notes text"
+  },
+  {
+    "table_name": "lessons_backup",
+    "columns": "id uuid, topic_id uuid, title character varying, content text, video_url text, audio_url text, lesson_type character varying, passing_score_percentage integer, category character varying, duration integer, is_active boolean, display_order integer, created_at timestamp without time zone, updated_at timestamp without time zone"
+  },
+  {
+    "table_name": "mock_exam_config",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), part_a_question_count integer NOT NULL DEFAULT 15, part_a_duration_minutes integer NOT NULL DEFAULT 30, part_b_question_count integer NOT NULL DEFAULT 120, part_b_duration_minutes integer NOT NULL DEFAULT 150, allow_calculator boolean DEFAULT false, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "mock_exams",
+    "columns": "id integer NOT NULL DEFAULT nextval('mock_exams_id_seq'::regclass), user_id uuid NOT NULL, started_at timestamp with time zone NOT NULL DEFAULT now(), completed_at timestamp with time zone, total_questions integer, correct_count integer, incorrect_count integer, skipped_count integer, created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "mock_results",
+    "columns": "id integer NOT NULL DEFAULT nextval('mock_results_id_seq'::regclass), mock_exam_id integer NOT NULL, question_id integer NOT NULL, selected_option_id integer, is_correct boolean NOT NULL, time_taken_seconds integer, created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "mock_sessions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, exam_part text, started_at timestamp with time zone DEFAULT now(), completed_at timestamp with time zone, total_questions integer DEFAULT 0, correct_answers integer DEFAULT 0, score_percentage integer, time_taken_minutes integer, passed boolean DEFAULT false, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now()"
+  },
+  {
+    "table_name": "modules",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), title character varying NOT NULL, description text, thumbnail_url text, is_active boolean DEFAULT true, display_order integer DEFAULT 0, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "notification_preferences",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, push_enabled boolean DEFAULT true, email_enabled boolean DEFAULT true, in_app_enabled boolean DEFAULT true, subscription_expiring_enabled boolean DEFAULT true, content_approved_enabled boolean DEFAULT true, welcome_enabled boolean DEFAULT true, milestones_enabled boolean DEFAULT true, marketing_enabled boolean DEFAULT false, quiet_hours jsonb, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "notification_queue",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), notification_id uuid NOT NULL, run_at timestamp with time zone NOT NULL, attempts integer NOT NULL DEFAULT 0, max_attempts integer NOT NULL DEFAULT 3, last_attempt_at timestamp with time zone, next_retry_at timestamp with time zone, status character varying NOT NULL DEFAULT 'pending'::character varying, last_error text, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "notification_targets",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), notification_id uuid NOT NULL, user_id uuid NOT NULL, push_token_id uuid, delivery_status character varying NOT NULL DEFAULT 'pending'::character varying, expo_ticket_id character varying, expo_receipt_id character varying, sent_at timestamp with time zone, delivered_at timestamp with time zone, read_at timestamp with time zone, error_code character varying, error_message text, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "notifications",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), title character varying NOT NULL, body text NOT NULL, image_url text, data jsonb DEFAULT '{}'::jsonb, audience_filter jsonb DEFAULT '{\"type\": \"all\"}'::jsonb, scheduled_for timestamp with time zone, sent_at timestamp with time zone, status character varying NOT NULL DEFAULT 'draft'::character varying, notification_type character varying NOT NULL DEFAULT 'manual'::character varying, total_recipients integer DEFAULT 0, total_sent integer DEFAULT 0, total_delivered integer DEFAULT 0, total_failed integer DEFAULT 0, created_by uuid, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "practice_results",
+    "columns": "id integer NOT NULL DEFAULT nextval('practice_results_id_seq'::regclass), session_id integer NOT NULL, question_id integer NOT NULL, selected_option_id integer, is_correct boolean NOT NULL, time_taken_seconds integer, created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "practice_sessions",
+    "columns": "id integer NOT NULL DEFAULT nextval('practice_sessions_id_seq'::regclass), user_id uuid NOT NULL, topic_id integer, subtopic_id integer, started_at timestamp with time zone NOT NULL DEFAULT now(), completed_at timestamp with time zone, total_questions integer, correct_count integer, incorrect_count integer, skipped_count integer, created_at timestamp with time zone NOT NULL DEFAULT now(), subdivision text, module_id uuid NOT NULL"
+  },
+  {
+    "table_name": "push_tokens",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, expo_push_token character varying NOT NULL, device_id character varying, platform character varying, is_active boolean NOT NULL DEFAULT true, last_seen_at timestamp with time zone NOT NULL DEFAULT now(), created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "question_media",
+    "columns": "id integer NOT NULL DEFAULT nextval('question_media_id_seq'::regclass), question_id integer NOT NULL, media_type text NOT NULL, media_url text NOT NULL, created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "question_options",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), question_id uuid NOT NULL, option_text text NOT NULL, is_correct boolean DEFAULT false, display_order integer DEFAULT 0, created_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "questions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), lesson_id uuid, question_text text NOT NULL, question_type character varying DEFAULT 'multiple_choice'::character varying, difficulty character varying, points integer DEFAULT 1, explanation text, image_url text, is_active boolean DEFAULT true, module_type character varying, category character varying, subdivision character varying, exam_part character varying, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "questions_backup",
+    "columns": "id uuid, lesson_id uuid, question_text text, question_type character varying, difficulty character varying, points integer, explanation text, image_url text, is_active boolean, module_type character varying, category character varying, subdivision character varying, exam_part character varying, created_at timestamp without time zone, updated_at timestamp without time zone"
+  },
+  {
+    "table_name": "subscription_plans",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), name text NOT NULL, description text, price_usd numeric NOT NULL, duration_days integer NOT NULL, features ARRAY, is_active boolean DEFAULT true, display_order integer DEFAULT 0, created_at timestamp with time zone DEFAULT now(), updated_at timestamp with time zone DEFAULT now(), config jsonb DEFAULT '{}'::jsonb"
+  },
+  {
+    "table_name": "subscriptions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, plan_type text NOT NULL, start_date date NOT NULL, end_date date NOT NULL, is_active boolean NOT NULL DEFAULT true, auto_renew boolean NOT NULL DEFAULT false, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now(), status text DEFAULT 'active'::text, plan_id uuid, payment_gateway text, payment_method text, amount_paid_usd numeric DEFAULT 0, coupon_code text, discount_amount numeric DEFAULT 0, transaction_id text"
+  },
+  {
+    "table_name": "subtopics",
+    "columns": "id integer NOT NULL DEFAULT nextval('subtopics_id_seq'::regclass), topic_id integer NOT NULL, name text NOT NULL, description text, position integer NOT NULL, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "topics",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), module_id uuid NOT NULL, title character varying NOT NULL, description text, is_active boolean DEFAULT true, display_order integer DEFAULT 0, created_at timestamp without time zone DEFAULT now(), updated_at timestamp without time zone DEFAULT now()"
+  },
+  {
+    "table_name": "user_analytics",
+    "columns": "id integer NOT NULL DEFAULT nextval('user_analytics_id_seq'::regclass), user_id uuid NOT NULL, topic_id integer NOT NULL, subtopic_id integer, practice_attempts integer NOT NULL DEFAULT 0, correct_count integer NOT NULL DEFAULT 0, incorrect_count integer NOT NULL DEFAULT 0, average_time_seconds double precision, last_updated timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, notification_id uuid NOT NULL, read_at timestamp with time zone NOT NULL DEFAULT now(), created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "user_profiles",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, full_name text NOT NULL, phone_number text, country_code text, date_of_birth date, gender text, current_country text, nmc_attempts integer NOT NULL DEFAULT 0, uses_coaching boolean NOT NULL DEFAULT false, nursing_id_url text, profile_completed boolean NOT NULL DEFAULT false, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now(), email text, oauth_provider character varying DEFAULT 'email'::character varying"
+  },
+  {
+    "table_name": "user_sessions",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), user_id uuid NOT NULL, device_info text, session_token text NOT NULL, ip_address inet, user_agent text, last_active_at timestamp with time zone NOT NULL DEFAULT now(), created_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "users",
+    "columns": "id uuid NOT NULL DEFAULT gen_random_uuid(), email text NOT NULL, password_hash text NOT NULL, auth_provider text NOT NULL DEFAULT 'email'::text, is_email_verified boolean NOT NULL DEFAULT false, created_at timestamp with time zone NOT NULL DEFAULT now(), updated_at timestamp with time zone NOT NULL DEFAULT now()"
+  },
+  {
+    "table_name": "v_daily_ai_usage",
+    "columns": "date date, active_users bigint, total_messages bigint, total_tokens bigint, total_cost numeric, avg_messages_per_user numeric"
+  },
+  {
+    "table_name": "v_popular_ai_questions",
+    "columns": "content text, question_count bigint, first_asked timestamp with time zone, last_asked timestamp with time zone"
+  },
+  {
+    "table_name": "v_user_ai_engagement",
+    "columns": "user_id uuid, email text, total_conversations bigint, total_messages bigint, total_tokens_used bigint, total_cost numeric, last_message_at timestamp with time zone"
+  }
+]

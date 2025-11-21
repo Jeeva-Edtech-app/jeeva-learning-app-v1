@@ -1,0 +1,272 @@
+[
+  {
+    "schemaname": "public",
+    "tablename": "mock_sessions",
+    "size": "1256 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "mock_exams",
+    "size": "784 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "question_options",
+    "size": "376 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lessons",
+    "size": "296 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "questions",
+    "size": "248 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "chat_messages",
+    "size": "144 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "learning_completions",
+    "size": "96 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_notification_reads",
+    "size": "88 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notifications",
+    "size": "88 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "email_templates",
+    "size": "80 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_profiles",
+    "size": "80 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "ai_usage_stats",
+    "size": "72 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lessons_backup",
+    "size": "72 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "analytics_sessions",
+    "size": "72 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "flashcards",
+    "size": "64 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notification_preferences",
+    "size": "64 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "chat_conversations",
+    "size": "64 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "content_approvals",
+    "size": "56 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notification_targets",
+    "size": "56 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "practice_sessions",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "users",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subscription_plans",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "push_tokens",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "admin_users",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "dashboard_hero",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "discount_coupons",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "topics",
+    "size": "48 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subscriptions",
+    "size": "40 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notification_queue",
+    "size": "40 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lesson_quiz_results",
+    "size": "32 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "modules",
+    "size": "32 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "daily_stats",
+    "size": "24 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "mock_exam_config",
+    "size": "24 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "questions_backup",
+    "size": "24 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_sessions",
+    "size": "24 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "subtopics",
+    "size": "24 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "ai_recommendations",
+    "size": "16 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "learning_paths",
+    "size": "16 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_analytics",
+    "size": "16 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "app_settings",
+    "size": "16 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "question_media",
+    "size": "16 kB",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lesson_quizzes",
+    "size": "8192 bytes",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "practice_results",
+    "size": "8192 bytes",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "flashcards_backup",
+    "size": "8192 bytes",
+    "row_count": 1
+  },
+  {
+    "schemaname": "public",
+    "tablename": "mock_results",
+    "size": "8192 bytes",
+    "row_count": 1
+  }
+]

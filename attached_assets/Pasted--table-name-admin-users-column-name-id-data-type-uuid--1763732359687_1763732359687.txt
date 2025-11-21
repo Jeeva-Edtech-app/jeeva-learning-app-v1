@@ -1,0 +1,122 @@
+[
+  {
+    "table_name": "admin_users",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "email",
+    "data_type": "text"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "password_hash",
+    "data_type": "text"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "full_name",
+    "data_type": "text"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "role",
+    "data_type": "text"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "admin_users",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "full_name",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "phone_number",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "country_code",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "date_of_birth",
+    "data_type": "date"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "gender",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "current_country",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "nmc_attempts",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "uses_coaching",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "nursing_id_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "profile_completed",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "email",
+    "data_type": "text"
+  },
+  {
+    "table_name": "user_profiles",
+    "column_name": "oauth_provider",
+    "data_type": "character varying"
+  }
+]

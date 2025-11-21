@@ -1,0 +1,207 @@
+[
+  {
+    "table_name": "discount_coupons",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "code",
+    "data_type": "text"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "description",
+    "data_type": "text"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "discount_type",
+    "data_type": "text"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "discount_value",
+    "data_type": "numeric"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "applicable_plans",
+    "data_type": "ARRAY"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "usage_limit",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "usage_count",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "valid_from",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "valid_until",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "discount_coupons",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "name",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "description",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "price_usd",
+    "data_type": "numeric"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "duration_days",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "features",
+    "data_type": "ARRAY"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "display_order",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "subscription_plans",
+    "column_name": "config",
+    "data_type": "jsonb"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "plan_type",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "start_date",
+    "data_type": "date"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "end_date",
+    "data_type": "date"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "auto_renew",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "status",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "plan_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "payment_gateway",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "payment_method",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "amount_paid_usd",
+    "data_type": "numeric"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "coupon_code",
+    "data_type": "text"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "discount_amount",
+    "data_type": "numeric"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "transaction_id",
+    "data_type": "text"
+  }
+]

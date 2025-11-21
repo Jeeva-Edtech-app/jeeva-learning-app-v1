@@ -1,0 +1,347 @@
+[
+  {
+    "table_name": "notification_preferences",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "push_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "email_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "in_app_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "subscription_expiring_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "content_approved_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "welcome_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "milestones_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "marketing_enabled",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "quiet_hours",
+    "data_type": "jsonb"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_preferences",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "notification_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "run_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "attempts",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "max_attempts",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "last_attempt_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "next_retry_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "status",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "last_error",
+    "data_type": "text"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_queue",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "notification_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "push_token_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "delivery_status",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "expo_ticket_id",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "expo_receipt_id",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "sent_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "delivered_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "read_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "error_code",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "error_message",
+    "data_type": "text"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notification_targets",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "title",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "body",
+    "data_type": "text"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "image_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "data",
+    "data_type": "jsonb"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "audience_filter",
+    "data_type": "jsonb"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "scheduled_for",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "sent_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "status",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "notification_type",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "total_recipients",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "total_sent",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "total_delivered",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "total_failed",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "created_by",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "expo_push_token",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "device_id",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "platform",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "last_seen_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "push_tokens",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "column_name": "user_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "column_name": "notification_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "column_name": "read_at",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "table_name": "user_notification_reads",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone"
+  }
+]

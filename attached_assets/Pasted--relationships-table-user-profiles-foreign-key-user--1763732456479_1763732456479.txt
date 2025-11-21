@@ -1,0 +1,254 @@
+[
+  {
+    "relationships": [
+      {
+        "table": "user_profiles",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "subscriptions",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "user_sessions",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "practice_sessions",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "practice_sessions",
+        "foreign_key": "subtopic_id",
+        "references": {
+          "table": "subtopics",
+          "column": "id"
+        }
+      },
+      {
+        "table": "practice_results",
+        "foreign_key": "session_id",
+        "references": {
+          "table": "practice_sessions",
+          "column": "id"
+        }
+      },
+      {
+        "table": "mock_exams",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "mock_results",
+        "foreign_key": "mock_exam_id",
+        "references": {
+          "table": "mock_exams",
+          "column": "id"
+        }
+      },
+      {
+        "table": "ai_recommendations",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "user_analytics",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "user_analytics",
+        "foreign_key": "subtopic_id",
+        "references": {
+          "table": "subtopics",
+          "column": "id"
+        }
+      },
+      {
+        "table": "learning_paths",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "chat_messages",
+        "foreign_key": "conversation_id",
+        "references": {
+          "table": "chat_conversations",
+          "column": "id"
+        }
+      },
+      {
+        "table": "ai_usage_stats",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "content_approvals",
+        "foreign_key": "submitted_by",
+        "references": {
+          "table": "admin_users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "content_approvals",
+        "foreign_key": "reviewed_by",
+        "references": {
+          "table": "admin_users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "chat_conversations",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "subscriptions",
+        "foreign_key": "plan_id",
+        "references": {
+          "table": "subscription_plans",
+          "column": "id"
+        }
+      },
+      {
+        "table": "subscriptions",
+        "foreign_key": "coupon_code",
+        "references": {
+          "table": "discount_coupons",
+          "column": "code"
+        }
+      },
+      {
+        "table": "question_options",
+        "foreign_key": "question_id",
+        "references": {
+          "table": "questions",
+          "column": "id"
+        }
+      },
+      {
+        "table": "flashcards",
+        "foreign_key": "lesson_id",
+        "references": {
+          "table": "topics",
+          "column": "id"
+        }
+      },
+      {
+        "table": "topics",
+        "foreign_key": "module_id",
+        "references": {
+          "table": "modules",
+          "column": "id"
+        }
+      },
+      {
+        "table": "lessons",
+        "foreign_key": "topic_id",
+        "references": {
+          "table": "topics",
+          "column": "id"
+        }
+      },
+      {
+        "table": "questions",
+        "foreign_key": "lesson_id",
+        "references": {
+          "table": "lessons",
+          "column": "id"
+        }
+      },
+      {
+        "table": "practice_sessions",
+        "foreign_key": "module_id",
+        "references": {
+          "table": "modules",
+          "column": "id"
+        }
+      },
+      {
+        "table": "mock_sessions",
+        "foreign_key": "user_id",
+        "references": {
+          "table": "user_profiles",
+          "column": "user_id"
+        }
+      },
+      {
+        "table": "notifications",
+        "foreign_key": "created_by",
+        "references": {
+          "table": "admin_users",
+          "column": "id"
+        }
+      },
+      {
+        "table": "notification_targets",
+        "foreign_key": "notification_id",
+        "references": {
+          "table": "notifications",
+          "column": "id"
+        }
+      },
+      {
+        "table": "notification_targets",
+        "foreign_key": "push_token_id",
+        "references": {
+          "table": "push_tokens",
+          "column": "id"
+        }
+      },
+      {
+        "table": "notification_queue",
+        "foreign_key": "notification_id",
+        "references": {
+          "table": "notifications",
+          "column": "id"
+        }
+      },
+      {
+        "table": "user_notification_reads",
+        "foreign_key": "notification_id",
+        "references": {
+          "table": "notifications",
+          "column": "id"
+        }
+      }
+    ]
+  }
+]

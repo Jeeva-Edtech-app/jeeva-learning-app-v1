@@ -1,0 +1,282 @@
+[
+  {
+    "table_name": "flashcards",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "lesson_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "front",
+    "data_type": "text"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "back",
+    "data_type": "text"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "category",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "image_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "display_order",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "flashcards",
+    "column_name": "updated_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "topic_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "title",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "content",
+    "data_type": "text"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "video_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "audio_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "lesson_type",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "passing_score_percentage",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "category",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "duration",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "display_order",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "updated_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "lessons",
+    "column_name": "notes",
+    "data_type": "text"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "title",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "description",
+    "data_type": "text"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "thumbnail_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "display_order",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "modules",
+    "column_name": "updated_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "lesson_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "question_text",
+    "data_type": "text"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "question_type",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "difficulty",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "points",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "explanation",
+    "data_type": "text"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "image_url",
+    "data_type": "text"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "module_type",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "category",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "subdivision",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "exam_part",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "questions",
+    "column_name": "updated_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "module_id",
+    "data_type": "uuid"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "title",
+    "data_type": "character varying"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "description",
+    "data_type": "text"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "is_active",
+    "data_type": "boolean"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "display_order",
+    "data_type": "integer"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone"
+  },
+  {
+    "table_name": "topics",
+    "column_name": "updated_at",
+    "data_type": "timestamp without time zone"
+  }
+]
