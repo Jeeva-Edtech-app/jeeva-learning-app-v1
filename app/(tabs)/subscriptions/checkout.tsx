@@ -16,8 +16,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { countryDetectionService } from '@/services/countryDetectionService';
 import { paymentGatewaySelector } from '@/services/paymentGatewaySelector';
-import { useStripePayment } from '@/services/stripePaymentService';
-import { useRazorpayPayment } from '@/services/razorpayPaymentService';
+import { Platform } from 'react-native';
+
+let useStripePayment: any = null;
+let useRazorpayPayment: any = null;
+
+if (Platform.OS !== 'web') {
+  useStripePayment = require('@/services/stripePaymentService').useStripePayment;
+  useRazorpayPayment = require('@/services/razorpayPaymentService').useRazorpayPayment;
+} else {
+  useStripePayment = () => ({ createPayment: async () => ({ success: false, error: 'Payment not available on web' }) });
+  useRazorpayPayment = () => ({ createPayment: async () => ({ success: false, error: 'Payment not available on web' }) });
+}
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
 
 export default function CheckoutScreen() {

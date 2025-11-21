@@ -1,4 +1,13 @@
-import RazorpayCheckout from 'react-native-razorpay'
+import { Platform } from 'react-native'
+
+let RazorpayCheckout: any = null
+if (Platform.OS !== 'web') {
+  try {
+    RazorpayCheckout = require('react-native-razorpay').default
+  } catch (e) {
+    console.warn('Razorpay not available')
+  }
+}
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://jeeva-admin-portal.replit.app'
 const API_URL = `${BACKEND_URL}/api/payments`
@@ -58,6 +67,10 @@ export const useRazorpayPayment = () => {
         theme: { color: '#007aff' },
       }
 
+      if (!RazorpayCheckout) {
+        throw new Error('Razorpay is not available on this platform')
+      }
+
       const data = await RazorpayCheckout.open(options)
 
       const verifyResponse = await fetch(`${API_URL}/verify`, {
@@ -85,7 +98,7 @@ export const useRazorpayPayment = () => {
     } catch (error: any) {
       console.error('Razorpay payment error:', error)
       
-      if (error.code === RazorpayCheckout.PAYMENT_CANCELLED) {
+      if (RazorpayCheckout && error.code === RazorpayCheckout.PAYMENT_CANCELLED) {
         return {
           success: false,
           canceled: true,

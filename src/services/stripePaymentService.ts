@@ -3,11 +3,18 @@ import { Platform } from 'react-native'
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://jeeva-admin-portal.replit.app'
 const API_URL = `${BACKEND_URL}/api/payments`
 
-let useStripe: any = () => ({ initPaymentSheet: async () => ({}), presentPaymentSheet: async () => ({}) })
+let useStripe: any = null
 
 if (Platform.OS !== 'web') {
-  const stripeModule = require('@stripe/stripe-react-native')
-  useStripe = stripeModule.useStripe
+  try {
+    const stripeModule = require('@stripe/stripe-react-native')
+    useStripe = stripeModule.useStripe
+  } catch (e) {
+    console.warn('Stripe not available:', e)
+    useStripe = () => ({ initPaymentSheet: async () => ({}), presentPaymentSheet: async () => ({}) })
+  }
+} else {
+  useStripe = () => ({ initPaymentSheet: async () => ({}), presentPaymentSheet: async () => ({}) })
 }
 
 export const useStripePayment = () => {
