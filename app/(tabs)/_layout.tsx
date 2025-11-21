@@ -97,6 +97,24 @@ export default function TabLayout() {
           href: null, // Hide from tab bar
         }}
       />
+      <Tabs.Screen
+        name="plans"
+        options={{
+          href: null, // Hide from tab bar - accessible from menu
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          href: null, // Hide from tab bar - accessible from bell icon
+        }}
+      />
+      <Tabs.Screen
+        name="notification-settings"
+        options={{
+          href: null, // Hide from tab bar - in settings
+        }}
+      />
     </Tabs>
   );
 }

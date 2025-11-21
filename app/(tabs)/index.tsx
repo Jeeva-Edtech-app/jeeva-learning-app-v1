@@ -175,6 +175,20 @@ export default function HomeScreen() {
                     <TouchableOpacity
                       style={styles.sidebarNavItem}
                       onPress={() => {
+                        router.push('/(tabs)/plans' as any)
+                        setShowProfileMenu(false)
+                      }}
+                    >
+                      <View style={styles.navIconContainer}>
+                        <Ionicons name="card-outline" size={22} color="#059669" />
+                      </View>
+                      <Text style={styles.navItemText}>Subscription Plans</Text>
+                      <Ionicons name="chevron-forward-outline" size={18} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.sidebarNavItem}
+                      onPress={() => {
                         router.push('/(tabs)/settings')
                         setShowProfileMenu(false)
                       }}
