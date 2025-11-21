@@ -14,6 +14,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { AuthProvider } from '@/context/AuthContext';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { TrialProvider } from '@/context/TrialContext';
 import { toastConfig } from '@/utils/toast';
 
 function RootLayoutContent() {
@@ -85,7 +86,9 @@ export default function RootLayout() {
         <QueryProvider>
           <ThemeProvider>
             <AuthProvider>
-              <RootLayoutContent />
+              <TrialProvider>
+                <RootLayoutContent />
+              </TrialProvider>
             </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
