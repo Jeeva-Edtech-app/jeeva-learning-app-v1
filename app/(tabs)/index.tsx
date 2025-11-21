@@ -203,7 +203,7 @@ export default function HomeScreen() {
                     <TouchableOpacity
                       style={styles.sidebarNavItem}
                       onPress={() => {
-                    router.push('/(tabs)/ai-assistant')
+                        router.push('/(tabs)/support' as any)
                         setShowProfileMenu(false)
                       }}
                     >

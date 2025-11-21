@@ -110,12 +110,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="notification-settings"
-        options={{
-          href: null, // Hide from tab bar - in settings
-        }}
-      />
-      <Tabs.Screen
         name="support"
         options={{
           href: null, // Hide from tab bar - accessible from settings

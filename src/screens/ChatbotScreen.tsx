@@ -138,7 +138,7 @@ export default function ChatbotScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea}>
       <InnerPageHeader title="Support" onBack={handleBackPress} />
 
       {state === 'menu' && <MenuView categories={FAQ_DATA} onSelect={handleCategorySelect} />}
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
   questionContext: {
     fontSize: 14,
     color: Colors.text.primary,
-    backgroundColor: Colors.ui.background,
+    backgroundColor: '#F3F4F6',
     padding: 12,
     borderRadius: DesignSystem.borderRadius.md,
     fontStyle: 'italic',
