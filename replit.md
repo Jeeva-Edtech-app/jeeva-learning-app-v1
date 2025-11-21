@@ -3,7 +3,7 @@
 ## Project Overview
 **Jeeva Learning App** is a React Native Expo mobile application designed for Indian nurses preparing for the UK NMC CBT (Computer-Based Test) exam. The app provides comprehensive learning materials, practice questions, mock exams, and an AI-powered chatbot (JeevaBot) using Gemini AI.
 
-**Status**: Database connected and API queries fixed ✅
+**Status**: Database connected, API queries fixed, Subscriptions implementation in progress ✅
 
 ---
 
@@ -15,27 +15,35 @@
 - **AI Integration**: Google Gemini API for intelligent chatbot
 - **Authentication**: OAuth (Google & Apple) via Supabase Auth
 - **State Management**: TanStack React Query with async storage persistence
-- **Payments**: Stripe integration for subscriptions (Razorpay alternative)
+- **Payments**: Stripe (international) + Razorpay (India) with smart routing
 - **Voice Input**: Expo Voice for speech-to-text capabilities
 
 ### Key Features
 1. **Three Main Learning Modules**:
    - Practice Module: Question-by-question practice with instant feedback
-   - Learning Module: Comprehensive lessons with video/audio support
+   - Learning Module: Comprehensive lessons with sequential unlocking (80% pass threshold)
    - Mock Exam Module: Full-length practice exams simulating real NMC CBT
 
-2. **AI Chatbot (JeevaBot)**:
+2. **Subscription System** (NEW):
+   - Free Trial: 7 days, all features
+   - Monthly: $9.99/USD (₹799/INR), auto-renew
+   - Yearly: $99.99/USD (₹7999/INR), auto-renew, best value
+   - Smart payment routing: Stripe for international, Razorpay for India
+   - Content gating based on subscription status
+   - Usage limits tracking (AI messages, voice sessions, mock exams)
+
+3. **AI Chatbot (JeevaBot)**:
    - Contextual assistance based on current lesson/module
    - Performance-aware recommendations
-   - 50 messages/day rate limiting
+   - Message limits: 50/day (trial), 100/month (monthly), unlimited (yearly)
    - Integrated with lesson context and user analytics
 
-3. **User Features**:
+4. **User Features**:
    - Progress tracking and analytics
    - Flashcard system for memorization
    - Push notifications (Expo notifications)
-   - Subscription management
    - User profiles with coaching preferences
+   - Subscription management with renewal flow
 
 ---
 
@@ -97,6 +105,13 @@ Tracks completed lessons
 Columns: id, user_id (FK), lesson_id (FK), is_completed, completed_at, time_spent_minutes
 Constraints: Unique(user_id, lesson_id) for idempotency
 Key relationships: tracks user progress through lessons
+```
+
+#### `learning_progress` (UUID primary key)
+Tracks subtopic scores for sequential unlocking
+```
+Columns: id, user_id (FK), subtopic_id (FK), score_percentage, passed, completed_at
+Constraints: Unique(user_id, subtopic_id) - enforces 80% pass to unlock next
 ```
 
 #### `practice_sessions` (serial primary key)
@@ -227,14 +242,26 @@ Available subscription tiers
 ```
 Columns: id, name, description, price_usd, duration_days, features (ARRAY),
          is_active, display_order, config (JSONB)
+Example:
+- Free Trial: 7 days, $0, all features
+- Monthly: 30 days, $9.99 (₹799), all features
+- Yearly: 365 days, $99.99 (₹7999), all features
 ```
 
 #### `subscriptions` (UUID primary key)
 User subscription records
 ```
-Columns: id, user_id (FK), plan_id (FK), status, plan_type, start_date, end_date,
-         is_active, auto_renew, payment_gateway, payment_method, amount_paid_usd,
-         coupon_code (FK), discount_amount, transaction_id
+Columns: id, user_id (FK), plan_id (FK), status (active/trial/expired/cancelled), 
+         plan_type (trial/monthly/yearly), start_date, end_date,
+         is_active, auto_renew, payment_gateway (stripe/razorpay/free_trial), 
+         payment_method, amount_paid_usd, coupon_code (FK), discount_amount, transaction_id
+```
+
+#### `subscription_usage` (UUID primary key)
+Tracks feature usage against subscription limits
+```
+Columns: id, user_id (FK), feature (ai_messages/voice_sessions/mock_exams), 
+         used_this_month, limit_this_month, reset_date
 ```
 
 #### `discount_coupons` (UUID primary key)
@@ -333,6 +360,12 @@ Columns: key (PRIMARY), value (JSONB), description, updated_at
 - Calculates accuracy, time spent, progress percentage
 - Uses `practice_sessions`, `learning_completions`, `user_analytics`
 
+### `/src/api/subscriptions.ts` (NEW)
+- Manages subscription plans, user subscriptions, usage tracking
+- Uses `subscription_plans`, `subscriptions`, `subscription_usage` tables
+- Handles country detection and payment routing
+- Manages trial start, renewal, cancellation
+
 ### `/supabase/functions/chat/index.ts` (Edge Function)
 - AI chatbot backend using Google Gemini
 - Rate limiting (50 messages/day) via `ai_usage_stats`
@@ -342,6 +375,52 @@ Columns: key (PRIMARY), value (JSONB), description, updated_at
 ### `/supabase/functions/rate-limit/index.ts` (Edge Function)
 - Enforces daily message limits
 - Tracks usage in `ai_usage_stats` table
+
+---
+
+## Subscription System Implementation
+
+### Overview
+Complete subscription system with smart payment routing (Stripe for international, Razorpay for India), flexible billing periods, content gating, and automated renewal management.
+
+### Subscription Plans
+1. **Free Trial** (7 days)
+   - Price: $0
+   - Features: All included
+   - Purpose: User testing before upgrade
+
+2. **Monthly** (30 days)
+   - Price: $9.99 (USD) or ₹799 (INR)
+   - Features: All included
+   - Auto-renewal: Yes
+
+3. **Yearly** (365 days)
+   - Price: $99.99 (USD) or ₹7999 (INR)
+   - Features: All included
+   - Value: Saves 2 months vs monthly
+   - Auto-renewal: Yes
+
+### Country Detection & Payment Routing
+- **India (IN)**: Razorpay checkout with UPI, cards, wallets, NetBanking
+- **All Other Countries**: Stripe with card payments
+- Automatic currency conversion based on country
+- IP geolocation as fallback for device location
+
+### Content Gating
+- **Free Trial**: All features (with usage limits)
+- **Paid Plans**: All features unlimited
+- Limits tracked in `subscription_usage` table:
+  - AI Chat: 50/day (trial), 100/month (monthly), unlimited (yearly)
+  - Voice Sessions: 0 (trial), 5/month (monthly), 50/year (yearly)
+  - Mock Exams: 2 max (trial), unlimited (paid)
+
+### Implementation Status
+- ✅ Database schema and tables configured
+- ✅ API endpoints ready in admin app
+- 🔄 Mobile client implementation in progress
+- 🔄 Payment processing integration
+- 🔄 Usage tracking and content gating
+- 🔄 Renewal and expiration flows
 
 ---
 
@@ -358,6 +437,12 @@ Columns: key (PRIMARY), value (JSONB), description, updated_at
 - Foreign key relationships properly configured
 - Unique constraints prevent duplicate records
 
+### Recent Updates (Nov 21, 2025)
+- ✅ Database v2 migration applied: 209 questions, 184 lessons
+- ✅ JeevaBot redesigned: removed generic suggestions, context-only prompts
+- ✅ Theme system added: Light/Dark/System preference with AsyncStorage persistence
+- ✅ Subscriptions guide created: complete implementation spec ready
+
 ---
 
 ## User Preferences & Development Notes
@@ -366,22 +451,29 @@ Columns: key (PRIMARY), value (JSONB), description, updated_at
 - **Backend**: Supabase for all services (no Replit PostgreSQL migration)
 - **Authentication**: OAuth with Google & Apple via Supabase Auth
 - **AI Provider**: Google Gemini API with rate limiting (50 msgs/day)
-- **Payment Gateway**: Stripe integration for subscriptions
+- **Payment Gateway**: Stripe (international) + Razorpay (India) with smart routing
 - **Push Notifications**: Expo Notifications service
+- **UI Design**: Light theme dashboard with system theme preference support
 
 ### File Structure
 ```
 src/
   ├── api/              # Supabase queries & data fetching
   ├── screens/          # React Native screen components
-  ├── hooks/            # Custom React hooks (useChatbot, useVoiceInput, etc.)
+  ├── hooks/            # Custom React hooks (useChatbot, useVoiceInput, useSubscription, etc.)
   ├── lib/              # Utilities (Supabase client, helpers)
   ├── components/       # Reusable UI components
+  ├── context/          # React Context (Theme, Auth, etc.)
   └── navigation/       # Navigation configuration
 
 supabase/
   ├── functions/        # Edge Functions (chat, rate-limit)
   └── migrations/       # Database migration history
+
+docs/
+  ├── MOBILE_SUBSCRIPTIONS_IMPLEMENTATION_GUIDE.md  # Complete spec
+  ├── DATABASE_ANALYSIS_AND_FIX_PLAN.md
+  └── ... other documentation
 ```
 
 ---
@@ -396,13 +488,14 @@ supabase/
 - Chatbot Edge Functions deployed
 - OAuth authentication functional
 - Stripe payment integration active
+- Theme switching (Light/Dark/System) functional in Settings
 
 ### 📊 Database Health
-- 48 tables across learning, analytics, user, notification, and billing domains
+- 48+ tables across learning, analytics, user, notification, subscription, and billing domains
 - 200+ indexes for query optimization
 - All foreign key relationships validated
 - ✅ **MIGRATION APPLIED SUCCESSFULLY** (Nov 21, 2025):
-  - 6 Modules (Practice, Learning, Mock Exam + duplicates from previous runs)
+  - 6 Modules (Practice, Learning, Mock Exam)
   - 18 Topics total
   - 184 Lessons with video/audio URLs and durations
   - 209 Questions across all module types
@@ -418,19 +511,27 @@ supabase/
 4. ✅ Verified seed data: 209 questions + 184 lessons loaded
 5. ✅ Restarted Expo app - running on port 5000
 6. ✅ learning_completions + learning_progress tables operational
+7. ✅ Theme system implemented with AsyncStorage persistence
+8. ✅ Subscriptions Implementation Guide created
 
 ### 🔄 Next Steps (For User)
-1. **Test Learning Module**: Navigate to Learning tab in app
+1. **Implement Subscriptions Client** (In Progress):
+   - Create subscription hooks (useSubscription, usePaymentGateway)
+   - Implement country detection and payment routing
+   - Build subscription plans screen with checkout flow
+   - Add subscription validation on app launch
+   - Implement content gating and feature limits
+2. Test Learning Module: Navigate to Learning tab in app
    - Should display 8 topics with lessons
    - Click a lesson to see content and assessment questions
    - Test 80% pass requirement unlocks next subtopic
-2. Deploy app to iOS/Android with EAS Build
-3. Configure Stripe webhook endpoints
-4. Set up email notification templates
-5. Test push notifications end-to-end
+3. Deploy app to iOS/Android with EAS Build
+4. Configure Stripe webhook endpoints
+5. Test subscription flows with actual payments (test keys)
 
 ### 📄 Reference Documentation
-- `docs/DATABASE_ANALYSIS_AND_FIX_PLAN.md` - Detailed analysis of what was missing and fixed
+- `docs/MOBILE_SUBSCRIPTIONS_IMPLEMENTATION_GUIDE.md` - Complete implementation specification
+- `docs/DATABASE_ANALYSIS_AND_FIX_PLAN.md` - Detailed analysis of what was fixed
 - `supabase/migrations/001_create_learning_schema_v2_comprehensive.sql` - Complete migration script
 
 ---
