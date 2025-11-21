@@ -58,8 +58,8 @@ export default function CheckoutScreen() {
 
     setLoading(true);
     try {
-      const { processPayment } = await import('@/services/nativePaymentService');
-      const result = await processPayment(
+      const nativePayment = await import('@/services/nativePaymentService');
+      const result = await nativePayment.processPayment(
         gateway,
         user.id,
         planId,
