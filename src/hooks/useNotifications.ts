@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useAuth } from '@/context/AuthContext'
-import * as notificationAPI from '@/api/notifications'
+import { notificationAPI, NotificationPreferences } from '@/api/notifications'
 import { useEffect, useState } from 'react'
 
 export function useNotifications() {
@@ -8,20 +8,12 @@ export function useNotifications() {
   const userId = user?.id
   const [unreadCount, setUnreadCount] = useState(0)
 
-  // Fetch unread notifications
-  const unreadQuery = useQuery({
-    queryKey: ['unreadNotifications', userId],
-    queryFn: () => (userId ? notificationAPI.fetchUnreadNotifications(userId) : []),
-    enabled: !!userId,
-    staleTime: 1000 * 60 * 1, // 1 minute
-  })
-
-  // Fetch all notifications with pagination
-  const allNotificationsQuery = useQuery({
+  // Fetch all notifications
+  const notificationsQuery = useQuery({
     queryKey: ['allNotifications', userId],
-    queryFn: () => (userId ? notificationAPI.fetchNotifications(userId, 50, 0) : { data: [], total: 0 }),
+    queryFn: () => (userId ? notificationAPI.getUserNotifications(userId, 50, 0) : []),
     enabled: !!userId,
-    staleTime: 1000 * 60 * 1, // 1 minute
+    staleTime: 1000 * 60 * 1,
   })
 
   // Get unread count
@@ -29,54 +21,28 @@ export function useNotifications() {
     queryKey: ['unreadCount', userId],
     queryFn: () => (userId ? notificationAPI.getUnreadCount(userId) : 0),
     enabled: !!userId,
-    staleTime: 1000 * 30, // 30 seconds
+    staleTime: 1000 * 30,
   })
 
   // Mark as read mutation
   const markAsReadMutation = useMutation({
-    mutationFn: (notificationId: string) => notificationAPI.markNotificationAsRead(notificationId),
+    mutationFn: (notificationId: string) =>
+      userId ? notificationAPI.markAsRead(userId, notificationId) : Promise.resolve(),
     onSuccess: () => {
-      unreadQuery.refetch()
+      notificationsQuery.refetch()
       unreadCountQuery.refetch()
-      allNotificationsQuery.refetch()
     },
   })
 
   // Mark all as read mutation
   const markAllAsReadMutation = useMutation({
-    mutationFn: () => (userId ? notificationAPI.markAllNotificationsAsRead(userId) : Promise.resolve(false)),
+    mutationFn: () => (userId ? notificationAPI.markAllAsRead(userId) : Promise.resolve()),
     onSuccess: () => {
-      unreadQuery.refetch()
-      unreadCountQuery.refetch()
-      allNotificationsQuery.refetch()
-    },
-  })
-
-  // Delete notification mutation
-  const deleteNotificationMutation = useMutation({
-    mutationFn: (notificationId: string) => notificationAPI.deleteNotification(notificationId),
-    onSuccess: () => {
-      allNotificationsQuery.refetch()
+      notificationsQuery.refetch()
       unreadCountQuery.refetch()
     },
   })
 
-  // Setup real-time subscription
-  useEffect(() => {
-    if (!userId) return
-
-    const subscription = notificationAPI.subscribeToNotifications(userId, (notification) => {
-      unreadQuery.refetch()
-      unreadCountQuery.refetch()
-      allNotificationsQuery.refetch()
-    })
-
-    return () => {
-      subscription?.unsubscribe()
-    }
-  }, [userId])
-
-  // Update unread count from query
   useEffect(() => {
     if (unreadCountQuery.data !== undefined) {
       setUnreadCount(unreadCountQuery.data)
@@ -84,29 +50,15 @@ export function useNotifications() {
   }, [unreadCountQuery.data])
 
   return {
-    // Data
-    unreadNotifications: unreadQuery.data || [],
-    allNotifications: allNotificationsQuery.data?.data || [],
-    totalNotifications: allNotificationsQuery.data?.total || 0,
+    notifications: notificationsQuery.data || [],
     unreadCount,
-
-    // Loading states
-    loading: unreadQuery.isLoading || allNotificationsQuery.isLoading,
-    unreadLoading: unreadQuery.isLoading,
-    countLoading: unreadCountQuery.isLoading,
-
-    // Mutations
+    loading: notificationsQuery.isLoading,
     markAsRead: markAsReadMutation.mutate,
     markAsReadLoading: markAsReadMutation.isPending,
     markAllAsRead: markAllAsReadMutation.mutate,
     markAllAsReadLoading: markAllAsReadMutation.isPending,
-    deleteNotification: deleteNotificationMutation.mutate,
-    deleteLoading: deleteNotificationMutation.isPending,
-
-    // Refetch
     refetch: () => {
-      unreadQuery.refetch()
-      allNotificationsQuery.refetch()
+      notificationsQuery.refetch()
       unreadCountQuery.refetch()
     },
   }
@@ -118,14 +70,14 @@ export function useNotificationPreferences() {
 
   const preferencesQuery = useQuery({
     queryKey: ['notificationPreferences', userId],
-    queryFn: () => (userId ? notificationAPI.fetchNotificationPreferences(userId) : null),
+    queryFn: () => (userId ? notificationAPI.getPreferences(userId) : null),
     enabled: !!userId,
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: 1000 * 60 * 60,
   })
 
   const updatePreferencesMutation = useMutation({
-    mutationFn: (prefs: any) =>
-      userId ? notificationAPI.updateNotificationPreferences(userId, prefs) : Promise.resolve(null),
+    mutationFn: (prefs: Partial<NotificationPreferences>) =>
+      userId ? notificationAPI.updatePreferences(userId, prefs) : Promise.resolve(),
     onSuccess: () => {
       preferencesQuery.refetch()
     },
