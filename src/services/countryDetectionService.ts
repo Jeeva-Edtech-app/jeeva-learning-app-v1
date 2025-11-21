@@ -2,13 +2,8 @@ import * as Localization from 'expo-localization'
 
 export const countryDetectionService = {
   getCountryFromDevice(): string {
-    try {
-      const locales = Localization.getLocales()
-      const region = locales[0]?.regionCode || 'GB'
-      return region
-    } catch {
-      return 'GB'
-    }
+    const region = Localization.region
+    return region || 'GB'
   },
 
   async getCountryFromProfile(userId: string): Promise<string> {

@@ -104,12 +104,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="subscriptions"
-        options={{
-          href: null, // Hide from tab bar - accessible from menu
-        }}
-      />
-      <Tabs.Screen
         name="notifications"
         options={{
           href: null, // Hide from tab bar - accessible from bell icon
