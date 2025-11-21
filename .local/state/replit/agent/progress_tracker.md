@@ -35,3 +35,5 @@
 [x] 33. Gemini AI integrated for chatbot responses
 [x] 34. Complete chat system with rate limiting (50 messages/day)
 [x] 35. All infrastructure tested and verified working
+[x] 36. Added Supabase secrets to Replit (EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY, GEMINI_API_KEY)
+[x] 37. Fixed dependency installation and workflow
