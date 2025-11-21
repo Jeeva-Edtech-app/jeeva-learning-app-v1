@@ -198,7 +198,6 @@ export const getQuestionsByLesson = async (lessonId: string): Promise<Question[]
       )
     `)
     .eq('lesson_id', lessonId)
-    .eq('is_active', true)
     .order('created_at', { ascending: true });
 
   if (error) throw error;
@@ -216,7 +215,6 @@ export const getQuestionsByTopic = async (topicId: string, limit: number = 10): 
       )
     `)
     .eq('lessons.topic_id', topicId)
-    .eq('is_active', true)
     .limit(limit);
 
   if (error) throw error;
@@ -239,7 +237,6 @@ export const getQuestionsByModule = async (
       )
     `)
     .eq('module_type', moduleType)
-    .eq('is_active', true)
     .limit(limit);
 
   if (error) throw error;
@@ -269,7 +266,6 @@ export const getQuestionsBySubdivision = async (
     `,
       )
       .eq('module_type', 'practice')
-      .eq('is_active', true)
       .limit(limit);
 
   type Attempt = {
@@ -336,7 +332,6 @@ export const getQuestionsByCategory = async (
     `)
     .eq('module_type', 'learning')
     .eq('category', category)
-    .eq('is_active', true)
     .limit(limit);
 
   if (subdivision) {
@@ -367,7 +362,6 @@ export const getMockExamQuestions = async (
     `)
     .eq('module_type', 'mock_exam')
     .eq('exam_part', examPart)
-    .eq('is_active', true)
     .limit(limit);
 
   if (error) throw error;
