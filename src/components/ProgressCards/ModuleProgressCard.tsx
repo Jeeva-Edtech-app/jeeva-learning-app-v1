@@ -47,43 +47,40 @@ export function ModuleProgressCard({
   const info = getModuleInfo()
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { borderLeftColor: info.color }]}>
       <View style={styles.header}>
-        <View style={[styles.iconBg, { backgroundColor: `${info.color}20` }]}>
-          <Ionicons name={info.icon as any} size={20} color={info.color} />
-        </View>
+        <Ionicons name={info.icon as any} size={24} color={info.color} />
         <View style={styles.headerText}>
           <Text style={styles.title}>{info.name}</Text>
           <Text style={styles.description}>{info.description}</Text>
         </View>
       </View>
 
-      <View style={styles.progressSection}>
-        <View style={styles.progressBar}>
-          <View
-            style={[
-              styles.progressBarFill,
-              {
-                width: `${completionPercentage}%`,
-                backgroundColor: info.color,
-              },
-            ]}
-          />
-        </View>
-        <Text style={styles.progressText}>
+      <View style={styles.completionContainer}>
+        <Text style={[styles.completionPercentage, { color: info.color }]}>
+          {completionPercentage}%
+        </Text>
+        <Text style={styles.topicsText}>
           {completedSubtopics}/{totalSubtopics} Topics
         </Text>
       </View>
 
+      <View style={styles.bar}>
+        <View
+          style={[
+            styles.barFill,
+            {
+              width: `${completionPercentage}%`,
+              backgroundColor: info.color,
+            },
+          ]}
+        />
+      </View>
+
       <View style={styles.statsRow}>
         <View style={styles.stat}>
-          <Text style={styles.statLabel}>Completion</Text>
-          <Text style={styles.statValue}>{completionPercentage}%</Text>
-        </View>
-        <View style={styles.divider} />
-        <View style={styles.stat}>
-          <Text style={styles.statLabel}>Avg Score</Text>
-          <Text style={styles.statValue}>{averageScore}%</Text>
+          <Text style={styles.statLabel}>Score</Text>
+          <Text style={[styles.statValue, { color: info.color }]}>{averageScore}%</Text>
         </View>
       </View>
     </View>
@@ -94,30 +91,24 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: DesignSystem.borderRadius.lg,
-    padding: 14,
+    padding: 16,
     marginHorizontal: 16,
     marginBottom: 10,
+    borderLeftWidth: 4,
     borderWidth: 1,
     borderColor: Colors.ui.border,
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 12,
     marginBottom: 12,
-  },
-  iconBg: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   headerText: {
     flex: 1,
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: Colors.text.primary,
   },
@@ -125,46 +116,48 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.text.secondary,
     marginTop: 2,
+    fontWeight: '500',
   },
-  progressSection: {
+  completionContainer: {
     marginBottom: 12,
   },
-  progressBar: {
-    height: 5,
+  completionPercentage: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  topicsText: {
+    fontSize: 13,
+    color: Colors.text.secondary,
+    fontWeight: '500',
+  },
+  bar: {
+    height: 6,
     backgroundColor: Colors.ui.border,
-    borderRadius: 2.5,
-    marginBottom: 6,
+    borderRadius: 3,
+    marginBottom: 10,
     overflow: 'hidden',
   },
-  progressBarFill: {
+  barFill: {
     height: '100%',
-    borderRadius: 2.5,
-  },
-  progressText: {
-    fontSize: 12,
-    color: Colors.text.secondary,
+    borderRadius: 3,
   },
   statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   stat: {
     flex: 1,
   },
   statLabel: {
-    fontSize: 11,
+    fontSize: 12,
     color: Colors.text.secondary,
     fontWeight: '500',
   },
   statValue: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
-    color: Colors.text.primary,
     marginTop: 2,
-  },
-  divider: {
-    width: 1,
-    height: 30,
-    backgroundColor: Colors.ui.border,
   },
 })
