@@ -10,12 +10,6 @@ import {
 } from '@/types/chat';
 import { useVoiceInput } from './useVoiceInput';
 
-const EMPTY_STATE_SUGGESTIONS = [
-  '📚 Explain a concept',
-  '💡 Practice tips',
-  '🎯 Study strategy',
-];
-
 export interface LessonContextPayload {
   lessonId?: string;
   lessonTitle?: string;
@@ -104,7 +98,7 @@ export const useChatbot = (initialConversationId?: string) => {
   const [composerText, setComposerText] = useState('');
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>(EMPTY_STATE_SUGGESTIONS);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -128,9 +122,10 @@ export const useChatbot = (initialConversationId?: string) => {
 
   const updateSuggestions = useCallback(
     (assistantMessage?: ChatMessage) => {
-      // Build dynamic suggestions based on lesson context
+      // Build dynamic suggestions ONLY based on actual context
+      
+      // Context-aware suggestions for current lesson
       if (lessonContext?.lessonTitle) {
-        // Context-aware suggestions for current lesson
         setSuggestions([
           `📚 Deep dive: ${lessonContext.lessonTitle}`,
           `🎯 Practice questions on this topic`,
@@ -139,19 +134,15 @@ export const useChatbot = (initialConversationId?: string) => {
         return;
       }
 
+      // No suggestions if no lesson context and no AI response
       if (!assistantMessage) {
-        // Empty state: generic suggestions
-        setSuggestions([
-          '📚 Explain a concept',
-          '💡 Practice tips',
-          '🎯 Study strategy',
-        ]);
+        setSuggestions([]);
         return;
       }
 
       const lower = assistantMessage.content.toLowerCase();
 
-      // Content-specific suggestions based on AI response
+      // Content-specific suggestions based on AI response context
       if (lower.includes('dose') || lower.includes('dosage')) {
         setSuggestions([
           '📊 Show medication dose example',
@@ -179,12 +170,8 @@ export const useChatbot = (initialConversationId?: string) => {
         return;
       }
 
-      // Fallback: generic follow-up suggestions
-      setSuggestions([
-        '💬 Explain in simple terms',
-        '📚 Share exam-focused tips',
-        '🧠 Practice question please',
-      ]);
+      // No generic fallback - only show suggestions with actual context
+      setSuggestions([]);
     },
     [lessonContext?.lessonTitle, lessonContext?.topicTitle],
   );
@@ -433,7 +420,7 @@ export const useChatbot = (initialConversationId?: string) => {
           const lastAssistant = [...history].reverse().find(msg => msg.role === 'assistant');
           updateSuggestions(lastAssistant);
         } else {
-          setSuggestions(EMPTY_STATE_SUGGESTIONS);
+          setSuggestions([]);
         }
       } catch (error) {
         setErrorBanner(deriveErrorMessage(error));
@@ -449,7 +436,7 @@ export const useChatbot = (initialConversationId?: string) => {
     setMessages([]);
     setConversationId(null);
     setLessonContext(null);
-    setSuggestions(EMPTY_STATE_SUGGESTIONS);
+    setSuggestions([]);
   }, [cancelStreaming]);
 
   const applyLessonContext = useCallback((context: LessonContextPayload | null) => {
