@@ -20,12 +20,6 @@ import TypingIndicator from '@/components/chat/TypingIndicator';
 import { DesignSystem } from '@/constants/DesignSystem';
 import { useChatbot } from '@/hooks/useChatbot';
 
-const HERO_SUGGESTIONS = [
-  '📚 Explain a concept',
-  '💡 Practice tips',
-  '🎯 Study strategy',
-  '🧠 Review weak topics',
-];
 
 export default function JeevaBotScreen() {
   const {
@@ -131,17 +125,8 @@ export default function JeevaBotScreen() {
       </View>
       <Text style={styles.heroTitle}>Hi! I&apos;m JeevaBot</Text>
       <Text style={styles.heroSubtitle}>
-        Your AI study assistant for UK NMC CBT prep. Ask anything or try a quick suggestion below.
+        Your AI study assistant for UK NMC CBT prep. Ask me anything about your lessons!
       </Text>
-      <View style={styles.suggestionList}>
-        {HERO_SUGGESTIONS.map(label => (
-          <SuggestionCard
-            key={label}
-            label={label}
-            onPress={() => handleSuggestionPress(label)}
-          />
-        ))}
-      </View>
     </ScrollView>
   );
 
