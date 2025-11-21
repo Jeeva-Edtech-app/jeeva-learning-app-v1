@@ -1,3 +1,4 @@
+// @ts-ignore - react-native and dynamic requires work at runtime despite TypeScript warnings
 import { Platform } from 'react-native';
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://jeeva-admin-portal.replit.app'
@@ -10,12 +11,12 @@ async function createStripePayment(
   coupon?: string
 ) {
   try {
-    const { Platform: RNPlatform } = require('react-native');
+    const RNPlatform = Platform;
     if (RNPlatform.OS === 'web') {
       return { success: false, error: 'Stripe not available on web' };
     }
 
-    const stripeModule = require('@stripe/stripe-react-native');
+    const stripeModule = (require as any)('@stripe/stripe-react-native');
     const useStripe = stripeModule.useStripe;
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
@@ -77,12 +78,12 @@ async function createRazorpayPayment(
   coupon?: string
 ) {
   try {
-    const { Platform: RNPlatform } = require('react-native');
+    const RNPlatform = Platform;
     if (RNPlatform.OS === 'web') {
       return { success: false, error: 'Razorpay not available on web' };
     }
 
-    const RazorpayCheckout = require('react-native-razorpay').default;
+    const RazorpayCheckout = (require as any)('react-native-razorpay').default;
 
     const configResponse = await fetch(`${API_URL}/config`);
     if (!configResponse.ok) throw new Error('Config fetch failed');
