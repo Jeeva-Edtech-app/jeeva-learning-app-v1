@@ -58,22 +58,88 @@ export default function CheckoutScreen() {
 
     setLoading(true);
     try {
-      const nativePayment = await import('@/services/nativePaymentService');
-      const result = await nativePayment.processPayment(
-        gateway,
-        user.id,
-        planId,
-        user.email || '',
-        country,
-        couponCode,
-        (user as any).phone,
-        (user as any).user_metadata?.name
-      );
+      // Dynamic native-only payment processing
+      let result: any;
+      
+      if (gateway === 'stripe') {
+        const stripeModule = (require as any)('@stripe/stripe-react-native');
+        const useStripe = stripeModule.useStripe;
+        const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-      if (result.success) {
+        const response = await fetch(`${API_URL}/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, subscriptionPlanId: planId, countryCode: country, discountCouponCode: couponCode }),
+        });
+
+        if (!response.ok) throw new Error(`Backend error: ${response.status}`);
+        const { paymentId, clientSecret } = await response.json();
+
+        const { error: initError } = await initPaymentSheet({
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Jeeva Learning',
+          returnURL: 'jeevalearning://payment-success',
+        });
+
+        if (initError) throw new Error(initError.message);
+        const { error: presentError } = await presentPaymentSheet();
+        if (presentError) {
+          if (presentError.code === 'Canceled') {
+            result = { success: false, canceled: true };
+          } else {
+            throw new Error(presentError.message);
+          }
+        } else {
+          const verifyResponse = await fetch(`${API_URL}/verify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paymentId }),
+          });
+
+          if (!verifyResponse.ok) throw new Error('Verification failed');
+          const verifyResult = await verifyResponse.json();
+          result = verifyResult.success ? { success: true, transactionId: paymentId } : { success: false, error: verifyResult.error || 'Payment verification failed' };
+        }
+      } else {
+        const RazorpayCheckout = (require as any)('react-native-razorpay').default;
+
+        const configResponse = await fetch(`${API_URL}/config`);
+        if (!configResponse.ok) throw new Error('Config fetch failed');
+        const config = await configResponse.json();
+
+        const createResponse = await fetch(`${API_URL}/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, subscriptionPlanId: planId, countryCode: country, discountCouponCode: couponCode }),
+        });
+
+        if (!createResponse.ok) throw new Error('Payment creation failed');
+        const { paymentId, orderId, amount, currency } = await createResponse.json();
+
+        const options = {
+          description: 'Jeeva Learning Subscription',
+          currency, key: config.razorpay.keyId, amount, name: 'Jeeva Learning', order_id: orderId,
+          prefill: { email: user.email, contact: (user as any).phone, name: (user as any).user_metadata?.name },
+          theme: { color: '#007aff' },
+        };
+
+        await RazorpayCheckout.open(options);
+
+        const verifyResponse = await fetch(`${API_URL}/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ paymentId }),
+        });
+
+        if (!verifyResponse.ok) throw new Error('Verification failed');
+        const verifyResult = await verifyResponse.json();
+        result = verifyResult.success ? { success: true, transactionId: paymentId } : { success: false, error: verifyResult.error || 'Payment verification failed' };
+      }
+
+      if (finalResult.success) {
         router.push('/subscriptions/success');
-      } else if (!result.canceled) {
-        Alert.alert('Error', result.error || 'Payment failed');
+      } else if (!finalResult.canceled) {
+        Alert.alert('Error', finalResult.error || 'Payment failed');
       }
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Payment processing failed');
