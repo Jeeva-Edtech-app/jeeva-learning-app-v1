@@ -146,7 +146,7 @@ export default function JeevaBotScreen() {
     >
       <View style={styles.heroAvatar}>
         <Image 
-          source={require('@/assets/images/splash-icon.png')} 
+          source={require('../../assets/images/splash-icon.png')} 
           style={styles.heroImage}
           resizeMode="contain"
         />
