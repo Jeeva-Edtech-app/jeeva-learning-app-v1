@@ -9,6 +9,7 @@ import {
   Alert,
   SafeAreaView,
   TextInput,
+  Platform,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { router } from 'expo-router';
@@ -16,7 +17,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { countryDetectionService } from '@/services/countryDetectionService';
 import { paymentGatewaySelector } from '@/services/paymentGatewaySelector';
-import { processPayment } from '@/services/paymentWrapper';
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
 
 export default function CheckoutScreen() {
@@ -51,8 +51,14 @@ export default function CheckoutScreen() {
       return;
     }
 
+    if (Platform.OS === 'web') {
+      Alert.alert('Payment processing is not available on web. Please use the mobile app.');
+      return;
+    }
+
     setLoading(true);
     try {
+      const { processPayment } = await import('@/services/nativePaymentService');
       const result = await processPayment(
         gateway,
         user.id,
@@ -79,83 +85,65 @@ export default function CheckoutScreen() {
   const gatewayInfo = paymentGatewaySelector.getGatewayInfo(gateway);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.text.primary} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Payment Details</Text>
-        <View style={styles.headerPlaceholder} />
-      </View>
+    <SafeAreaView style={[styles.container, { backgroundColor: Colors.background }]}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color={Colors.text} />
+          </TouchableOpacity>
+          <Text style={styles.title}>Order Summary</Text>
+          <View style={{ width: 24 }} />
+        </View>
 
-      <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-        {/* Order Summary */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
-          <View style={styles.summaryBox}>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{planName}</Text>
-              <Text style={styles.summaryValue}>${planPrice.toFixed(2)}</Text>
+        <View style={styles.content}>
+          <View style={styles.planCard}>
+            <Text style={styles.planName}>{planName}</Text>
+            <Text style={styles.planPrice}>₹{discountedPrice.toFixed(2)}</Text>
+          </View>
+
+          <View style={styles.couponSection}>
+            <Text style={styles.sectionTitle}>Have a coupon?</Text>
+            <View style={styles.couponInput}>
+              <TextInput
+                placeholder="Enter coupon code"
+                value={couponCode}
+                onChangeText={setCouponCode}
+                style={styles.input}
+              />
+              <TouchableOpacity style={styles.applyButton}>
+                <Text style={styles.applyButtonText}>Apply</Text>
+              </TouchableOpacity>
             </View>
+          </View>
 
-            {discountedPrice < planPrice && (
-              <>
-                <View style={styles.divider} />
-                <View style={styles.summaryRow}>
-                  <Text style={styles.summaryLabel}>Discount</Text>
-                  <Text style={styles.discountValue}>-${(planPrice - discountedPrice).toFixed(2)}</Text>
-                </View>
-              </>
+          <View style={styles.paymentMethodSection}>
+            <Text style={styles.sectionTitle}>Payment Method</Text>
+            <View style={styles.methodCard}>
+              <Ionicons name={gatewayInfo.icon as any} size={32} color={Colors.primary} />
+              <Text style={styles.methodName}>{gatewayInfo.name}</Text>
+              <Text style={styles.methodDescription}>{gatewayInfo.description}</Text>
+            </View>
+          </View>
+
+          <View style={styles.summarySection}>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Subtotal</Text>
+              <Text style={styles.summaryValue}>₹{planPrice.toFixed(2)}</Text>
+            </View>
+            {couponCode && (
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Discount</Text>
+                <Text style={[styles.summaryValue, { color: Colors.success }]}>-₹{(planPrice - discountedPrice).toFixed(2)}</Text>
+              </View>
             )}
-
-            <View style={styles.divider} />
-            <View style={styles.summaryRow}>
+            <View style={[styles.summaryRow, styles.totalRow]}>
               <Text style={styles.totalLabel}>Total</Text>
-              <Text style={styles.totalValue}>${discountedPrice.toFixed(2)}</Text>
+              <Text style={styles.totalValue}>₹{discountedPrice.toFixed(2)}</Text>
             </View>
           </View>
-        </View>
-
-        {/* Payment Method */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Method</Text>
-          <View style={styles.gatewayBox}>
-            <Text style={styles.gatewayName}>{gatewayInfo.name}</Text>
-            <Text style={styles.gatewayDescription}>{gatewayInfo.description}</Text>
-            <View style={styles.methodsContainer}>
-              {gatewayInfo.methods.map((method, index) => (
-                <View key={index} style={styles.methodTag}>
-                  <Text style={styles.methodText}>{method}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        </View>
-
-        {/* Billing Info */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Billing Details</Text>
-          <View style={styles.billingBox}>
-            <View style={styles.billingRow}>
-              <Text style={styles.billingLabel}>Email:</Text>
-              <Text style={styles.billingValue}>{user?.email}</Text>
-            </View>
-            <View style={styles.billingRow}>
-              <Text style={styles.billingLabel}>Country:</Text>
-              <Text style={styles.billingValue}>{country}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Terms */}
-        <View style={styles.termsContainer}>
-          <Text style={styles.termsText}>
-            By proceeding, you agree to our Terms & Conditions and Refund Policy. Your subscription will be set to manual renewal.
-          </Text>
         </View>
       </ScrollView>
 
-      {/* Payment Button */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={[styles.payButton, loading && styles.payButtonDisabled]}
@@ -163,12 +151,9 @@ export default function CheckoutScreen() {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
+            <ActivityIndicator color="#fff" />
           ) : (
-            <>
-              <Text style={styles.payButtonText}>Pay ${discountedPrice.toFixed(2)}</Text>
-              <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
-            </>
+            <Text style={styles.payButtonText}>Pay ₹{discountedPrice.toFixed(2)}</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -179,176 +164,155 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.main,
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    backgroundColor: Colors.background.card,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.ui.border,
+    borderBottomColor: Colors.border,
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-  },
-  headerTitle: {
+  title: {
     fontSize: 18,
     fontWeight: '600',
-    color: Colors.text.primary,
-  },
-  headerPlaceholder: {
-    width: 40,
+    color: Colors.text,
   },
   content: {
-    flex: 1,
+    padding: 20,
   },
-  scrollContent: {
-    paddingBottom: 120,
-  },
-  section: {
+  planCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
     padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  planName: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    marginBottom: 8,
+  },
+  planPrice: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: Colors.primary,
+  },
+  couponSection: {
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.text,
     marginBottom: 12,
   },
-  summaryBox: {
-    backgroundColor: Colors.background.card,
+  couponInput: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    color: Colors.text,
+  },
+  applyButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  paymentMethodSection: {
+    marginBottom: 24,
+  },
+  methodCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: Colors.primary,
+  },
+  methodName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.text,
+    marginTop: 12,
+  },
+  methodDescription: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginTop: 4,
+  },
+  summarySection: {
+    backgroundColor: Colors.surface,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: Colors.ui.border,
+    borderColor: Colors.border,
   },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 8,
+    marginBottom: 12,
   },
   summaryLabel: {
     fontSize: 14,
-    color: Colors.text.secondary,
+    color: Colors.textSecondary,
   },
   summaryValue: {
     fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text.primary,
+    fontWeight: '500',
+    color: Colors.text,
   },
-  discountValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.semantic.success,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: Colors.ui.border,
-    marginVertical: 12,
+  totalRow: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    paddingTopView: 12,
+    marginTop: 12,
+    marginBottom: 0,
   },
   totalLabel: {
     fontSize: 16,
-    fontWeight: '700',
-    color: Colors.text.primary,
+    fontWeight: 'bold',
+    color: Colors.text,
   },
   totalValue: {
     fontSize: 16,
-    fontWeight: '700',
-    color: Colors.primary.main,
-  },
-  gatewayBox: {
-    backgroundColor: Colors.background.card,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 2,
-    borderColor: Colors.primary.main,
-  },
-  gatewayName: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.text.primary,
-    marginBottom: 4,
-  },
-  gatewayDescription: {
-    fontSize: 13,
-    color: Colors.text.secondary,
-    marginBottom: 12,
-  },
-  methodsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  methodTag: {
-    backgroundColor: '#F3F4F6',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  methodText: {
-    fontSize: 12,
-    color: Colors.text.primary,
-    fontWeight: '500',
-  },
-  billingBox: {
-    backgroundColor: Colors.background.card,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Colors.ui.border,
-  },
-  billingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-  },
-  billingLabel: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-  },
-  billingValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text.primary,
-  },
-  termsContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  termsText: {
-    fontSize: 12,
-    color: Colors.text.secondary,
-    lineHeight: 18,
+    fontWeight: 'bold',
+    color: Colors.primary,
   },
   footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: Colors.background.card,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    padding: 20,
+    paddingBottom: 32,
     borderTopWidth: 1,
-    borderTopColor: Colors.ui.border,
+    borderTopColor: Colors.border,
+    backgroundColor: Colors.background,
   },
   payButton: {
-    backgroundColor: Colors.primary.main,
+    backgroundColor: Colors.primary,
+    borderRadius: 12,
     paddingVertical: 14,
-    borderRadius: 10,
     alignItems: 'center',
-    flexDirection: 'row',
     justifyContent: 'center',
-    gap: 8,
   },
   payButtonDisabled: {
     opacity: 0.6,
   },
   payButtonText: {
-    color: '#FFFFFF',
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
