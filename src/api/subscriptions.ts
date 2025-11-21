@@ -56,7 +56,7 @@ export async function isSubscriptionValid(userId: string): Promise<boolean> {
     const subscription = await fetchUserSubscription(userId)
     if (!subscription) return false
 
-    const endDate = new Date(subscription.end_date)
+    const endDate = new Date(subscription.endDate)
     const today = new Date()
 
     return endDate > today && subscription.status === 'active'
@@ -74,7 +74,7 @@ export async function getDaysRemaining(userId: string): Promise<number> {
     const subscription = await fetchUserSubscription(userId)
     if (!subscription) return 0
 
-    const endDate = new Date(subscription.end_date)
+    const endDate = new Date(subscription.endDate)
     const today = new Date()
     const daysRemaining = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
@@ -163,7 +163,7 @@ export async function getRemainingUsage(userId: string, feature: string): Promis
       },
     }
 
-    const planType = subscription.plan_type || 'free_trial'
+    const planType = (subscription as any).plan_type || 'free_trial'
     const limit = limits[planType]?.[feature] ?? null
 
     if (limit === null) return 999999 // unlimited
