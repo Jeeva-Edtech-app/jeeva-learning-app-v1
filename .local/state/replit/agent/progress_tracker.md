@@ -25,3 +25,15 @@
 [x] 25. Updated app.json with notification configuration for iOS and Android
 [x] 26. Fixed notification deep-linking routes to match Expo Router structure
 [x] 27. All optimizations reviewed and approved by architect
+
+## MIGRATION TO REPLIT POSTGRESQL (NEON)
+[ ] 28. Install required packages for migration (@neondatabase/serverless, drizzle-orm, drizzle-kit)
+[ ] 29. Create Drizzle schema file matching all 24 Supabase tables
+[ ] 30. Request Supabase credentials from user (EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY, GEMINI_API_KEY)
+[ ] 31. Set up Drizzle configuration and migration scripts
+[ ] 32. Create API routes to replace Supabase Edge Functions
+[ ] 33. Update mobile app to call new API routes instead of Supabase
+[ ] 34. Run database migrations to create all tables
+[ ] 35. Test the migration thoroughly
+[ ] 36. Update documentation
+[ ] 37. Final architect review of migration

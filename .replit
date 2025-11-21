@@ -1,5 +1,5 @@
 entrypoint = "README.md"
-modules = ["nodejs-20", "nix", "postgresql-16"]
+modules = ["nodejs-20", "bash", "nix"]
 
 [nix]
 channel = "stable-25_05"
@@ -90,3 +90,4 @@ waitForPort = 5000
 
 [agent]
 expertMode = true
+integrations = ["javascript_database:1.0.0"]
