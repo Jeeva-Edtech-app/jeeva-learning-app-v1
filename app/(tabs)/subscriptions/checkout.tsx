@@ -16,18 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { countryDetectionService } from '@/services/countryDetectionService';
 import { paymentGatewaySelector } from '@/services/paymentGatewaySelector';
-import { Platform } from 'react-native';
-
-let useStripePayment: any = null;
-let useRazorpayPayment: any = null;
-
-if (Platform.OS !== 'web') {
-  useStripePayment = require('@/services/stripePaymentService').useStripePayment;
-  useRazorpayPayment = require('@/services/razorpayPaymentService').useRazorpayPayment;
-} else {
-  useStripePayment = () => ({ createPayment: async () => ({ success: false, error: 'Payment not available on web' }) });
-  useRazorpayPayment = () => ({ createPayment: async () => ({ success: false, error: 'Payment not available on web' }) });
-}
+import { processPayment } from '@/services/paymentWrapper';
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
 
 export default function CheckoutScreen() {
@@ -40,9 +29,6 @@ export default function CheckoutScreen() {
   const [gateway, setGateway] = useState<'stripe' | 'razorpay'>('stripe');
   const [couponCode, setCouponCode] = useState('');
   const [discountedPrice, setDiscountedPrice] = useState(planPrice);
-
-  const stripePayment = useStripePayment();
-  const razorpayPayment = useRazorpayPayment();
 
   useEffect(() => {
     detectCountryAndGateway();
@@ -67,28 +53,21 @@ export default function CheckoutScreen() {
 
     setLoading(true);
     try {
-      if (gateway === 'stripe') {
-        const result = await stripePayment.createPayment(user.id, planId, country, couponCode);
-        if (result.success) {
-          router.push('/subscriptions/success');
-        } else if (!result.canceled) {
-          Alert.alert('Error', result.error || 'Payment failed');
-        }
-      } else {
-        const result = await razorpayPayment.createPayment(
-          user.id,
-          planId,
-          user.email || '',
-          user.phone || '',
-          user.user_metadata?.name || 'User',
-          country,
-          couponCode
-        );
-        if (result.success) {
-          router.push('/subscriptions/success');
-        } else if (!result.canceled) {
-          Alert.alert('Error', result.error || 'Payment failed');
-        }
+      const result = await processPayment(
+        gateway,
+        user.id,
+        planId,
+        user.email || '',
+        country,
+        couponCode,
+        (user as any).phone,
+        (user as any).user_metadata?.name
+      );
+
+      if (result.success) {
+        router.push('/subscriptions/success');
+      } else if (!result.canceled) {
+        Alert.alert('Error', result.error || 'Payment failed');
       }
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Payment processing failed');
