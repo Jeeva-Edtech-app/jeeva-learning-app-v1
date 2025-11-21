@@ -489,19 +489,16 @@ ON CONFLICT DO NOTHING;
 -- ============================================
 
 SELECT 
-  'SEED DATA SUMMARY' as verification,
-  (SELECT COUNT(*) FROM modules) as modules,
-  (SELECT COUNT(*) FROM topics) as topics,
-  (SELECT COUNT(*) FROM lessons) as lessons,
-  (SELECT COUNT(*) FROM questions) as questions,
-  (SELECT COUNT(*) FROM question_options) as options,
-  (SELECT COUNT(*) FROM learning_progress) as learning_progress
-  UNION ALL
-SELECT 
-  'TOPICS BREAKDOWN',
-  (SELECT COUNT(*) FROM topics WHERE module_id = '550e8400-e29b-41d4-a716-446655440001')::text,
-  (SELECT COUNT(*) FROM topics WHERE module_id = '550e8400-e29b-41d4-a716-446655440002')::text,
-  (SELECT COUNT(*) FROM topics WHERE module_id = '550e8400-e29b-41d4-a716-446655440003')::text,
-  '',
-  '',
-  '';
+  'Modules' as entity,
+  COUNT(*) as count
+FROM modules
+UNION ALL
+SELECT 'Topics', COUNT(*) FROM topics
+UNION ALL
+SELECT 'Lessons', COUNT(*) FROM lessons
+UNION ALL
+SELECT 'Questions', COUNT(*) FROM questions
+UNION ALL
+SELECT 'Question Options', COUNT(*) FROM question_options
+UNION ALL
+SELECT 'Learning Progress Records', COUNT(*) FROM learning_progress;
