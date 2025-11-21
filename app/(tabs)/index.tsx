@@ -17,15 +17,20 @@ import { useAuth } from '@/context/AuthContext'
 import { useState, useCallback, useEffect } from 'react'
 import { useHeroSections } from '@/hooks/useHeroSections'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useProgress } from '@/hooks/useProgress'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { notificationAPI } from '@/api/notifications'
 import { showToast } from '@/utils/toast'
+import { ExamReadinessCard } from '@/components/ProgressCards/ExamReadinessCard'
+import { ModuleProgressCard } from '@/components/ProgressCards/ModuleProgressCard'
+import { TimeSpentCard } from '@/components/ProgressCards/TimeSpentCard'
 
 export default function HomeScreen() {
   const { user, signOut } = useAuth()
   const router = useRouter()
   const { data: heroSections, isLoading: heroLoading, error: heroError } = useHeroSections()
   const { data: analytics, isLoading: analyticsLoading } = useAnalytics(30)
+  const { dashboardData, loading: progressLoading } = useProgress()
 
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
@@ -306,73 +311,51 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* Analytics Overview */}
-        {analyticsLoading ? (
+        {/* Progress Tracking Section */}
+        {progressLoading ? (
           <View style={styles.analyticsSection}>
             <View style={styles.sectionHeader}>
-              <Ionicons name="bar-chart-outline" size={16} color="#111827" style={styles.sectionIcon} />
-              <Text style={styles.sectionTitleSmall}>Analytics Overview</Text>
+              <Ionicons name="trending-up-outline" size={16} color="#111827" style={styles.sectionIcon} />
+              <Text style={styles.sectionTitleSmall}>Your Progress</Text>
             </View>
-            <View style={styles.analyticsGrid}>
-              <View style={styles.analyticsCardContainer}>
-                <View style={styles.modernAnalyticsCard}>
-                  <Skeleton width="55%" height={18} />
-                  <Skeleton width="40%" height={30} style={styles.skeletonSpacing} />
-                  <Skeleton width="100%" height={8} borderRadius={4} />
-                </View>
-              </View>
-              <View style={styles.analyticsCardContainer}>
-                <View style={styles.modernAnalyticsCard}>
-                  <Skeleton width="50%" height={18} />
-                  <Skeleton width="35%" height={30} style={styles.skeletonSpacing} />
-                  <Skeleton width="100%" height={8} borderRadius={4} />
-                </View>
-              </View>
-            </View>
+            <Skeleton width="90%" height={100} borderRadius={12} style={{ marginHorizontal: 16, marginTop: 12 }} />
           </View>
-        ) : analytics ? (
-          <View style={styles.analyticsSection}>
+        ) : dashboardData ? (
+          <View style={styles.progressSection}>
             <View style={styles.sectionHeader}>
-              <Ionicons name="bar-chart-outline" size={16} color="#111827" style={styles.sectionIcon} />
-              <Text style={styles.sectionTitleSmall}>Analytics Overview</Text>
+              <Ionicons name="trending-up-outline" size={16} color="#111827" style={styles.sectionIcon} />
+              <Text style={styles.sectionTitleSmall}>Your Progress</Text>
             </View>
-            <View style={styles.analyticsGrid}>
-              {/* Completion Card */}
-              <View style={styles.analyticsCardContainer}>
-                <View style={styles.modernAnalyticsCard}>
-                  <View style={styles.iconRow}>
-                    <View style={[styles.iconBadge, styles.completionIconBg]}>
-                      <Ionicons name={analytics.completionRate > 20 ? "checkmark-circle" : "checkmark"} size={24} color="#16A34A" />
-                    </View>
-                    <View style={styles.metricColumn}>
-                      <Text style={styles.metricLabel}>Completion</Text>
-                      <Text style={styles.metricNumber}>{analytics.completionRate}%</Text>
-                    </View>
-                  </View>
-                  <View style={styles.progressBar}>
-                    <View style={[styles.progressFill, { width: `${analytics.completionRate}%`, backgroundColor: '#16A34A' }]} />
-                  </View>
-                </View>
-              </View>
 
-              {/* Premium Card */}
-              <View style={styles.analyticsCardContainer}>
-                <View style={styles.modernAnalyticsCard}>
-                  <View style={styles.iconRow}>
-                    <View style={[styles.iconBadge, styles.premiumIconBg]}>
-                      <Ionicons name="star" size={24} color="#D97706" />
-                    </View>
-                    <View style={styles.metricColumn}>
-                      <Text style={styles.metricLabel}>Subscriptions</Text>
-                      <Text style={styles.metricNumber}>{analytics.subscriptionRate}%</Text>
-                    </View>
-                  </View>
-                  <View style={styles.progressBar}>
-                    <View style={[styles.progressFill, { width: `${analytics.subscriptionRate}%`, backgroundColor: '#D97706' }]} />
-                  </View>
-                </View>
-              </View>
-            </View>
+            {/* Exam Readiness Card */}
+            <ExamReadinessCard examReadinessScore={dashboardData.examReadinessScore} />
+
+            {/* Module Progress Cards */}
+            <Text style={styles.subsectionTitle}>Module Performance</Text>
+            <ModuleProgressCard
+              moduleId="practice"
+              completedSubtopics={dashboardData.moduleProgress.practice.completedSubtopics}
+              totalSubtopics={dashboardData.moduleProgress.practice.totalSubtopics}
+              completionPercentage={dashboardData.moduleProgress.practice.completionPercentage}
+              averageScore={dashboardData.moduleProgress.practice.averageScore}
+            />
+            <ModuleProgressCard
+              moduleId="learning"
+              completedSubtopics={dashboardData.moduleProgress.learning.completedSubtopics}
+              totalSubtopics={dashboardData.moduleProgress.learning.totalSubtopics}
+              completionPercentage={dashboardData.moduleProgress.learning.completionPercentage}
+              averageScore={dashboardData.moduleProgress.learning.averageScore}
+            />
+            <ModuleProgressCard
+              moduleId="mock_exam"
+              completedSubtopics={dashboardData.moduleProgress.mockExam.attemptCount}
+              totalSubtopics={5}
+              completionPercentage={dashboardData.moduleProgress.mockExam.attemptCount * 20}
+              averageScore={dashboardData.moduleProgress.mockExam.averageScore}
+            />
+
+            {/* Time Spent Card */}
+            <TimeSpentCard totalMinutes={dashboardData.totalTimeSpent} />
           </View>
         ) : null}
 
@@ -454,6 +437,19 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 24,
+  },
+
+  // Progress Section
+  progressSection: {
+    paddingBottom: 12,
+  },
+  subsectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 10,
   },
 
   // Header / App Bar
