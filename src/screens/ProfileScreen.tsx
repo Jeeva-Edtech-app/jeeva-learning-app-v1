@@ -166,7 +166,7 @@ export default function ProfileScreen() {
                 {hasValidSubscription && subscription ? (
                   <>
                     <Text style={styles.planName}>
-                      {subscription.planName || 'Premium Plan'}
+                      Active Subscription
                     </Text>
 
                     <View style={styles.statusBadgeContainer}>
@@ -178,7 +178,7 @@ export default function ProfileScreen() {
                     </View>
 
                     <Text style={styles.daysRemaining}>
-                      {subscription.daysRemaining || 0} days left
+                      {Math.ceil((new Date(subscription.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) || 0} days left
                     </Text>
 
                     <Text style={styles.expiryDate}>
@@ -191,7 +191,7 @@ export default function ProfileScreen() {
                         <View
                           style={[
                             styles.progressFill,
-                            { width: `${Math.min(100, Math.max(0, 100 - ((subscription.daysRemaining || 0) / 30) * 100))}%` }
+                            { width: `${Math.min(100, Math.max(0, 100 - ((Math.ceil((new Date(subscription.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) || 0) / 30) * 100))}%` }
                           ]}
                         />
                       </View>
