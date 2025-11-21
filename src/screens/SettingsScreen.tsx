@@ -417,9 +417,8 @@ export default function SettingsScreen() {
                       onPress: () => savePreference('theme', 'light'),
                     },
                     {
-                      text: 'Dark (Coming Soon)',
-                      onPress: () =>
-                        Alert.alert('Coming Soon', 'Dark mode will be added soon!'),
+                      text: 'Dark',
+                      onPress: () => savePreference('theme', 'dark'),
                     },
                     {
                       text: 'System',
