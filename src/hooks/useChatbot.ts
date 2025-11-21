@@ -10,13 +10,6 @@ import {
 } from '@/types/chat';
 import { useVoiceInput } from './useVoiceInput';
 
-const EMPTY_STATE_SUGGESTIONS = [
-  'Explain a concept',
-  'Practice tips',
-  'Study strategy',
-  'Review weak topics',
-];
-
 export interface LessonContextPayload {
   lessonId?: string;
   lessonTitle?: string;
@@ -129,13 +122,30 @@ export const useChatbot = (initialConversationId?: string) => {
 
   const updateSuggestions = useCallback(
     (assistantMessage?: ChatMessage) => {
+      // Build dynamic suggestions based on lesson context
+      if (lessonContext?.lessonTitle) {
+        // Context-aware suggestions for current lesson
+        setSuggestions([
+          `📚 Deep dive: ${lessonContext.lessonTitle}`,
+          `🎯 Practice questions on this topic`,
+          `⚠️ Common mistakes in ${lessonContext.topicTitle || 'this topic'}`,
+        ]);
+        return;
+      }
+
       if (!assistantMessage) {
-        setSuggestions(EMPTY_STATE_SUGGESTIONS);
+        // Empty state: generic suggestions
+        setSuggestions([
+          '📚 Explain a concept',
+          '💡 Practice tips',
+          '🎯 Study strategy',
+        ]);
         return;
       }
 
       const lower = assistantMessage.content.toLowerCase();
 
+      // Content-specific suggestions based on AI response
       if (lower.includes('dose') || lower.includes('dosage')) {
         setSuggestions([
           '📊 Show medication dose example',
@@ -163,13 +173,14 @@ export const useChatbot = (initialConversationId?: string) => {
         return;
       }
 
+      // Fallback: generic follow-up suggestions
       setSuggestions([
         '💬 Explain in simple terms',
         '📚 Share exam-focused tips',
         '🧠 Practice question please',
       ]);
     },
-    [],
+    [lessonContext?.lessonTitle, lessonContext?.topicTitle],
   );
 
   useEffect(() => {

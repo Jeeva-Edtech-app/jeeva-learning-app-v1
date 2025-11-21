@@ -61,12 +61,18 @@ export const useVoiceInput = (config?: VoiceHookConfig): VoiceHookReturn => {
     };
 
     return () => {
-      voice
-        .destroy()
-        .catch(() => undefined)
-        .finally(() => {
+      try {
+        voice.destroy?.().catch(() => undefined);
+      } catch {
+        // ignore destroy errors
+      }
+      try {
+        if (voice.removeAllListeners && typeof voice.removeAllListeners === 'function') {
           voice.removeAllListeners();
-        });
+        }
+      } catch {
+        // ignore cleanup errors on web platform
+      }
     };
   }, []);
 
