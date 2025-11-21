@@ -164,6 +164,9 @@ function TopicCard({
 }
 
 export default function LearningOverviewScreen() {
+  const { isContentLocked } = useTrialMode();
+  const [selectedLockedTopic, setSelectedLockedTopic] = useState<string | null>(null);
+
   const topicsWithStatus = useMemo(() => {
     const mapped: {
       id: string;
