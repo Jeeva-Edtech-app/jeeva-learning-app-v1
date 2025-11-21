@@ -1,14 +1,3 @@
-import { Platform } from 'react-native'
-
-let RazorpayCheckout: any = null
-if (Platform.OS !== 'web') {
-  try {
-    RazorpayCheckout = require('react-native-razorpay').default
-  } catch (e) {
-    console.warn('Razorpay not available')
-  }
-}
-
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://jeeva-admin-portal.replit.app'
 const API_URL = `${BACKEND_URL}/api/payments`
 
@@ -23,6 +12,20 @@ export const useRazorpayPayment = () => {
     discountCouponCode?: string
   ) => {
     try {
+      const { Platform } = require('react-native')
+
+      if (Platform.OS === 'web') {
+        return { success: false, error: 'Payment processing not available on web' }
+      }
+
+      let RazorpayCheckout: any
+      try {
+        RazorpayCheckout = require('react-native-razorpay').default
+      } catch (e) {
+        console.warn('Razorpay not available:', e)
+        return { success: false, error: 'Razorpay not available' }
+      }
+
       const configResponse = await fetch(`${API_URL}/config`)
       if (!configResponse.ok) {
         throw new Error(`Config fetch failed: ${configResponse.status}`)
@@ -67,10 +70,6 @@ export const useRazorpayPayment = () => {
         theme: { color: '#007aff' },
       }
 
-      if (!RazorpayCheckout) {
-        throw new Error('Razorpay is not available on this platform')
-      }
-
       const data = await RazorpayCheckout.open(options)
 
       const verifyResponse = await fetch(`${API_URL}/verify`, {
@@ -78,27 +77,27 @@ export const useRazorpayPayment = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           paymentId,
-          gateway: 'razorpay',
-          razorpayOrderId: data.razorpay_order_id,
-          razorpayPaymentId: data.razorpay_payment_id,
-          razorpaySignature: data.razorpay_signature,
         }),
       })
+
+      if (!verifyResponse.ok) {
+        throw new Error(`Verification failed: ${verifyResponse.status}`)
+      }
 
       const verifyResult = await verifyResponse.json()
 
       if (verifyResult.success) {
         return {
           success: true,
-          payment: verifyResult.payment,
+          transactionId: paymentId,
         }
       } else {
         throw new Error(verifyResult.error || 'Payment verification failed')
       }
     } catch (error: any) {
       console.error('Razorpay payment error:', error)
-      
-      if (RazorpayCheckout && error.code === RazorpayCheckout.PAYMENT_CANCELLED) {
+
+      if (error.code === 'PAYMENT_CANCELLED' || error.message === 'Payment Cancelled') {
         return {
           success: false,
           canceled: true,
@@ -107,7 +106,7 @@ export const useRazorpayPayment = () => {
 
       return {
         success: false,
-        error: error.description || error.message || 'Payment failed',
+        error: error.message || 'Payment failed',
       }
     }
   }
