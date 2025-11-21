@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 import { useUserProfile } from '@/hooks/useProfile';
-import { useSubscriptionStatus } from '@/hooks/useSubscription';
+import { useSubscription } from '@/hooks/useSubscription';
 import { usePerformanceStats } from '@/hooks/usePerformance';
 import { InnerPageHeader } from '@/components/ui/InnerPageHeader';
 import { Colors } from '@/constants/DesignSystem';
@@ -15,7 +15,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { user, signOut } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile(user?.id || '');
-  const { data: subscription, isLoading: subLoading } = useSubscriptionStatus(user?.id);
+  const { subscription, subscriptionLoading: subLoading, isValid: hasValidSubscription } = useSubscription();
   const { isLoading: perfLoading } = usePerformanceStats(user?.id);
 
   const [activeTab, setActiveTab] = useState(0);
@@ -163,31 +163,26 @@ export default function ProfileScreen() {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Subscription Status</Text>
               <View style={styles.card}>
-                {subscription?.hasActiveSubscription && subscription.subscription ? (
+                {hasValidSubscription && subscription ? (
                   <>
                     <Text style={styles.planName}>
-                      {subscription.subscription.plan?.name || 'Premium Plan'}
+                      {subscription.plan_name || 'Premium Plan'}
                     </Text>
 
                     <View style={styles.statusBadgeContainer}>
-                      {(() => {
-                        const badge = getStatusBadge(subscription.subscription.status);
-                        return (
-                          <View style={[styles.statusBadge, { backgroundColor: badge.bg }]}>
-                            <Text style={[styles.statusBadgeText, { color: badge.color }]}>
-                              {badge.label}
-                            </Text>
-                          </View>
-                        );
-                      })()}
+                      <View style={[styles.statusBadge, { backgroundColor: '#10B981' }]}>
+                        <Text style={[styles.statusBadgeText, { color: '#FFFFFF' }]}>
+                          Active
+                        </Text>
+                      </View>
                     </View>
 
                     <Text style={styles.daysRemaining}>
-                      {subscription.daysRemaining} days left
+                      {subscription.days_remaining || 0} days left
                     </Text>
 
                     <Text style={styles.expiryDate}>
-                      Expires on: {formatDate(subscription.subscription.end_date)}
+                      Expires on: {subscription.end_date ? new Date(subscription.end_date).toLocaleDateString() : 'N/A'}
                     </Text>
 
                     {/* Progress Bar */}
@@ -196,21 +191,21 @@ export default function ProfileScreen() {
                         <View
                           style={[
                             styles.progressFill,
-                            { width: `${subscription.progressPercentage}%` }
+                            { width: `${Math.min(100, Math.max(0, 100 - ((subscription.days_remaining || 0) / 30) * 100))}%` }
                           ]}
                         />
                       </View>
                       <Text style={styles.progressText}>
-                        {subscription.daysUsed}/{subscription.totalDays} days used
+                        Subscription active
                       </Text>
                     </View>
                   </>
                 ) : (
                   <>
                     <Text style={styles.trialEmoji}>🎁</Text>
-                    <Text style={styles.trialTitle}>Free Trial Mode</Text>
+                    <Text style={styles.trialTitle}>Free User</Text>
                     <Text style={styles.trialSubtitle}>Upgrade to unlock full access</Text>
-                    <Pressable style={styles.upgradeButton}>
+                    <Pressable style={styles.upgradeButton} onPress={() => router.push('/subscriptions')}>
                       <Text style={styles.upgradeButtonText}>Upgrade Now</Text>
                     </Pressable>
                   </>
