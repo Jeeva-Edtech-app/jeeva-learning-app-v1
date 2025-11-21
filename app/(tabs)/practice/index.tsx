@@ -8,6 +8,8 @@ import {
   LEARNING_STRUCTURE,
 } from '@/api/constants';
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
+import { useTrialMode } from '@/context/TrialContext';
+import { LockedTopicOverlay } from '@/components/LockedTopicOverlay';
 
 interface PracticeCategory {
   key: string;
@@ -102,8 +104,10 @@ export default function PracticeModuleScreen() {
     category: string;
   };
 
+  const { isContentLocked } = useTrialMode();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubdivision, setSelectedSubdivision] = useState<SubdivisionOption | null>(null);
+  const [selectedLockedTopic, setSelectedLockedTopic] = useState<string | null>(null);
 
   const numeracyOptions = useMemo<SubdivisionOption[]>(() => {
     const numeracyTopic = LEARNING_STRUCTURE.find((topic) => topic.topic === 'Numeracy');
@@ -137,6 +141,12 @@ export default function PracticeModuleScreen() {
 
   const handleStartPractice = () => {
     if (!selectedSubdivision) return;
+    
+    if (isContentLocked('practice', selectedSubdivision.id)) {
+      setSelectedLockedTopic(selectedSubdivision.id);
+      return;
+    }
+    
     router.push({
       pathname: '/practice/quiz',
       params: {
@@ -245,6 +255,14 @@ export default function PracticeModuleScreen() {
           />
         </TouchableOpacity>
       </ScrollView>
+
+      {selectedLockedTopic && (
+        <LockedTopicOverlay
+          moduleType="practice"
+          onSubscribe={() => router.push('/subscriptions')}
+          onClose={() => setSelectedLockedTopic(null)}
+        />
+      )}
     </SafeAreaView>
   );
 }

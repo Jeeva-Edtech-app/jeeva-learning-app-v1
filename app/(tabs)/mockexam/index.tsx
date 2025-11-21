@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { Colors, DesignSystem } from '@/constants/DesignSystem';
 import { MOCK_EXAM_CONFIG } from '@/api/constants';
 import { useAuth } from '@/context/AuthContext';
+import { useTrialMode } from '@/context/TrialContext';
 import {
   clearMockExamSnapshot,
   hasActiveMockExam,
@@ -55,7 +56,14 @@ function ExamPartCard({ title, questionCount, duration, examPart, icon, tint, on
 
 export default function MockExamSelectionScreen() {
   const { user } = useAuth();
+  const { isTrialUser } = useTrialMode();
   const [resumeSnapshot, setResumeSnapshot] = useState<MockExamSnapshot | null>(null);
+
+  useEffect(() => {
+    if (isTrialUser) {
+      router.replace('/');
+    }
+  }, [isTrialUser]);
 
   const refreshSnapshot = useCallback(async () => {
     if (!user?.id) {

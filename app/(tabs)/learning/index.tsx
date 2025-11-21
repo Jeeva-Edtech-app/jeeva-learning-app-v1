@@ -313,16 +313,28 @@ export default function LearningOverviewScreen() {
               latestScore={topic.latestScore}
               completedSubtopics={topic.completedSubtopics}
               locked={topic.locked}
-              onPress={() =>
-                router.push({
-                  pathname: '/learning/lesson',
-                  params: { topicId: topic.id, topicTitle: topic.title },
-                })
-              }
+              onPress={() => {
+                if (isContentLocked('learning', topic.title)) {
+                  setSelectedLockedTopic(topic.title)
+                } else {
+                  router.push({
+                    pathname: '/learning/lesson',
+                    params: { topicId: topic.id, topicTitle: topic.title },
+                  })
+                }
+              }}
             />
           ))}
         </View>
       </ScrollView>
+
+      {selectedLockedTopic && (
+        <LockedTopicOverlay
+          moduleType="learning"
+          onSubscribe={() => router.push('/subscriptions')}
+          onClose={() => setSelectedLockedTopic(null)}
+        />
+      )}
     </SafeAreaView>
   );
 }
