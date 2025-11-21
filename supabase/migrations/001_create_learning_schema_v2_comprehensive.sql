@@ -262,6 +262,19 @@ ALTER TABLE mock_exams ENABLE ROW LEVEL SECURITY;
 ALTER TABLE mock_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_analytics ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies (if any) to avoid conflicts
+DROP POLICY IF EXISTS "Users can view own learning completions" ON learning_completions;
+DROP POLICY IF EXISTS "Users can view own quiz results" ON lesson_quiz_results;
+DROP POLICY IF EXISTS "Users can view own learning progress" ON learning_progress;
+DROP POLICY IF EXISTS "Users can view own practice sessions" ON practice_sessions;
+DROP POLICY IF EXISTS "Users can view own mock sessions" ON mock_sessions;
+DROP POLICY IF EXISTS "Users can view own analytics" ON user_analytics;
+DROP POLICY IF EXISTS "Service role manages learning completions" ON learning_completions;
+DROP POLICY IF EXISTS "Service role manages quiz results" ON lesson_quiz_results;
+DROP POLICY IF EXISTS "Service role manages learning progress" ON learning_progress;
+DROP POLICY IF EXISTS "Service role manages practice sessions" ON practice_sessions;
+DROP POLICY IF EXISTS "Service role manages mock sessions" ON mock_sessions;
+
 -- RLS Policies
 CREATE POLICY "Users can view own learning completions" ON learning_completions
   FOR SELECT TO authenticated USING (auth.uid() = user_id);
