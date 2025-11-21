@@ -106,9 +106,10 @@ async function buildSystemPrompt(supabase: any, userId: string, context?: any): 
   let systemPrompt = `You are JeevaBot, an AI assistant helping Indian nurses prepare for the UK NMC CBT exam.
 
 Your role:
-- Answer questions about UK nursing practices, NMC Code, and clinical scenarios
+- Answer questions about UK nursing practices, NMC Code, and clinical scenarios tailored to their current study material
 - Explain medical concepts clearly and professionally
-- Provide exam preparation tips and strategies
+- Provide exam preparation tips and strategies based on their performance
+- Recommend focus areas based on their weak points
 - Be supportive and encouraging
 
 Guidelines:
@@ -116,19 +117,141 @@ Guidelines:
 - Use simple, professional language
 - Reference UK standards and NMC Code when relevant
 - If unsure, say so and suggest where to find accurate information
+- Always relate your answer to their current studies when possible
 
 `;
 
-  if (context?.lessonId) {
-    const { data: lesson } = await supabase
-      .from('lessons')
-      .select('title, content')
-      .eq('id', context.lessonId)
-      .single();
+  try {
+    // Fetch current lesson/module context
+    let lessonContext = '';
+    if (context?.lessonId) {
+      const { data: lesson } = await supabase
+        .from('lessons')
+        .select('title, content, topic_id')
+        .eq('id', context.lessonId)
+        .single();
 
-    if (lesson) {
-      systemPrompt += `\nCurrent lesson context: "${lesson.title}"\n`;
+      if (lesson) {
+        lessonContext = `\n## Current Lesson:\n**${lesson.title}**\n`;
+        
+        // Fetch topic info
+        if (lesson.topic_id) {
+          const { data: topic } = await supabase
+            .from('topics')
+            .select('title, module_id')
+            .eq('id', lesson.topic_id)
+            .single();
+          
+          if (topic) {
+            lessonContext += `Topic: ${topic.title}\n`;
+            
+            // Fetch module info
+            if (topic.module_id) {
+              const { data: module } = await supabase
+                .from('modules')
+                .select('title')
+                .eq('id', topic.module_id)
+                .single();
+              
+              if (module) {
+                lessonContext += `Module: ${module.title}\n`;
+              }
+            }
+          }
+        }
+      }
     }
+
+    // Fetch user performance data
+    let performanceContext = '';
+    try {
+      // Get recent mock exam results
+      const { data: recentExams } = await supabase
+        .from('mock_exam_results')
+        .select('results_data', { count: 'exact' })
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (recentExams && recentExams.length > 0) {
+        const scores = recentExams.map(exam => {
+          try {
+            const data = typeof exam.results_data === 'string' 
+              ? JSON.parse(exam.results_data) 
+              : exam.results_data;
+            return data.score || 0;
+          } catch {
+            return 0;
+          }
+        });
+        const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        performanceContext += `\n## Your Performance:\n- Average Mock Exam Score: ${avgScore}%\n`;
+      }
+
+      // Get user analytics
+      const { data: analytics } = await supabase
+        .from('user_analytics')
+        .select('analytics_data')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (analytics && analytics.length > 0) {
+        try {
+          const analyticsData = typeof analytics[0].analytics_data === 'string' 
+            ? JSON.parse(analytics[0].analytics_data) 
+            : analytics[0].analytics_data;
+          
+          if (analyticsData.lessonsCompleted) {
+            performanceContext += `- Lessons Completed: ${analyticsData.lessonsCompleted}\n`;
+          }
+          if (analyticsData.averageScore) {
+            performanceContext += `- Overall Average: ${analyticsData.averageScore}%\n`;
+          }
+          if (analyticsData.currentStreak) {
+            performanceContext += `- Current Study Streak: ${analyticsData.currentStreak} days\n`;
+          }
+        } catch (e) {
+          console.error('Error parsing analytics:', e);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching performance data:', error);
+    }
+
+    // Fetch AI recommendations
+    let recommendationContext = '';
+    try {
+      const { data: recommendations } = await supabase
+        .from('ai_recommendations')
+        .select('recommendation_data')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (recommendations && recommendations.length > 0) {
+        recommendationContext = '\n## Recommended Focus Areas:\n';
+        recommendations.forEach((rec, index) => {
+          try {
+            const recData = typeof rec.recommendation_data === 'string' 
+              ? JSON.parse(rec.recommendation_data) 
+              : rec.recommendation_data;
+            if (recData.reason) {
+              recommendationContext += `${index + 1}. ${recData.reason}\n`;
+            }
+          } catch (e) {
+            console.error('Error parsing recommendation:', e);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+    }
+
+    systemPrompt += lessonContext + performanceContext + recommendationContext;
+  } catch (error) {
+    console.error('Error building enhanced system prompt:', error);
+    // Fall back to basic prompt if there's an error
   }
 
   return systemPrompt;
