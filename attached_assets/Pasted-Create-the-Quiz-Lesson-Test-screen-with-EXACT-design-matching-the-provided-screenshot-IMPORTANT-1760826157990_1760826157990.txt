@@ -1,0 +1,450 @@
+Create the Quiz/Lesson Test screen with EXACT design matching the provided screenshot.
+
+⚠️ IMPORTANT: Use Inter font family throughout (as specified in replit.md)
+
+Read docs/MOBILE_APP_FEATURES.md and docs/DATABASE_SCHEMA.md for reference.
+
+SCREEN STRUCTURE:
+
+1. HEADER:
+   - Back arrow button (left, 24px icon, black #1F2937)
+   - "Lesson Test" title (18pt Inter Medium, black #1F2937)
+   - Background: White (#FFFFFF)
+   - Height: 56px + safe area
+   - Shadow: subtle bottom shadow (elevation 2)
+
+2. QUESTION HEADER BAR:
+   - Background: White (#FFFFFF)
+   - Padding: 16px horizontal, 12px vertical
+   - Border bottom: 1px solid #E5E7EB
+   - Layout: Horizontal flex (space-between)
+   
+   LEFT SIDE:
+   - Question number in circle:
+     * "1" (current question number)
+     * Font: 16pt Inter Bold
+     * Color: Black #1F2937
+   
+   RIGHT SIDE:
+   - Timer with icon:
+     * Timer icon: Ionicons "timer-outline" (18px)
+     * Time text: "01:00" (MM:SS format)
+     * Color: Red/Coral (#EF4444 or #F87171)
+     * Font: 16pt Inter Medium
+     * Layout: Horizontal (icon + text, gap 4px)
+
+3. QUESTION SECTION:
+   - Background: White
+   - Padding: 24px horizontal, 32px vertical
+   - Margin bottom: 24px
+   
+   Question Text:
+   - "A patient with a severe allergy to penicillin is mistakenly prescribed amoxicillin. What should the nurse do first?"
+   - Font: 18pt Inter Regular
+   - Color: Dark Gray (#1F2937)
+   - Line height: 1.6
+   - Text align: left
+
+4. ANSWER OPTIONS (4 Options):
+   - Container padding: 0px 16px
+   - Gap between options: 12px
+   - Each option card:
+     * Background: White (#FFFFFF)
+     * Border: 2px solid Light Gray (#E5E7EB)
+     * Border radius: 12px
+     * Padding: 18px horizontal, 16px vertical
+     * Min height: 56px
+     * Shadow: none (until selected)
+   
+   OPTION STATES:
+   
+   a) Default (Unselected):
+      - Border: 2px solid #E5E7EB
+      - Background: White
+      - Text color: Gray (#6B7280)
+      - Font: 15pt Inter Regular
+   
+   b) Selected (Before Submit):
+      - Border: 2px solid Blue (#3B82F6)
+      - Background: Light Blue (#EFF6FF or #DBEAFE - very light)
+      - Text color: Black (#1F2937)
+      - Font: 15pt Inter Medium
+   
+   c) Correct (After Submit):
+      - Border: 2px solid Green (#10B981)
+      - Background: Light Green (#D1FAE5)
+      - Text color: Dark Green (#065F46)
+      - Font: 15pt Inter Medium
+      - Show checkmark icon (Ionicons "checkmark-circle", right side, green)
+   
+   d) Incorrect (After Submit):
+      - Border: 2px solid Red (#EF4444)
+      - Background: Light Red (#FEE2E2)
+      - Text color: Dark Red (#991B1B)
+      - Font: 15pt Inter Medium
+      - Show X icon (Ionicons "close-circle", right side, red)
+
+5. EXPLANATION SECTION (Show AFTER answer submission):
+   - Container: Below answer options
+   - Background: Light Blue (#EFF6FF)
+   - Border left: 4px solid Blue (#3B82F6)
+   - Padding: 16px
+   - Margin: 16px horizontal, 24px top
+   - Border radius: 8px
+   
+   Content:
+   - "Explanation:" label (14pt Inter Bold, Blue #3B82F6)
+   - Explanation text (14pt Inter Regular, Gray #4B5563, line height 1.5)
+   - Margin top between label and text: 8px
+
+6. NAVIGATION BUTTONS (Bottom):
+   - Container padding: 16px
+   - Background: White
+   - Border top: 1px solid #E5E7EB
+   - Layout: Horizontal, center-aligned, gap 12px
+   
+   BACK Button:
+   - Background: Light Red/Coral (#F87171 or #EF4444)
+   - Width: 120px
+   - Height: 48px
+   - Border radius: 8px
+   - Text: "Back" (16pt Inter Medium, White)
+   - Shadow: elevation 2
+   - On press: Go to previous question
+   
+   NEXT Button:
+   - Background: Blue (#3B82F6)
+   - Width: 120px
+   - Height: 48px
+   - Border radius: 8px
+   - Text: "Next" (16pt Inter Medium, White)
+   - Shadow: elevation 2
+   - On press: 
+     * If not answered: Show alert "Please select an answer"
+     * If answered but not submitted: Submit answer, show correct/incorrect
+     * If submitted: Move to next question
+   
+   BUTTON VARIATIONS:
+   - If first question: Hide "Back" button
+   - If last question: "Next" becomes "Finish" (same blue style)
+   - Disabled state (before answer): Opacity 0.5
+
+7. EXACT COLORS:
+   - Primary Blue: #3B82F6
+   - Light Blue BG: #EFF6FF or #DBEAFE
+   - Red/Coral (timer, back button): #EF4444 or #F87171
+   - Light Red BG: #FEE2E2
+   - Green (correct): #10B981
+   - Light Green BG: #D1FAE5
+   - Dark Green text: #065F46
+   - Dark Red text: #991B1B
+   - Black text: #1F2937
+   - Gray text: #6B7280
+   - Light gray border: #E5E7EB
+   - White: #FFFFFF
+
+8. TYPOGRAPHY (Inter Font):
+   - Header title: 18pt Inter Medium
+   - Question number: 16pt Inter Bold
+   - Timer: 16pt Inter Medium
+   - Question text: 18pt Inter Regular
+   - Answer options (default): 15pt Inter Regular
+   - Answer options (selected): 15pt Inter Medium
+   - Explanation label: 14pt Inter Bold
+   - Explanation text: 14pt Inter Regular
+   - Button text: 16pt Inter Medium
+
+9. SPACING & MEASUREMENTS:
+   - Header height: 56px + safe area
+   - Question header padding: 16px horizontal, 12px vertical
+   - Question section padding: 24px horizontal, 32px vertical
+   - Answer options padding: 18px horizontal, 16px vertical
+   - Gap between options: 12px
+   - Button height: 48px
+   - Button width: 120px each
+   - Border radius (options): 12px
+   - Border radius (buttons): 8px
+
+10. TIMER FUNCTIONALITY:
+    - Start timer when question loads
+    - Count down from 01:00 (60 seconds) per question
+    - Update every second
+    - Change color to red when < 10 seconds
+    - When timer reaches 00:00:
+      * Auto-submit current answer (or mark as skipped)
+      * Move to next question
+      * Reset timer for new question
+    - Pause timer when answer is submitted (while viewing explanation)
+
+11. QUESTION FLOW LOGIC:
+    
+    State Management:
+    - currentQuestionIndex (0-based)
+    - selectedAnswerIds (array of selected answer IDs per question)
+    - submittedAnswers (array of submitted answers with correctness)
+    - score (count of correct answers)
+    
+    User Actions:
+    a) Select answer:
+       - Store selected answer ID
+       - Highlight selected option
+       - Enable "Next" button
+    
+    b) Press "Next" (before submission):
+       - Submit answer to check correctness
+       - Show correct/incorrect state
+       - Display explanation
+       - Change "Next" text to "Continue" or keep as "Next"
+       - Pause timer
+    
+    c) Press "Next" (after submission):
+       - Save result to practice_sessions table
+       - Increment currentQuestionIndex
+       - Reset timer to 60 seconds
+       - Load next question
+       - Clear selected answer
+    
+    d) Press "Finish" (last question):
+       - Navigate to Results screen
+       - Pass: totalQuestions, correctAnswers, score percentage, timeSpent
+
+12. DATA STRUCTURE:
+    
+    Fetch questions from database:
+    ```typescript
+    const questions = await supabase
+      .from('questions')
+      .select(`
+        id,
+        question_text,
+        explanation,
+        correct_answer_id,
+        question_options (
+          id,
+          option_text,
+          is_correct
+        )
+      `)
+      .eq('topic_id', topicId)
+      .eq('is_active', true)
+      .order('display_order');
+    ```
+    
+    Save practice session:
+    ```typescript
+    await supabase.from('practice_sessions').insert({
+      user_id: userId,
+      topic_id: topicId,
+      questions_attempted: totalQuestions,
+      correct_answers: correctAnswers,
+      score_percentage: (correctAnswers / totalQuestions) * 100,
+      time_spent_seconds: totalTimeSpent,
+      completed_at: new Date(),
+    });
+    ```
+
+13. ACCESSIBILITY:
+    - Touch target size: Min 48px height for options and buttons
+    - Clear visual feedback on selection
+    - High contrast text (WCAG AA compliant)
+    - Screen reader support for timer and score
+
+14. FILES TO CREATE:
+    - src/screens/practice/QuizScreen.tsx
+    - src/components/quiz/QuestionCard.tsx
+    - src/components/quiz/AnswerOption.tsx
+    - src/components/quiz/QuizTimer.tsx
+    - src/components/quiz/ExplanationCard.tsx
+
+15. EXAMPLE CODE STRUCTURE:
+```typescript
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useRoute, useNavigation } from '@react-navigation/native';
+
+export default function QuizScreen() {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { topicId, questions } = route.params;
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswerId, setSelectedAnswerId] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(60);
+  const [results, setResults] = useState([]);
+  
+  const currentQuestion = questions[currentIndex];
+  
+  // Timer logic
+  useEffect(() => {
+    if (isSubmitted) return;
+    
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          handleAutoSubmit();
+          return 60;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [currentIndex, isSubmitted]);
+  
+  const handleAnswerSelect = (optionId) => {
+    if (!isSubmitted) {
+      setSelectedAnswerId(optionId);
+    }
+  };
+  
+  const handleNext = () => {
+    if (!selectedAnswerId && !isSubmitted) {
+      Alert.alert('Please select an answer');
+      return;
+    }
+    
+    if (!isSubmitted) {
+      // Submit answer
+      setIsSubmitted(true);
+      const isCorrect = selectedAnswerId === currentQuestion.correct_answer_id;
+      setResults([...results, { questionId: currentQuestion.id, isCorrect }]);
+    } else {
+      // Move to next question
+      if (currentIndex < questions.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+        setSelectedAnswerId(null);
+        setIsSubmitted(false);
+        setTimeRemaining(60);
+      } else {
+        // Finish quiz
+        navigation.navigate('QuizResults', { results, questions });
+      }
+    }
+  };
+  
+  const handleAutoSubmit = () => {
+    setIsSubmitted(true);
+    const isCorrect = selectedAnswerId === currentQuestion.correct_answer_id;
+    setResults([...results, { questionId: currentQuestion.id, isCorrect }]);
+  };
+  
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Lesson Test</Text>
+      </View>
+      
+      {/* Question Header */}
+      <View style={styles.questionHeader}>
+        <Text style={styles.questionNumber}>{currentIndex + 1}</Text>
+        <View style={styles.timerContainer}>
+          <Ionicons name="timer-outline" size={18} color="#EF4444" />
+          <Text style={styles.timerText}>
+            {Math.floor(timeRemaining / 60).toString().padStart(2, '0')}:
+            {(timeRemaining % 60).toString().padStart(2, '0')}
+          </Text>
+        </View>
+      </View>
+      
+      <ScrollView style={styles.content}>
+        {/* Question Text */}
+        <View style={styles.questionSection}>
+          <Text style={styles.questionText}>{currentQuestion.question_text}</Text>
+        </View>
+        
+        {/* Answer Options */}
+        <View style={styles.optionsContainer}>
+          {currentQuestion.question_options.map((option) => (
+            <AnswerOption
+              key={option.id}
+              option={option}
+              isSelected={selectedAnswerId === option.id}
+              isSubmitted={isSubmitted}
+              isCorrect={option.is_correct}
+              onPress={() => handleAnswerSelect(option.id)}
+            />
+          ))}
+        </View>
+        
+        {/* Explanation (after submission) */}
+        {isSubmitted && (
+          <View style={styles.explanationCard}>
+            <Text style={styles.explanationLabel}>Explanation:</Text>
+            <Text style={styles.explanationText}>
+              {currentQuestion.explanation}
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+      
+      {/* Navigation Buttons */}
+      <View style={styles.buttonContainer}>
+        {currentIndex > 0 && (
+          <TouchableOpacity style={styles.backButton} onPress={() => setCurrentIndex(currentIndex - 1)}>
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity 
+          style={[styles.nextButton, !selectedAnswerId && !isSubmitted && styles.disabledButton]}
+          onPress={handleNext}
+        >
+          <Text style={styles.buttonText}>
+            {currentIndex === questions.length - 1 ? 'Finish' : 'Next'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const AnswerOption = ({ option, isSelected, isSubmitted, isCorrect, onPress }) => {
+  const getOptionStyle = () => {
+    if (isSubmitted) {
+      if (isCorrect) {
+        return styles.correctOption;
+      } else if (isSelected && !isCorrect) {
+        return styles.incorrectOption;
+      }
+    } else if (isSelected) {
+      return styles.selectedOption;
+    }
+    return styles.defaultOption;
+  };
+  
+  return (
+    <TouchableOpacity 
+      style={[styles.optionCard, getOptionStyle()]}
+      onPress={onPress}
+      disabled={isSubmitted}
+    >
+      <Text style={styles.optionText}>{option.option_text}</Text>
+      {isSubmitted && isCorrect && (
+        <Ionicons name="checkmark-circle" size={24} color="#10B981" />
+      )}
+      {isSubmitted && isSelected && !isCorrect && (
+        <Ionicons name="close-circle" size={24} color="#EF4444" />
+      )}
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  questionText: {
+    fontFamily: 'Inter-Regular',
+    fontSize: 18,
+    color: '#1F2937',
+    lineHeight: 28.8, // 1.6 * 18
+  },
+  optionText: {
+    fontFamily: 'Inter-Regular',
+    fontSize: 15,
+    color: '#6B7280',
+  },
+  // ... add all other styles
+});

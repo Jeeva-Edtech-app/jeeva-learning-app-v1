@@ -1,0 +1,146 @@
+UPDATE src/api/analytics.ts
+
+Replace mock data with real Supabase queries:
+
+ENGAGEMENT TRENDS (Replace lines 102-107):
+// Calculate real engagement trends from last 7 days
+const engagementTrends = await Promise.all(
+  Array.from({ length: 7 }, async (_, i) => {
+    const date = formatISO(subDays(new Date(), 6 - i), { representation: 'date' })
+    
+    // Active users for this day
+    const { count: dayActiveUsers } = await supabase
+      .from('user_sessions')
+      .select('user_id', { count: 'exact', head: true })
+      .gte('session_start', `${date} 00:00:00`)
+      .lte('session_start', `${date} 23:59:59`)
+    
+    // Total sessions for this day
+    const { count: daySessions } = await supabase
+      .from('user_sessions')
+      .select('*', { count: 'exact', head: true })
+      .gte('session_start', `${date} 00:00:00`)
+      .lte('session_start', `${date} 23:59:59`)
+    
+    // Average duration for this day
+    const { data: sessionsData } = await supabase
+      .from('user_sessions')
+      .select('duration_seconds')
+      .gte('session_start', `${date} 00:00:00`)
+      .lte('session_start', `${date} 23:59:59`)
+      .not('duration_seconds', 'is', null)
+    
+    const avgDuration = sessionsData && sessionsData.length > 0
+      ? sessionsData.reduce((sum, s) => sum + (s.duration_seconds || 0), 0) / sessionsData.length / 60
+      : 0
+    
+    return {
+      date,
+      activeUsers: dayActiveUsers || 0,
+      sessions: daySessions || 0,
+      avgDuration: Math.round(avgDuration * 10) / 10
+    }
+  })
+)
+CONVERSION METRICS (Replace lines 108-113):
+// Calculate real conversion metrics from last 7 days
+const conversionMetrics = await Promise.all(
+  Array.from({ length: 7 }, async (_, i) => {
+    const date = formatISO(subDays(new Date(), 6 - i), { representation: 'date' })
+    
+    // Signups for this day
+    const { count: daySignups } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', `${date} 00:00:00`)
+      .lte('created_at', `${date} 23:59:59`)
+    
+    // Conversions (paid subscriptions) for this day
+    const { count: dayConversions } = await supabase
+      .from('subscriptions')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'active')
+      .gte('created_at', `${date} 00:00:00`)
+      .lte('created_at', `${date} 23:59:59`)
+    
+    const conversionRate = daySignups > 0 
+      ? Math.round((dayConversions / daySignups) * 100 * 10) / 10
+      : 0
+    
+    return {
+      date,
+      signups: daySignups || 0,
+      conversions: dayConversions || 0,
+      conversionRate
+    }
+  })
+)
+AVERAGE SESSION DURATION (Replace line 77):
+// Calculate real average session duration
+const { data: allSessions } = await supabase
+  .from('user_sessions')
+  .select('duration_seconds')
+  .gte('session_start', startDate)
+  .lte('session_start', endDate)
+  .not('duration_seconds', 'is', null)
+const averageSessionDuration = allSessions && allSessions.length > 0
+  ? allSessions.reduce((sum, s) => sum + (s.duration_seconds || 0), 0) / allSessions.length / 60
+  : 0
+REVENUE GROWTH (Replace line 100):
+// Calculate real revenue growth (current month vs last month)
+const currentMonth = new Date()
+const lastMonth = subDays(currentMonth, 30)
+const { data: currentRevenue } = await supabase
+  .from('subscriptions')
+  .select('amount_paid_usd')
+  .eq('status', 'active')
+  .gte('created_at', formatISO(lastMonth, { representation: 'date' }))
+const { data: previousRevenue } = await supabase
+  .from('subscriptions')
+  .select('amount_paid_usd')
+  .eq('status', 'active')
+  .gte('created_at', formatISO(subDays(lastMonth, 30), { representation: 'date' }))
+  .lt('created_at', formatISO(lastMonth, { representation: 'date' }))
+const currentTotal = currentRevenue?.reduce((sum, s) => sum + (s.amount_paid_usd || 0), 0) || 0
+const previousTotal = previousRevenue?.reduce((sum, s) => sum + (s.amount_paid_usd || 0), 0) || 0
+const revenueGrowth = previousTotal > 0 
+  ? Math.round(((currentTotal - previousTotal) / previousTotal) * 100 * 10) / 10
+  : 0
+PART 3: OPTIMIZE QUERIES
+
+Since we're making multiple parallel queries, wrap them in Promise.all():
+
+// At the top of getAnalytics function, fetch all data in parallel
+const [
+  usersData,
+  subscriptionsData,
+  completionsData,
+  engagementTrendsData,
+  conversionMetricsData,
+  sessionDurationData,
+  revenueGrowthData
+] = await Promise.all([
+  // Users query
+  supabase.from('users').select('id, created_at, last_login')
+    .gte('created_at', startDate).lte('created_at', endDate),
+  
+  // Subscriptions query
+  supabase.from('subscriptions').select('*, users(id)').eq('status', 'active'),
+  
+  // Completions query
+  supabase.from('learning_completions')
+    .select('*, lessons(id, title, topics(id, title, modules(id, title)))')
+    .gte('completed_at', startDate).lte('completed_at', endDate),
+  
+  // Engagement trends calculation
+  calculateEngagementTrends(startDate, endDate),
+  
+  // Conversion metrics calculation
+  calculateConversionMetrics(startDate, endDate),
+  
+  // Session duration calculation
+  calculateAvgSessionDuration(startDate, endDate),
+  
+  // Revenue growth calculation
+  calculateRevenueGrowth()
+])

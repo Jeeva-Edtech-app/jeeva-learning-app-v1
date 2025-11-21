@@ -1,0 +1,362 @@
+[
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "a3255c4e-26c9-4696-8eab-e3f8e6e002b5",
+    "level": "log",
+    "timestamp": 1763272195456000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "52898a82-1fb9-4138-b249-51bfc5b1f6a6",
+    "level": "log",
+    "timestamp": 1763272195190000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "ab608c6e-68e5-42da-8641-c68b8ebeeb9f",
+    "level": "log",
+    "timestamp": 1763272183619000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "66a3647c-d5f5-4bb3-bdf5-b119859278ff",
+    "level": "log",
+    "timestamp": 1763272183375000
+  },
+  {
+    "event_message": "Error updating usage stats: {\n  code: \"PGRST202\",\n  details: \"Searched for the function public.increment_usage_stats with parameters p_date, p_message_count, p_tokens, p_user_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\n  hint: \"Perhaps you meant to call the function public.increment_ai_usage\",\n  message: \"Could not find the function public.increment_usage_stats(p_date, p_message_count, p_tokens, p_user_id) in the schema cache\"\n}\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "3a4046d3-d25e-46e1-a61a-5782eee9e1f9",
+    "level": "error",
+    "timestamp": 1763272123919000
+  },
+  {
+    "event_message": "booted (time: 29ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "c12a123b-dbe1-4180-b469-79d07908d9df",
+    "level": "log",
+    "timestamp": 1763272120439000
+  },
+  {
+    "event_message": "booted (time: 31ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "24ac6829-7569-479e-81b6-b367bd424445",
+    "level": "log",
+    "timestamp": 1763272120132000
+  },
+  {
+    "event_message": "Error updating usage stats: {\n  code: \"PGRST202\",\n  details: \"Searched for the function public.increment_usage_stats with parameters p_date, p_message_count, p_tokens, p_user_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\n  hint: \"Perhaps you meant to call the function public.increment_ai_usage\",\n  message: \"Could not find the function public.increment_usage_stats(p_date, p_message_count, p_tokens, p_user_id) in the schema cache\"\n}\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "f4326653-fb7f-4796-bfe5-00bcbafa41de",
+    "level": "error",
+    "timestamp": 1763272115910000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "6ba42c3a-3e86-492c-ac74-bbb64672374c",
+    "level": "log",
+    "timestamp": 1763272108602000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "3f858396-cdfc-4750-aa6a-902c9c282c3e",
+    "level": "log",
+    "timestamp": 1763272108352000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "e882a0da-7e16-48f4-b1ae-3e4e83072b27",
+    "level": "log",
+    "timestamp": 1763271454253000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "46b99398-79b7-4adf-b2cc-2d873573cb47",
+    "level": "log",
+    "timestamp": 1763271453980000
+  },
+  {
+    "event_message": "Error updating usage stats: {\n  code: \"PGRST202\",\n  details: \"Searched for the function public.increment_usage_stats with parameters p_date, p_message_count, p_tokens, p_user_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\n  hint: \"Perhaps you meant to call the function public.increment_ai_usage\",\n  message: \"Could not find the function public.increment_usage_stats(p_date, p_message_count, p_tokens, p_user_id) in the schema cache\"\n}\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "70fb650b-97ce-480f-9f09-23f1d68fa539",
+    "level": "error",
+    "timestamp": 1763271384134000
+  },
+  {
+    "event_message": "booted (time: 31ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "8b8cdf72-325f-440d-a356-24f13b6aec66",
+    "level": "log",
+    "timestamp": 1763271379234000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "3c38d804-69b4-412a-8ae7-47be8261898b",
+    "level": "log",
+    "timestamp": 1763271378956000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "09f92837-a091-4d38-8674-e4b23b4a4c52",
+    "level": "log",
+    "timestamp": 1763270450988000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "4cbb1bcf-84ef-4934-8274-695c213c630a",
+    "level": "log",
+    "timestamp": 1763270450747000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "140e3172-fd2e-41c1-aeab-78c49643dccc",
+    "level": "log",
+    "timestamp": 1763270438738000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "c27e5491-9957-422e-8a7a-24684d89271c",
+    "level": "log",
+    "timestamp": 1763270438525000
+  },
+  {
+    "event_message": "Error updating usage stats: {\n  code: \"PGRST202\",\n  details: \"Searched for the function public.increment_usage_stats with parameters p_date, p_message_count, p_tokens, p_user_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\n  hint: \"Perhaps you meant to call the function public.increment_ai_usage\",\n  message: \"Could not find the function public.increment_usage_stats(p_date, p_message_count, p_tokens, p_user_id) in the schema cache\"\n}\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "55708a03-c9c5-43eb-8a98-7d8aaa0c2438",
+    "level": "error",
+    "timestamp": 1763270380939000
+  },
+  {
+    "event_message": "booted (time: 31ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "2b0b1c67-ca6e-45eb-b19f-9d832c4a0313",
+    "level": "log",
+    "timestamp": 1763270375971000
+  },
+  {
+    "event_message": "booted (time: 33ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "9fd91681-7b7a-4700-ad1e-8ea92ac34ca6",
+    "level": "log",
+    "timestamp": 1763270375724000
+  },
+  {
+    "event_message": "Error updating usage stats: {\n  code: \"PGRST202\",\n  details: \"Searched for the function public.increment_usage_stats with parameters p_date, p_message_count, p_tokens, p_user_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\n  hint: \"Perhaps you meant to call the function public.increment_ai_usage\",\n  message: \"Could not find the function public.increment_usage_stats(p_date, p_message_count, p_tokens, p_user_id) in the schema cache\"\n}\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "72cf6782-520a-4f9f-803d-a016c276907b",
+    "level": "error",
+    "timestamp": 1763270369308000
+  },
+  {
+    "event_message": "booted (time: 35ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "705fbf7b-f2e1-436c-8659-6f9464dd33b8",
+    "level": "log",
+    "timestamp": 1763270363721000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "19bfe683-a77f-4a71-b653-61971474cfae",
+    "level": "log",
+    "timestamp": 1763270363490000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "b56fd95f-6af2-4300-8d9f-0d549272d943",
+    "level": "log",
+    "timestamp": 1763269953958000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "e9df8289-dec0-4604-9b5d-04c3c107eada",
+    "level": "log",
+    "timestamp": 1763269953744000
+  },
+  {
+    "event_message": "Chat function error: Error: Gemini API error: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n\n    at callGeminiAPI (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:60:11)\n    at eventLoopTick (ext:core/01_core.js:175:7)\n    at async Object.handler (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:153:45)\n    at async mapped (ext:runtime/http.js:231:18)\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "7f8b7bfe-b0e7-4d59-b34c-b532574cf4de",
+    "level": "error",
+    "timestamp": 1763269879934000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "c8ac18c0-a461-4b7f-b1a4-dc869b932c36",
+    "level": "log",
+    "timestamp": 1763269878942000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "aea48220-db67-4bb1-850f-06e7a20a2d48",
+    "level": "log",
+    "timestamp": 1763269878720000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "532d9164-f8d8-4645-bd4d-5a54feea7a9e",
+    "level": "log",
+    "timestamp": 1763269669103000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "af59c260-c5e3-453e-907b-f21d07445f9a",
+    "level": "log",
+    "timestamp": 1763269668856000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "779c1f79-1c37-4ace-92ca-f2bc02d06205",
+    "level": "log",
+    "timestamp": 1763269607935000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "555b92b3-03b2-4eb3-83fa-f85a96ea67b6",
+    "level": "log",
+    "timestamp": 1763269607720000
+  },
+  {
+    "event_message": "Chat function error: Error: Gemini API error: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n\n    at callGeminiAPI (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:60:11)\n    at eventLoopTick (ext:core/01_core.js:175:7)\n    at async Object.handler (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:153:45)\n    at async mapped (ext:runtime/http.js:231:18)\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "4c0db2d8-ad12-4a35-9a7d-b6e9d7ff68fc",
+    "level": "error",
+    "timestamp": 1763269595595000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "de00f41e-9ddd-4cb0-a501-ab185952416b",
+    "level": "log",
+    "timestamp": 1763269594088000
+  },
+  {
+    "event_message": "booted (time: 32ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "3d9a351c-2ecd-4004-95eb-f76f7cdcaa9e",
+    "level": "log",
+    "timestamp": 1763269593834000
+  },
+  {
+    "event_message": "Chat function error: Error: Gemini API error: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n\n    at callGeminiAPI (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:60:11)\n    at eventLoopTick (ext:core/01_core.js:175:7)\n    at async Object.handler (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:153:45)\n    at async mapped (ext:runtime/http.js:231:18)\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "2d7fd044-3e20-4605-b8b0-c6f10a7564fa",
+    "level": "error",
+    "timestamp": 1763269535482000
+  },
+  {
+    "event_message": "booted (time: 30ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "5a645241-a911-427c-b96e-738c8aa31f37",
+    "level": "log",
+    "timestamp": 1763269532918000
+  },
+  {
+    "event_message": "booted (time: 29ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "b5fefb6c-3adb-46b9-9081-b94b40eb4f34",
+    "level": "log",
+    "timestamp": 1763269532696000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "d014a93e-bd5c-4881-b97d-7820b3d74602",
+    "level": "log",
+    "timestamp": 1763269297909000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "9a6aaec4-9d5b-4da2-8593-2a4f9c4654da",
+    "level": "log",
+    "timestamp": 1763269297669000
+  },
+  {
+    "event_message": "Chat function error: Error: Gemini API error: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n\n    at callGeminiAPI (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:60:11)\n    at eventLoopTick (ext:core/01_core.js:175:7)\n    at async Object.handler (file:///var/tmp/sb-compile-edge-runtime/functions/chat/index.ts:153:45)\n    at async mapped (ext:runtime/http.js:231:18)\n",
+    "event_type": "Log",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "d5938420-93d6-495e-91e4-7b57ae17a658",
+    "level": "error",
+    "timestamp": 1763269224653000
+  },
+  {
+    "event_message": "booted (time: 31ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "30c24740-0d67-47e5-9ab9-17a1a1fb0c20",
+    "level": "log",
+    "timestamp": 1763269222892000
+  },
+  {
+    "event_message": "booted (time: 29ms)",
+    "event_type": "Boot",
+    "function_id": "69e8d412-86f8-4ab8-a1de-127aa970d42c",
+    "id": "ce9de339-3be6-4238-90b5-3e0644f3fd8e",
+    "level": "log",
+    "timestamp": 1763269222645000
+  }
+]

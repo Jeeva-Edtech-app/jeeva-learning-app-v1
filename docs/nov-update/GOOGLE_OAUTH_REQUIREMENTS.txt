@@ -1,0 +1,59 @@
+Implement Google Sign-In authentication for the Jeeva Learning mobile app using Supabase OAuth.
+
+CONTEXT:
+- This is a React Native mobile app for Indian nurses preparing for UK NMC CBT exam
+- Backend uses Supabase for authentication and database
+- Need to support Google OAuth login alongside email/password
+
+TECHNICAL REQUIREMENTS:
+- Use Supabase Auth with OAuth provider: 'google'
+- Deep link redirect URL: jeevalearning://auth/callback
+- Install required packages for React Native Google Sign-In
+- Support both iOS and Android platforms
+
+IMPLEMENTATION NEEDED:
+
+1. Install Dependencies:
+   - @react-native-google-signin/google-signin (or equivalent for Expo)
+   - Configure deep linking for OAuth callback
+
+2. Create Google Sign-In Function:
+   - Add signInWithGoogle() to auth context/hook
+   - Use supabase.auth.signInWithOAuth({ provider: 'google' })
+   - Handle redirect with deep link callback
+   - Create/update user profile after successful authentication
+
+3. Update Login Screen:
+   - Add "Sign in with Google" button
+   - Implement Google sign-in flow
+   - Show loading states during authentication
+   - Handle errors gracefully
+
+4. User Profile Handling:
+   - After Google auth, check if user_profiles record exists
+   - If new user, create profile with Google data (name, email, avatar)
+   - If existing user, update last_login timestamp
+   - Navigate to appropriate screen (onboarding or home)
+
+5. Deep Linking Setup:
+   - Configure app scheme: jeevalearning://
+   - Handle auth/callback route for OAuth redirect
+   - Extract tokens from redirect URL
+   - Complete authentication flow
+
+SUPABASE SETUP (Already Done on Backend):
+- Supabase project URL: Use SUPABASE_URL from environment
+- Supabase anon key: Use SUPABASE_ANON_KEY from environment
+- Google OAuth is enabled in Supabase dashboard
+- Redirect URLs are configured
+
+EXPECTED USER FLOW:
+Login Screen → Click "Google Sign In" → Open Google OAuth → User authenticates → Redirect to app → Create/update profile → Navigate to home/onboarding
+
+ERROR HANDLING:
+- OAuth cancellation by user
+- Network errors during authentication
+- Invalid/expired tokens
+- Profile creation failures
+
+Please implement this with proper TypeScript types, error handling, and follow React Native best practices.

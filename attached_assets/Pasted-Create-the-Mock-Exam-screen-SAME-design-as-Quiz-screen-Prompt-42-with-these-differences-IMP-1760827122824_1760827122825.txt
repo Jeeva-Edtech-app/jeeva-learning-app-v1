@@ -1,0 +1,113 @@
+Create the Mock Exam screen - SAME design as Quiz screen (Prompt 42) with these differences:
+
+⚠️ IMPORTANT: Mock exams are FULL-LENGTH simulations (100-120 questions, 3-hour timer)
+
+DIFFERENCES FROM PRACTICE QUIZ:
+
+HEADER:
+
+Title: "Mock Exam Test" (instead of "Lesson Test")
+TIMER:
+
+Start from 180:00 (3 hours = 10,800 seconds)
+Format: HH:MM:SS (e.g., "02:45:30")
+Color: Red #EF4444 (warning color always on)
+Countdown to 00:00:00
+QUESTION NAVIGATION:
+
+Add question palette button (top-right corner):
+Icon: MaterialCommunityIcons "view-grid"
+Size: 24px
+Color: Blue #3B82F6
+On tap: Show question palette modal
+Question Palette Modal:
+Grid of question numbers (1-120)
+Each cell: 32px x 32px rounded square
+States:
+Answered: Green border (#10B981)
+Current: Blue background (#3B82F6, white text)
+Unanswered: Gray border (#E5E7EB)
+Marked for review: Orange border (#F97316)
+Tap any number: Jump to that question
+Close button: X icon (top-right)
+MARK FOR REVIEW:
+
+Add "Flag" button below question text:
+Icon: Ionicons "flag-outline" (unflagged) or "flag" (flagged)
+Size: 20px
+Color: Orange #F97316
+Text: "Mark for review" (14pt Inter Regular)
+Toggle on tap
+NAVIGATION BUTTONS:
+
+Show both Back and Next always (except first/last)
+Add "Submit Exam" button on last question:
+Background: Green (#10B981)
+Text: "Submit Exam"
+Show confirmation dialog before submit
+SUBMIT CONFIRMATION DIALOG:
+
+Title: "Submit Mock Exam?"
+Message: "You have answered X/120 questions. Y questions are marked for review. Are you sure you want to submit?"
+Buttons:
+"Review" (gray) - Go to question palette
+"Submit" (green) - Navigate to Mock Exam Results
+AUTO-SUBMIT:
+
+When timer reaches 00:00:00:
+Auto-submit exam
+Show toast: "Time's up! Exam auto-submitted"
+Navigate to results immediately
+PROGRESS INDICATOR:
+
+Add progress bar at very top (below header):
+Height: 3px
+Background: Light Gray #E5E7EB
+Progress: Blue #3B82F6
+Width: (currentQuestion / totalQuestions) * 100%
+DATA STRUCTURE:
+
+Fetch 120 random questions from all topics:
+
+const questions = await supabase
+  .from('questions')
+  .select('*, question_options(*)')
+  .eq('question_type', 'mock_exam') // or filter by all topics
+  .eq('is_active', true)
+  .order('random()') // Randomize
+  .limit(120);
+Save mock exam session:
+
+await supabase.from('mock_exams').insert({
+  user_id: userId,
+  total_questions: 120,
+  correct_answers: correctCount,
+  score_percentage: (correctCount / 120) * 100,
+  time_spent_seconds: 10800 - timeRemaining,
+  completed_at: new Date(),
+  flagged_questions: flaggedQuestionIds,
+});
+SPECIAL FEATURES:
+
+Persist exam state to AsyncStorage (resume if app closes)
+Show "Resume Exam" dialog if unfinished exam exists
+Lock screen orientation to portrait during exam
+Disable back button during exam (show exit confirmation)
+EXIT CONFIRMATION:
+
+If user presses back/exit during exam:
+Show dialog: "Exit Mock Exam?"
+Message: "Your progress will be saved. You can resume later."
+Buttons:
+"Resume" (stay on exam)
+"Exit" (save and go back)
+FILES TO CREATE:
+
+src/screens/mockexam/MockExamScreen.tsx (extend QuizScreen)
+src/components/mockexam/QuestionPalette.tsx
+src/components/mockexam/ExamTimer.tsx
+src/components/mockexam/ProgressBar.tsx
+Use the EXACT same design as Quiz screen (Prompt 42) but add these mock exam features.
+
+Show me the Mock Exam screen with question palette, 3-hour timer, and all features.
+

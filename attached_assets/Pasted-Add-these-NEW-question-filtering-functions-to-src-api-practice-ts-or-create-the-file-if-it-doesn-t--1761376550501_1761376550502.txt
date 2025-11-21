@@ -1,0 +1,101 @@
+Add these NEW question filtering functions to src/api/practice.ts (or create the file if it doesn't exist):
+
+import { supabase } from '@/lib/supabase'
+
+export const getQuestionsByModule = async (
+  moduleType: 'practice' | 'learning' | 'mock_exam',
+  limit: number = 20
+) => {
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`
+      *,
+      question_options (
+        id,
+        option_text,
+        is_correct,
+        display_order
+      )
+    `)
+    .eq('module_type', moduleType)
+    .eq('is_active', true)
+    .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+export const getQuestionsBySubdivision = async (
+  subdivision: string,
+  limit: number = 20
+) => {
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`
+      *,
+      question_options (
+        id,
+        option_text,
+        is_correct,
+        display_order
+      )
+    `)
+    .eq('module_type', 'practice')
+    .eq('subdivision', subdivision)
+    .eq('is_active', true)
+    .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+export const getQuestionsByCategory = async (
+  category: string,
+  limit: number = 10
+) => {
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`
+      *,
+      question_options (
+        id,
+        option_text,
+        is_correct,
+        display_order
+      )
+    `)
+    .eq('module_type', 'learning')
+    .eq('category', category)
+    .eq('is_active', true)
+    .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+export const getMockExamQuestions = async (
+  examPart: 'part_a' | 'part_b'
+) => {
+  const limit = examPart === 'part_a' ? 15 : 120
+
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`
+      *,
+      question_options (
+        id,
+        option_text,
+        is_correct,
+        display_order
+      )
+    `)
+    .eq('module_type', 'mock_exam')
+    .eq('exam_part', examPart)
+    .eq('is_active', true)
+    .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+These functions use the new tag-based filtering instead of lesson joins.

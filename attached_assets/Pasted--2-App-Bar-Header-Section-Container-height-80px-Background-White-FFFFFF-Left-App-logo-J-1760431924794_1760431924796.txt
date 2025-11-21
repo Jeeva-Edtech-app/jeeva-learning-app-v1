@@ -1,0 +1,110 @@
+🧩 2. App Bar / Header Section
+Container height: ~80px
+Background: White (#FFFFFF)
+Left: App logo (JEEVA) – small (width ≈ 40px).
+Right: Circular avatar with initial (M).
+Circle background: Blue (#3B82F6)
+Text color: White (#FFFFFF)
+Font weight: Semi-bold
+Font size: 14px
+Diameter: ~36px
+Position: Right-aligned with ~16px right margin
+👋 3. Greeting Section
+Text: Hi, mac
+Font size: 20px
+Font weight: Bold (font-bold)
+Color: Dark gray (#111827)
+Margin-top: 16px
+Margin-left/right: 20px
+🚀 4. Promotion Card (“Upgrade Your Career”)
+Container background: Blue (#3B82F6)
+Corner radius: 16px
+Shadow: Soft shadow (0 4px 10px rgba(59, 130, 246, 0.25))
+Padding: 20px
+Text alignment: Left
+Inside the card:
+Title:
+Text: “UPGRADE YOUR CAREER”
+Color: White (#FFFFFF)
+Font weight: Bold (font-bold)
+Font size: 16px
+Subtitle:
+Text: “Crack NMC CBT with confidence and take the next step in your nursing journey.”
+Color: White with 85% opacity (rgba(255,255,255,0.85))
+Font size: 14px
+Margin-top: 4px
+Button (“Get Started”)
+Background: White (#FFFFFF)
+Text color: Blue (#3B82F6)
+Font size: 14px
+Font weight: Medium (font-medium)
+Corner radius: 10px
+Padding: 8px 20px
+Margin-top: 12px
+Shadow: None (flat design)
+⚡ 5. Quick Actions Section
+Section title: “Quick Actions”
+Font size: 18px
+Font weight: Bold
+Color: Black (#111827)
+Margin: 20px top, 20px sides, 10px bottom
+Action items (Courses / Packages / Features / Queries):
+Layout: 4-column grid (equal width)
+Icon container:
+Background: Very light blue gradient (#EFF6FF)
+Shape: Rounded (16px radius)
+Size: 56x56px
+Icon color: Blue (#3B82F6)
+Icon size: ~24px
+Label text:
+Font size: 13px
+Font weight: Medium
+Color: Dark gray (#111827)
+Margin-top: 8px
+🎁 6. Offer Card (“25% off on annual plans”)
+Container background: White (#FFFFFF)
+Border radius: 16px
+Shadow: Subtle gray shadow (0 2px 6px rgba(0, 0, 0, 0.08))
+Padding: 20px
+Margin: 16px horizontal, 24px vertical
+Inside the card:
+Tag (“LIMITED OFFER”):
+Background: Light yellow (#FEF3C7)
+Text color: Orange (#D97706)
+Font size: 10px
+Font weight: Bold
+Padding: 4px 8px
+Border radius: 6px
+Uppercase
+Main text:
+“Get 25% off on annual plans”
+Font size: 16px
+Font weight: Bold
+Color: Black (#111827)
+Margin-top: 8px
+Subtext:
+“Unlock all courses and practice tests with our premium subscription.”
+Font size: 13px
+Color: Gray (#6B7280)
+Line height: 1.5
+Margin-top: 4px
+Button (“View Plans”)
+Background: Blue (#3B82F6)
+Text color: White (#FFFFFF)
+Font size: 14px
+Font weight: Medium (font-medium)
+Border radius: 10px
+Padding: 10px 0
+Full width of card
+Margin-top: 16px
+🧭 7. Bottom Navigation Bar
+Background: White (#FFFFFF)
+Border top: 1px solid light gray (#E5E7EB)
+Height: 72px
+Each icon:
+Inactive color: Gray (#9CA3AF)
+Active color: Blue (#3B82F6)
+Font size: 12px
+Icon size: 22px
+Spacing: Icon above, label below
+Selected tab: “Home” (highlighted in blue)

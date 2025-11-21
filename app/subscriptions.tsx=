@@ -1,0 +1,605 @@
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Colors } from '@/constants/Colors';
+
+const { width } = Dimensions.get('window');
+
+interface PlanFeatures {
+  icon: string;
+  text: string;
+}
+
+interface SubscriptionPlan {
+  id: string;
+  name: string;
+  duration: number;
+  price: number;
+  popular: boolean;
+  features: PlanFeatures[];
+  color: string;
+  badge?: string;
+}
+
+const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
+  {
+    id: '30days',
+    name: 'Starter',
+    duration: 30,
+    price: 599,
+    popular: false,
+    color: '#6366F1',
+    features: [
+      { icon: 'check', text: 'Full Learning Module Access' },
+      { icon: 'edit', text: 'Practice Module (10 topics)' },
+      { icon: 'school', text: 'AI JeevaBot (30 messages)' },
+      { icon: 'analytics', text: 'Basic Performance Analytics' },
+      { icon: 'schedule', text: '30 days validity' },
+    ]
+  },
+  {
+    id: '60days',
+    name: 'Popular',
+    duration: 60,
+    price: 999,
+    popular: true,
+    color: '#7C3AED',
+    badge: 'Best Seller',
+    features: [
+      { icon: 'menu-book', text: 'All Learning Modules' },
+      { icon: 'edit', text: 'Unlimited Practice Questions' },
+      { icon: 'article', text: '2 Mock Exams' },
+      { icon: 'message', text: 'AI JeevaBot (100 messages)' },
+      { icon: 'analytics', text: 'Advanced Analytics' },
+      { icon: 'support-agent', text: 'Priority Support' },
+      { icon: 'access-time', text: '60 days validity' },
+    ]
+  },
+  {
+    id: '90days',
+    name: 'Premium',
+    duration: 90,
+    price: 1299,
+    popular: false,
+    color: '#059669',
+    features: [
+      { icon: 'menu-book', text: 'All Learning Modules' },
+      { icon: 'edit', text: 'Unlimited Practice Questions' },
+      { icon: 'article', text: '5 Mock Exams' },
+      { icon: 'message', text: 'AI JeevaBot (Unlimited)' },
+      { icon: 'analytics', text: 'Expert Analytics & Insights' },
+      { icon: 'support-agent', text: '24/7 Priority Support' },
+      { icon: 'celebration', text: 'Free Webinars Access' },
+      { icon: 'access-time', text: '90 days validity' },
+    ]
+  },
+  {
+    id: '120days',
+    name: 'Ultimate',
+    duration: 120,
+    price: 1699,
+    popular: false,
+    color: '#D97706',
+    features: [
+      { icon: 'menu-book', text: 'All Learning Modules' },
+      { icon: 'edit', text: 'Unlimited Practice Questions' },
+      { icon: 'article', text: '10 Mock Exams' },
+      { icon: 'message', text: 'AI JeevaBot (Unlimited)' },
+      { icon: 'analytics', text: 'Expert Analytics & AI Recommendations' },
+      { icon: 'support-agent', text: '24/7 Priority Support' },
+      { icon: 'celebration', text: 'Free Webinars & Live Sessions' },
+      { icon: 'menu-book', text: 'Study Materials Download' },
+      { icon: 'access-time', text: '120 days validity' },
+    ]
+  }
+];
+
+interface PlanCardProps {
+  plan: SubscriptionPlan;
+  onSelect: (plan: SubscriptionPlan) => void;
+}
+
+function PlanCard({ plan, onSelect }: PlanCardProps) {
+  const formatPrice = (price: number) => {
+    return `₹${price}`;
+  };
+
+  const getPlanColor = (color: string) => {
+    return `${color}15`;
+  };
+
+  return (
+    <View style={[styles.planCardWrapper, { borderColor: plan.popular ? plan.color : 'transparent' }]}>
+      {plan.popular && (
+        <View style={[styles.popularBadge, { backgroundColor: plan.color }]}>
+          <Text style={styles.popularBadgeText}>MOST POPULAR</Text>
+        </View>
+      )}
+
+      <LinearGradient
+        colors={[getPlanColor(plan.color), '#FFFFFF']}
+        style={styles.planCard}
+      >
+        <View style={styles.planHeader}>
+          <View style={styles.planInfo}>
+            <Text style={styles.planName}>{plan.name}</Text>
+            <View style={styles.planPriceRow}>
+              <Text style={styles.planPrice}>{formatPrice(plan.price)}</Text>
+              <Text style={styles.planDuration}>for {plan.duration} days</Text>
+            </View>
+          </View>
+          <View style={[styles.planIconCircle, { backgroundColor: plan.color }]}>
+            <MaterialCommunityIcons name="crown" size={24} color="white" />
+          </View>
+        </View>
+
+        <View style={styles.featuresList}>
+          {plan.features.map((feature, index) => (
+            <View key={index} style={styles.featureItem}>
+              <View style={styles.featureBullet} />
+              <Text style={styles.featureText}>{feature.text}</Text>
+            </View>
+          ))}
+        </View>
+
+        <TouchableOpacity
+          style={[styles.selectButton, { backgroundColor: plan.color }]}
+          onPress={() => onSelect(plan)}
+        >
+          <Text style={styles.selectButtonText}>Choose Plan</Text>
+          <Ionicons name="chevron-forward" size={18} color="white" />
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
+  );
+}
+
+export default function SubscriptionPlansScreen() {
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
+
+  const handlePlanSelection = (plan: SubscriptionPlan) => {
+    setSelectedPlan(plan);
+    // TODO: Implement payment flow
+    Alert.alert(
+      'Plan Selected',
+      `You selected the ${plan.name} plan for ${plan.price}₹\n\nThis will open payment gateway soon.`,
+      [
+        { text: 'OK', style: 'default' },
+      ]
+    );
+  };
+
+  const handleFreeTrial = () => {
+    router.back();
+    Alert.alert('Free Trial', 'You already have free trial access!');
+  };
+
+  return (
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
+          <Ionicons name="arrow-back" size={24} color="#6D6D6D" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Subscription Plans</Text>
+        <View style={styles.headerPlaceholder} />
+      </View>
+
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Hero Section */}
+        <LinearGradient
+          colors={['#007BFF', '#0059BA']}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 0.5, y: 0.5 }}
+          style={styles.heroSection}
+        >
+          <View style={styles.heroContent}>
+            <MaterialCommunityIcons name="rocket-launch" size={60} color="white" />
+            <Text style={styles.heroTitle}>Ace Your NMC CBT</Text>
+            <Text style={styles.heroSubtitle}>
+              Get unlimited access to all learning modules, practice questions, and mock exams
+            </Text>
+          </View>
+        </LinearGradient>
+
+        {/* Current Trial Status */}
+        <View style={styles.trialStatus}>
+          <View style={styles.trialCard}>
+            <Ionicons name="gift" size={24} color="#3B82F6" />
+            <View style={styles.trialInfo}>
+              <Text style={styles.trialTitle}>Currently on Free Trial</Text>
+              <Text style={styles.trialSubtitle}>Upgrade anytime for full access</Text>
+            </View>
+            <TouchableOpacity style={styles.trialButton}>
+              <Text style={styles.trialButtonText}>Free Trial</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Pricing Cards */}
+        <View style={styles.plansGrid}>
+          {SUBSCRIPTION_PLANS.map((plan) => (
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              onSelect={handlePlanSelection}
+            />
+          ))}
+        </View>
+
+        {/* Why Choose Us */}
+        <View style={styles.benefitsSection}>
+          <Text style={styles.sectionTitle}>Why Choose Our Plans?</Text>
+
+          <View style={styles.benefitsGrid}>
+            <View style={styles.benefitCard}>
+              <Ionicons name="school" size={32} color="#3B82F6" />
+              <Text style={styles.benefitTitle}>UK-Focused Content</Text>
+              <Text style={styles.benefitText}>
+                Content developed by UK nurses for Indian nurses preparing for NMC CBT
+              </Text>
+            </View>
+
+            <View style={styles.benefitCard}>
+              <Ionicons name="bulb" size={32} color="#10B981" />
+              <Text style={styles.benefitTitle}>AI-Powered Learning</Text>
+              <Text style={styles.benefitText}>
+                JeevaBot AI assistant provides 24/7 doubt clearing and personalized study plans
+              </Text>
+            </View>
+
+            <View style={styles.benefitCard}>
+              <Ionicons name="trophy" size={32} color="#F59E0B" />
+              <Text style={styles.benefitTitle}>Proven Success Rate</Text>
+              <Text style={styles.benefitText}>
+                90% success rate in NMC CBT among our users. Join thousands of successful nurses
+              </Text>
+            </View>
+
+            <View style={styles.benefitCard}>
+              <Ionicons name="people" size={32} color="#7C3AED" />
+              <Text style={styles.benefitTitle}>Community Support</Text>
+              <Text style={styles.benefitText}>
+                Connect with fellow nurses, share experiences, and get peer support
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* FAQ Section */}
+        <View style={styles.faqSection}>
+          <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
+
+          <View style={styles.faqList}>
+            <View style={styles.faqItem}>
+              <Text style={styles.faqQuestion}>Can I get a refund if I'm not satisfied?</Text>
+              <Text style={styles.faqAnswer}>
+                Yes, we offer a 30-day money-back guarantee if you feel the subscription doesn't meet your needs.
+              </Text>
+            </View>
+
+            <View style={styles.faqItem}>
+              <Text style={styles.faqQuestion}>Do I get access to all content immediately?</Text>
+              <Text style={styles.faqAnswer}>
+                Yes, once your payment is processed, you get immediate access to all premium features and content.
+              </Text>
+            </View>
+
+            <View style={styles.faqItem}>
+              <Text style={styles.faqQuestion}>Can I share my account with family?</Text>
+              <Text style={styles.faqAnswer}>
+                Per NMC regulations, each nurse needs their individual account for proper progress tracking.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={{ height: 100 }} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1F2937',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  headerPlaceholder: {
+    width: 40,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F7FA',
+  },
+  scrollContent: {
+    paddingBottom: 24,
+  },
+
+  // Hero Section
+  heroSection: {
+    marginHorizontal: 18,
+    marginTop: 16,
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+  },
+  heroContent: {
+    alignItems: 'center',
+  },
+  heroTitle: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: 'white',
+    fontFamily: 'Inter_600SemiBold',
+    textAlign: 'center',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontFamily: 'Inter_500Medium',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+
+  // Trial Status
+  trialStatus: {
+    paddingHorizontal: 18,
+    marginBottom: 16,
+  },
+  trialCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EFF6FF',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#DBEAFE',
+  },
+  trialInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  trialTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1F2937',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  trialSubtitle: {
+    fontSize: 12,
+    color: '#6B7280',
+    fontFamily: 'Inter_400Regular',
+    marginTop: 2,
+  },
+  trialButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#3B82F6',
+    borderRadius: 16,
+  },
+  trialButtonText: {
+    fontSize: 12,
+    color: 'white',
+    fontFamily: 'Inter_500Medium',
+  },
+
+  // Plans Grid
+  plansGrid: {
+    paddingHorizontal: 18,
+    marginBottom: 24,
+  },
+  planCardWrapper: {
+    marginBottom: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  popularBadge: {
+    position: 'absolute',
+    top: 12,
+    left: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    zIndex: 10,
+  },
+  popularBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: 'white',
+    fontFamily: 'Inter_700Bold',
+    textTransform: 'uppercase',
+  },
+  planCard: {
+    padding: 24,
+  },
+  planHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  planInfo: {
+    flex: 1,
+  },
+  planName: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1F2937',
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 4,
+  },
+  planPriceRow: {
+    alignItems: 'baseline',
+  },
+  planPrice: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#1F2937',
+    fontFamily: 'Inter_700Bold',
+  },
+  planDuration: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontFamily: 'Inter_400Regular',
+    marginLeft: 4,
+  },
+  planIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Features
+  featuresList: {
+    marginBottom: 20,
+  },
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  featureBullet: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#3B82F6',
+  },
+  featureText: {
+    fontSize: 14,
+    color: '#4B5563',
+    fontFamily: 'Inter_400Regular',
+    marginLeft: 10,
+    flex: 1,
+  },
+
+  // Select Button
+  selectButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    borderRadius: 8,
+    gap: 8,
+  },
+  selectButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white',
+    fontFamily: 'Inter_600SemiBold',
+  },
+
+  // Benefits Section
+  benefitsSection: {
+    paddingHorizontal: 18,
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1F2937',
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  benefitsGrid: {
+    gap: 12,
+  },
+  benefitCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  benefitTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1F2937',
+    fontFamily: 'Inter_600SemiBold',
+    marginTop: 12,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  benefitText: {
+    fontSize: 13,
+    color: '#6B7280',
+    fontFamily: 'Inter_400Regular',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+
+  // FAQ Section
+  faqSection: {
+    paddingHorizontal: 18,
+    marginBottom: 24,
+  },
+  faqList: {
+    gap: 12,
+  },
+  faqItem: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  faqQuestion: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1F2937',
+    fontFamily: 'Inter_600SemiBold',
+    marginBottom: 8,
+  },
+  faqAnswer: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 20,
+  },
+});

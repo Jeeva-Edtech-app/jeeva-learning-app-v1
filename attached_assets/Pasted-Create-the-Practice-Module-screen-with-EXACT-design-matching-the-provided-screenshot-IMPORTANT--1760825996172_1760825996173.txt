@@ -1,0 +1,304 @@
+Create the Practice Module screen with EXACT design matching the provided screenshot.
+
+⚠️ IMPORTANT: Use Inter font family throughout the app (already specified in replit.md)
+
+Read docs/MOBILE_APP_FEATURES.md and docs/DATABASE_SCHEMA.md for reference.
+
+SCREEN STRUCTURE:
+
+1. HEADER:
+   - Back arrow button (left, 24px icon, black)
+   - "Practice Module" title (18pt Inter Medium, black #1F2937)
+   - Background: White (#FFFFFF)
+   - Height: 56px + safe area
+   - No bottom border/shadow
+
+2. HERO CARD (Top Banner):
+   - Background: Blue (#1E40AF or #2563EB)
+   - Border radius: 16px
+   - Margin: 16px (left, right, top)
+   - Padding: 24px
+   - Content:
+     * "PRACTICE MODE" (white, 22pt Inter Bold, uppercase)
+     * "Practice topic-wise questions at your own pace." (white, 15pt Inter Regular, line height 1.4)
+
+3. SECTION HEADER:
+   - "Choose Your Practice Module" 
+     * Color: Blue (#3B82F6)
+     * Font: 28pt Inter Bold
+     * Margin top: 24px
+     * Margin left/right: 16px
+   
+   - Subtitle: "Select the section you want to focus on and start practicing immediately"
+     * Color: Gray (#6B7280)
+     * Font: 14pt Inter Regular
+     * Margin top: 8px
+     * Margin left/right: 16px
+     * Line height: 1.5
+
+4. MODULE CARDS (Vertical List):
+   - Margin: 24px (top), 16px (left/right)
+   - Gap between cards: 16px
+   
+   CARD 1 - Numeracy:
+   - Background: Light Green (#D1FAE5)
+   - Border radius: 16px
+   - Padding: 20px
+   - Height: Auto (min 100px)
+   - Layout: Horizontal (icon | content | chevron)
+   
+   Components:
+   a) Icon Circle (left):
+      - Size: 56px diameter
+      - Background: Green (#10B981)
+      - Icon: Calculator or math symbol (MaterialCommunityIcons "calculator")
+      - Icon color: White
+      - Icon size: 28px
+   
+   b) Content (middle, flex 1):
+      - Margin left: 16px from icon
+      - "Numeracy" title:
+        * Font: 20pt Inter Bold
+        * Color: Black (#1F2937)
+      - Description: "Timed practice with dosage, IV flow rates and unit conversions"
+        * Font: 13pt Inter Regular
+        * Color: Gray (#6B7280)
+        * Margin top: 4px
+        * Line height: 1.4
+   
+   c) Chevron (right):
+      - Icon: Ionicons "chevron-forward"
+      - Size: 24px
+      - Color: Gray (#9CA3AF)
+      - Background: White circle (40px)
+      - Align: center vertically
+   
+   CARD 2 - Clinical:
+   - Background: Light Peach/Orange (#FED7AA or #FEE2E2)
+   - Border radius: 16px
+   - Padding: 20px
+   - Height: Auto (min 100px)
+   
+   Components:
+   a) Icon Circle (left):
+      - Size: 56px diameter
+      - Background: Coral/Red (#F87171 or #EF4444)
+      - Icon: Medical/stethoscope symbol (MaterialCommunityIcons "stethoscope")
+      - Icon color: White
+      - Icon size: 28px
+   
+   b) Content (middle, flex 1):
+      - Same structure as Numeracy card
+      - "Clinical" title (20pt Inter Bold, Black)
+      - Description: "Timed practice with dosage, IV flow rates and unit conversions"
+        * (Update text to: "UK clinical scenarios, patient care, and nursing protocols")
+        * Font: 13pt Inter Regular
+        * Color: Gray (#6B7280)
+   
+   c) Chevron (same as Card 1)
+
+5. ADDITIONAL MODULE CARD (if applicable):
+   
+   CARD 3 - Professional Standards (NMC Code):
+   - Background: Light Purple (#EDE9FE)
+   - Border radius: 16px
+   - Icon background: Purple (#7C3AED)
+   - Icon: MaterialCommunityIcons "shield-check"
+   - Title: "Professional Standards"
+   - Description: "NMC Code principles, ethics, and professional conduct"
+
+6. EXACT COLORS:
+   - Primary Blue (titles): #3B82F6
+   - Dark Blue (hero): #1E40AF or #2563EB
+   - Green (Numeracy): #10B981
+   - Light Green BG: #D1FAE5
+   - Coral/Red (Clinical): #EF4444 or #F87171
+   - Light Peach BG: #FED7AA or #FEE2E2
+   - Purple: #7C3AED
+   - Light Purple BG: #EDE9FE
+   - Black text: #1F2937
+   - Gray text: #6B7280
+   - Light gray: #9CA3AF
+   - White: #FFFFFF
+
+7. TYPOGRAPHY (Inter Font):
+   - Hero title: 22pt Inter Bold
+   - Hero subtitle: 15pt Inter Regular
+   - Section title: 28pt Inter Bold
+   - Section subtitle: 14pt Inter Regular
+   - Card title: 20pt Inter Bold
+   - Card description: 13pt Inter Regular
+   - Header title: 18pt Inter Medium
+
+8. SPACING:
+   - Screen padding: 16px horizontal
+   - Hero card margin: 16px all sides
+   - Hero card padding: 24px
+   - Section title margin top: 24px
+   - Card margin top: 24px (first card after title)
+   - Card gap: 16px
+   - Card padding: 20px
+   - Icon size: 56px circle
+   - Chevron circle: 40px
+   - Content margin from icon: 16px
+
+9. FUNCTIONALITY:
+   - Fetch modules from database (modules table):
+     * WHERE category IN ('practice', 'numeracy', 'clinical', 'professional_standards')
+     * Filter by is_active = true
+     * Order by display_order
+   
+   - On card tap:
+     * Check subscription status (if trial user, check if module is accessible)
+     * If locked: Show upgrade prompt
+     * If accessible: Navigate to TopicsListScreen with moduleId
+   
+   - Trial mode logic:
+     * Allow access to first module (Numeracy)
+     * Lock Clinical and Professional Standards
+     * Show lock icon on locked cards
+
+10. LOCK ICON FOR PREMIUM CONTENT:
+    - Add to top-right of locked cards
+    - Icon: Ionicons "lock-closed"
+    - Size: 20px
+    - Color: Gray (#6B7280)
+    - Background: White/rgba(255,255,255,0.9) circle (32px)
+    - Position: absolute, top 16px, right 16px
+
+11. FILE TO CREATE:
+    - src/screens/practice/PracticeModuleScreen.tsx
+
+12. EXAMPLE CODE STRUCTURE:
+```typescript
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSubscription } from '@/hooks/useSubscription';
+
+const PRACTICE_MODULES = [
+  {
+    id: 'numeracy',
+    title: 'Numeracy',
+    description: 'Timed practice with dosage, IV flow rates and unit conversions',
+    icon: 'calculator',
+    bgColor: '#D1FAE5',
+    iconBgColor: '#10B981',
+    isPremium: false, // Free in trial
+  },
+  {
+    id: 'clinical',
+    title: 'Clinical',
+    description: 'UK clinical scenarios, patient care, and nursing protocols',
+    icon: 'stethoscope',
+    bgColor: '#FED7AA',
+    iconBgColor: '#EF4444',
+    isPremium: true,
+  },
+  {
+    id: 'professional',
+    title: 'Professional Standards',
+    description: 'NMC Code principles, ethics, and professional conduct',
+    icon: 'shield-check',
+    bgColor: '#EDE9FE',
+    iconBgColor: '#7C3AED',
+    isPremium: true,
+  },
+];
+
+export default function PracticeModuleScreen({ navigation }) {
+  const { isTrialUser } = useSubscription();
+
+  const handleModuleTap = (module) => {
+    if (isTrialUser && module.isPremium) {
+      // Show upgrade prompt
+      navigation.navigate('UpgradePrompt');
+    } else {
+      navigation.navigate('TopicsList', { moduleId: module.id });
+    }
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Practice Module</Text>
+      </View>
+
+      {/* Hero Card */}
+      <View style={styles.heroCard}>
+        <Text style={styles.heroTitle}>PRACTICE MODE</Text>
+        <Text style={styles.heroSubtitle}>
+          Practice topic-wise questions at your own pace.
+        </Text>
+      </View>
+
+      {/* Section Header */}
+      <Text style={styles.sectionTitle}>Choose Your Practice Module</Text>
+      <Text style={styles.sectionSubtitle}>
+        Select the section you want to focus on and start practicing immediately
+      </Text>
+
+      {/* Module Cards */}
+      <View style={styles.moduleList}>
+        {PRACTICE_MODULES.map((module) => (
+          <ModuleCard
+            key={module.id}
+            module={module}
+            onPress={() => handleModuleTap(module)}
+            isLocked={isTrialUser && module.isPremium}
+          />
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
+
+const ModuleCard = ({ module, onPress, isLocked }) => (
+  <TouchableOpacity 
+    style={[styles.moduleCard, { backgroundColor: module.bgColor }]}
+    onPress={onPress}
+  >
+    {/* Icon */}
+    <View style={[styles.iconCircle, { backgroundColor: module.iconBgColor }]}>
+      <MaterialCommunityIcons name={module.icon} size={28} color="white" />
+    </View>
+
+    {/* Content */}
+    <View style={styles.cardContent}>
+      <Text style={styles.cardTitle}>{module.title}</Text>
+      <Text style={styles.cardDescription}>{module.description}</Text>
+    </View>
+
+    {/* Chevron or Lock */}
+    {isLocked ? (
+      <View style={styles.lockIcon}>
+        <Ionicons name="lock-closed" size={20} color="#6B7280" />
+      </View>
+    ) : (
+      <View style={styles.chevronCircle}>
+        <Ionicons name="chevron-forward" size={24} color="#9CA3AF" />
+      </View>
+    )}
+  </TouchableOpacity>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+  },
+  heroTitle: {
+    fontFamily: 'Inter-Bold',
+    fontSize: 22,
+    color: 'white',
+  },
+  cardTitle: {
+    fontFamily: 'Inter-Bold',
+    fontSize: 20,
+    color: '#1F2937',
+  },
+  // ... add all other styles with Inter font family
+});

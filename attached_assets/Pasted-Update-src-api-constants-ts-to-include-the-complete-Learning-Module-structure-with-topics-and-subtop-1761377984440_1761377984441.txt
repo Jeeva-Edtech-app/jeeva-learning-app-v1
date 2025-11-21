@@ -1,0 +1,88 @@
+Update src/api/constants.ts to include the complete Learning Module structure with topics and subtopics:
+
+Replace the LEARNING_TOPICS section with this expanded structure:
+
+export const LEARNING_STRUCTURE = [
+  {
+    id: 1,
+    topic: 'The NMC Code',
+    category: 'The NMC Code',
+    icon: '📋',
+    subtopics: [
+      { id: '1.1', title: 'Prioritise People', category: 'The NMC Code' },
+      { id: '1.2', title: 'Practice Effectively', category: 'The NMC Code' },
+      { id: '1.3', title: 'Preserve Safety', category: 'The NMC Code' },
+      { id: '1.4', title: 'Promote Professionalism', category: 'The NMC Code' },
+    ],
+  },
+  {
+    id: 2,
+    topic: 'Mental Capacity Act',
+    category: 'Mental Capacity Act',
+    icon: '🧠',
+    subtopics: [
+      { id: '2.1', title: 'Presumption of Capacity', category: 'Mental Capacity Act' },
+      { id: '2.2', title: 'Assessing Capacity', category: 'Mental Capacity Act' },
+      { id: '2.3', title: 'Best Interests Decisions', category: 'Mental Capacity Act' },
+      { id: '2.4', title: 'Advanced Care Planning', category: 'Mental Capacity Act' },
+    ],
+  },
+  {
+    id: 3,
+    topic: 'Safeguarding',
+    category: 'Safeguarding',
+    icon: '🛡️',
+    subtopics: [
+      { id: '3.1', title: 'Recognising Abuse', category: 'Safeguarding' },
+      { id: '3.2', title: 'Reporting Protocols', category: 'Safeguarding' },
+      { id: '3.3', title: 'Child Protection', category: 'Safeguarding' },
+    ],
+  },
+  {
+    id: 4,
+    topic: 'Consent & Confidentiality',
+    category: 'Consent & Confidentiality',
+    icon: '🔒',
+    subtopics: [
+      { id: '4.1', title: 'Valid Consent', category: 'Consent & Confidentiality' },
+      { id: '4.2', title: 'GDPR & Confidentiality', category: 'Consent & Confidentiality' },
+      { id: '4.3', title: 'Confidentiality vs. Safeguarding', category: 'Consent & Confidentiality' },
+    ],
+  },
+  {
+    id: 5,
+    topic: 'Equality & Diversity',
+    category: 'Equality & Diversity',
+    icon: '🤝',
+    subtopics: [
+      { id: '5.1', title: 'Equality Act 2010', category: 'Equality & Diversity' },
+      { id: '5.2', title: 'Cultural Competence', category: 'Equality & Diversity' },
+      { id: '5.3', title: 'Reasonable Adjustments', category: 'Equality & Diversity' },
+    ],
+  },
+  {
+    id: 6,
+    topic: 'Duty of Candour',
+    category: 'Duty of Candour',
+    icon: '💬',
+    subtopics: [
+      { id: '6.1', title: 'Transparency After Errors', category: 'Duty of Candour' },
+      { id: '6.2', title: 'NHS Incident Reporting', category: 'Duty of Candour' },
+    ],
+  },
+  {
+    id: 7,
+    topic: 'Cultural Adaptation',
+    category: 'Cultural Adaptation',
+    icon: '🌍',
+    subtopics: [
+      { id: '7.1', title: 'Autonomy vs. Family Decisions', category: 'Cultural Adaptation' },
+      { id: '7.2', title: 'UK Communication Styles', category: 'Cultural Adaptation' },
+    ],
+  },
+] as const
+
+// Keep the simple array for backward compatibility
+export const LEARNING_TOPICS = LEARNING_STRUCTURE.map(item => item.topic)
+
+This creates the complete hierarchical structure for the Learning Module.

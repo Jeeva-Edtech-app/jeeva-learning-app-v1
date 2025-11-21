@@ -1,0 +1,162 @@
+Create the Lesson Content Viewer screen with EXACT design from the reference screenshot.
+
+⚠️ IMPORTANT: Use Inter font family, includes audio player for podcast-style learning
+
+SCREEN STRUCTURE:
+
+1. HEADER:
+   - Back arrow (left, 24px, black #1F2937)
+   - "The NMC Code" title (18pt Inter Medium, black #1F2937)
+   - Background: White
+   - Height: 56px + safe area
+
+2. LESSON CONTENT SECTION:
+   - Background: White
+   - Padding: 24px horizontal, 16px vertical
+   - ScrollView container
+   
+   LESSON HEADER:
+   - Lesson number + title:
+     * "1.1 Prioritise People" (24pt Inter Bold, Black #1F2937)
+   - Module badge:
+     * "The NMC Code" (14pt Inter Regular, Gray #6B7280)
+     * Margin top: 4px
+   
+   LESSON TEXT:
+   - Description paragraph:
+     * Font: 15pt Inter Regular
+     * Color: Dark Gray #4B5563
+     * Line height: 1.6
+     * Example: "The NMC Code is a set of professional standards that guides nurses and midwives to deliver safe, effective, and ethical care."
+     * Margin top: 16px
+
+3. AUDIO PLAYER (Podcast Mode):
+   - Background: Black (#000000 or #1F2937)
+   - Border radius: 12px
+   - Margin: 24px horizontal, 24px top
+   - Padding: 24px
+   - Aspect ratio: 16:9 or auto height
+   
+   PLAYER COMPONENTS:
+   
+   a) Speed Control (Top Right):
+      - "10X" button (white text, 14pt Inter Medium)
+      - Background: Semi-transparent white/gray
+      - Border radius: 6px
+      - Padding: 6px 12px
+      - Position: absolute top-right
+   
+   b) Playback Controls (Center):
+      - Layout: Horizontal, centered
+      - Gap: 40px between controls
+      
+      REWIND 10s Button (Left):
+      - Icon: Ionicons "play-back-circle-outline"
+      - Size: 48px
+      - Color: White
+      - Has "10" label inside circle
+      
+      PLAY/PAUSE Button (Center):
+      - Icon: Ionicons "play" or "pause"
+      - Size: 56px (larger than others)
+      - Color: White
+      - Background: Semi-transparent circle (optional)
+      
+      FORWARD 10s Button (Right):
+      - Icon: Ionicons "play-forward-circle-outline"
+      - Size: 48px
+      - Color: White
+      - Has "10" label inside circle
+   
+   c) Progress Bar (Bottom):
+      - Slider/progress track
+      - Background: Gray (#4B5563)
+      - Active/played: Coral/Red (#EF4444 or #F87171)
+      - Thumb: Circle (12px, coral/red)
+      - Height: 4px track
+      - Margin top: 24px from controls
+      
+      Time Display (Right side of progress):
+      - "0:00 / 1:45" (current / total duration)
+      - Font: 12pt Inter Regular
+      - Color: White
+      - Position: bottom-right of player
+
+4. VIEW NOTES SECTION:
+   - Button below audio player
+   - Background: Light Gray (#F3F4F6)
+   - Border: 1px solid #E5E7EB
+   - Border radius: 8px
+   - Padding: 14px
+   - Margin: 16px horizontal, 16px top
+   - Layout: Horizontal (space-between)
+   
+   LEFT SIDE:
+   - Text: "view notes" (14pt Inter Medium, Gray #6B7280)
+   
+   RIGHT SIDE:
+   - Plus icon: Ionicons "add"
+   - Size: 20px
+   - Color: Gray #6B7280
+   
+   On tap: Expand to show lesson notes/transcript
+
+5. CHECK UNDERSTANDING BUTTON:
+   - Background: Blue (#3B82F6)
+   - Border radius: 8px
+   - Padding: 16px
+   - Margin: 24px horizontal, 24px top
+   - Text: "Check your understanding" (16pt Inter Medium, White)
+   - Full width
+   - Shadow: elevation 2
+   - On tap: Navigate to lesson quiz/questions
+
+6. EXACT COLORS:
+   - Black player: #000000 or #1F2937
+   - Coral/Red progress: #EF4444 or #F87171
+   - Blue button: #3B82F6
+   - Gray text: #6B7280
+   - Dark gray text: #4B5563
+   - Light gray BG: #F3F4F6
+   - Border gray: #E5E7EB
+   - White: #FFFFFF
+
+7. TYPOGRAPHY (Inter Font):
+   - Lesson title: 24pt Inter Bold
+   - Module badge: 14pt Inter Regular
+   - Lesson text: 15pt Inter Regular
+   - Button text: 16pt Inter Medium
+   - View notes: 14pt Inter Medium
+   - Time display: 12pt Inter Regular
+
+8. AUDIO PLAYER FUNCTIONALITY:
+   - Use expo-av or react-native-track-player
+   - Load audio_url from lessons table
+   - Controls:
+     * Play/Pause toggle
+     * Rewind 10 seconds
+     * Forward 10 seconds
+     * Playback speed: 0.5x, 1x, 1.25x, 1.5x, 2x (cycle through)
+     * Seek via progress bar slider
+   - Display current time and total duration
+   - Auto-pause when leaving screen
+   - Remember playback position (save to AsyncStorage)
+
+9. DATA STRUCTURE:
+   Fetch lesson from database:
+   ```typescript
+   const lesson = await supabase
+     .from('lessons')
+     .select('*, topics(*), modules(*)')
+     .eq('id', lessonId)
+     .single();
+   
+   // lesson object:
+   {
+     id: uuid,
+     title: "1.1 Prioritise People",
+     content: "The NMC Code is a set of...",
+     audio_url: "https://cdn.example.com/lesson-audio.mp3",
+     notes: "Detailed transcript...",
+     topic_id: uuid,
+   }

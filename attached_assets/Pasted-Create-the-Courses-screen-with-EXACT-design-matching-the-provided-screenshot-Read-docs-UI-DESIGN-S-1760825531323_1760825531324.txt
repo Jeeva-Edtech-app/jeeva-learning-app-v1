@@ -1,0 +1,207 @@
+Create the Courses screen with EXACT design matching the provided screenshot.
+
+Read docs/UI_DESIGN_SPECS.md and docs/MOBILE_APP_FEATURES.md for reference.
+
+SCREEN STRUCTURE:
+
+1. HEADER:
+   - Back arrow button (left, navigate back)
+   - "Courses" title (center, 18pt, medium weight)
+   - Background: White
+   - Height: 56px + safe area
+
+2. HERO CARD (Top):
+   - Background: Blue gradient (#3B82F6)
+   - Border radius: 16px
+   - Padding: 24px
+   - Margin: 16px (left, right, top)
+   - Content:
+     * "CRACK NMC" (white, 28pt, bold)
+     * "Start your CBT journey with the right course." (white, 16pt, regular)
+
+3. MAIN COURSE CARD:
+   - Margin: 16px (all sides)
+   - Background: White
+   - Border radius: 16px
+   - Shadow: elevation 4
+   - Components:
+     a) Hero Image:
+        - Image: Nurse working at computer in hospital setting
+        - Aspect ratio: 16:9
+        - Border radius: 16px (top corners only)
+        - Height: 240px
+     
+     b) Card Content (padding 16px):
+        - "course" label (blue #3B82F6, 12pt, uppercase)
+        - "NMC CBT" title (24pt, bold, black)
+        - "Exam preparatory course" subtitle (14pt, gray #666666)
+        - Blue arrow button (→):
+          * Position: absolute right 16px
+          * Size: 48px circle
+          * Background: #3B82F6
+          * Icon: white arrow pointing right
+
+4. MODULE GRID (2x2 Grid):
+   - Margin: 16px (left, right)
+   - Gap between cards: 12px
+   - Each card:
+     * Background: Light color (specific per module)
+     * Border radius: 12px
+     * Padding: 20px
+     * Height: 100px
+     * Components:
+       - Icon circle (48px, colored background)
+       - Module name (14pt, medium weight, dark gray)
+
+   MODULE CARDS DETAILS:
+   
+   Row 1:
+   a) Start Free Trial:
+      - Background: Light purple (#EDE9FE)
+      - Icon background: Purple (#7C3AED)
+      - Icon: Hand/touch gesture (white)
+      - Text: "Start\nFree trial"
+   
+   b) Practice Module:
+      - Background: Light blue (#DBEAFE)
+      - Icon background: Blue (#3B82F6)
+      - Icon: Open book (white)
+      - Text: "Practice\nModule"
+   
+   Row 2:
+   c) Learning Module:
+      - Background: Light green (#D1FAE5)
+      - Icon background: Green (#10B981)
+      - Icon: Book (white)
+      - Text: "Learning\nModule"
+   
+   d) Mock Exams:
+      - Background: Light orange (#FED7AA)
+      - Icon background: Orange (#F97316)
+      - Icon: Document/exam paper (white)
+      - Text: "Mock\nExams"
+
+5. EXACT COLORS:
+   - Primary Blue: #3B82F6
+   - Purple: #7C3AED
+   - Green: #10B981
+   - Orange: #F97316
+   - Light Purple: #EDE9FE
+   - Light Blue: #DBEAFE
+   - Light Green: #D1FAE5
+   - Light Orange: #FED7AA
+   - Gray text: #6B7280
+   - Black text: #1F2937
+
+6. FUNCTIONALITY:
+   - Hero image: Use stock image or placeholder (nurse at computer)
+   - Main card tap: Navigate to course details/topics list
+   - "Start Free Trial" tap: Navigate to subscription plans OR start trial
+   - "Practice Module" tap: Navigate to practice questions
+   - "Learning Module" tap: Navigate to learning content
+   - "Mock Exams" tap: 
+     * If trial user: Show upgrade prompt (locked)
+     * If subscribed: Navigate to mock exams
+
+7. ICONS:
+   - Use @expo/vector-icons or react-native-vector-icons
+   - Suggested icons:
+     * Start Free Trial: MaterialCommunityIcons "hand-pointing-up"
+     * Practice Module: Ionicons "book-outline"
+     * Learning Module: Ionicons "book"
+     * Mock Exams: MaterialCommunityIcons "file-document-outline"
+
+8. SPACING & MEASUREMENTS:
+   - Screen padding: 16px
+   - Card border radius: 12px-16px
+   - Hero card padding: 24px
+   - Module card padding: 20px
+   - Grid gap: 12px
+   - Icon size: 24px
+   - Icon circle: 48px
+
+9. DATA:
+   - Fetch from modules table (if using real data)
+   - OR use hardcoded content for NMC CBT course
+   - Hero image: Store in assets or use remote URL
+
+10. FILE TO CREATE:
+    - src/screens/CoursesScreen.tsx
+
+EXAMPLE CODE STRUCTURE:
+```typescript
+import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+export default function CoursesScreen({ navigation }) {
+  return (
+    <ScrollView style={{ flex: 1, backgroundColor: '#F9FAFB' }}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Courses</Text>
+      </View>
+
+      {/* Hero Card */}
+      <View style={styles.heroCard}>
+        <Text style={styles.heroTitle}>CRACK NMC</Text>
+        <Text style={styles.heroSubtitle}>
+          Start your CBT journey with the right course.
+        </Text>
+      </View>
+
+      {/* Main Course Card */}
+      <TouchableOpacity style={styles.courseCard}>
+        <Image 
+          source={require('@/assets/nurse-computer.jpg')} 
+          style={styles.courseImage}
+        />
+        <View style={styles.courseContent}>
+          <Text style={styles.courseLabel}>course</Text>
+          <Text style={styles.courseTitle}>NMC CBT</Text>
+          <Text style={styles.courseSubtitle}>Exam preparatory course</Text>
+          <View style={styles.arrowButton}>
+            <Ionicons name="arrow-forward" size={24} color="white" />
+          </View>
+        </View>
+      </TouchableOpacity>
+
+      {/* Module Grid */}
+      <View style={styles.moduleGrid}>
+        {/* Row 1 */}
+        <ModuleCard 
+          bgColor="#EDE9FE" 
+          iconBg="#7C3AED"
+          icon="hand-pointing-up"
+          title="Start\nFree trial"
+          onPress={() => navigation.navigate('SubscriptionPlans')}
+        />
+        <ModuleCard 
+          bgColor="#DBEAFE" 
+          iconBg="#3B82F6"
+          icon="book-outline"
+          title="Practice\nModule"
+          onPress={() => navigation.navigate('Practice')}
+        />
+        
+        {/* Row 2 */}
+        <ModuleCard 
+          bgColor="#D1FAE5" 
+          iconBg="#10B981"
+          icon="book"
+          title="Learning\nModule"
+          onPress={() => navigation.navigate('Learning')}
+        />
+        <ModuleCard 
+          bgColor="#FED7AA" 
+          iconBg="#F97316"
+          icon="file-document-outline"
+          title="Mock\nExams"
+          onPress={() => checkAccessAndNavigate('MockExams')}
+        />
+      </View>
+    </ScrollView>
+  );
+}

@@ -1,0 +1,73 @@
+Create app/(tabs)/learning/index.tsx to display the 7 main topics:
+
+import React from 'react'
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
+import { useRouter } from 'expo-router'
+import { LEARNING_STRUCTURE } from '@/api/constants'
+
+export default function LearningScreen() {
+  const router = useRouter()
+
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Learning Module</Text>
+        <Text style={styles.subtitle}>Master the 7 essential topics for NMC CBT</Text>
+      </View>
+
+      {LEARNING_STRUCTURE.map((topic) => (
+        <TouchableOpacity
+          key={topic.id}
+          style={styles.topicCard}
+          onPress={() => {
+            router.push({
+              pathname: '/learning/subtopics',
+              params: { 
+                topicId: topic.id,
+                topicName: topic.topic,
+                category: topic.category
+              }
+            })
+          }}
+        >
+          <Text style={styles.topicIcon}>{topic.icon}</Text>
+          <View style={styles.topicContent}>
+            <Text style={styles.topicTitle}>{topic.topic}</Text>
+            <Text style={styles.topicMeta}>
+              {topic.subtopics.length} subtopics
+            </Text>
+          </View>
+          <Text style={styles.chevron}>›</Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  header: { padding: 20, backgroundColor: '#fff', marginBottom: 10 },
+  title: { fontSize: 28, fontWeight: 'bold', color: '#181C32' },
+  subtitle: { fontSize: 14, color: '#666', marginTop: 5 },
+  topicCard: { 
+    backgroundColor: '#fff', 
+    padding: 20, 
+    marginHorizontal: 15, 
+    marginVertical: 8,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  topicIcon: { fontSize: 40, marginRight: 15 },
+  topicContent: { flex: 1 },
+  topicTitle: { fontSize: 18, fontWeight: '600', color: '#181C32' },
+  topicMeta: { fontSize: 13, color: '#666', marginTop: 4 },
+  chevron: { fontSize: 30, color: '#007aff' },
+})
+
+This displays the 7 topics as tappable cards that navigate to subtopics.

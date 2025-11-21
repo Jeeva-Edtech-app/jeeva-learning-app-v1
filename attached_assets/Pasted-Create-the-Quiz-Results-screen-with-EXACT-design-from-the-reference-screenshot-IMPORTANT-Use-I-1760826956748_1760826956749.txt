@@ -1,0 +1,183 @@
+Create the Quiz Results screen with EXACT design from the reference screenshot.
+
+⚠️ IMPORTANT: Use Inter font family
+
+SCREEN STRUCTURE:
+
+HEADER:
+
+Back arrow (left, 24px, black #1F2937)
+"Lesson Test" title (18pt Inter Medium, black #1F2937)
+Background: White
+Height: 56px + safe area
+CELEBRATION SECTION (Top):
+
+Background: Light Blue (#DBEAFE or #EFF6FF)
+Height: 280px
+Border radius: 0 (full width)
+Padding: 40px vertical
+TROPHY ICON:
+
+Large trophy illustration (centered)
+Size: 160px x 160px
+Icon: MaterialCommunityIcons "trophy" or custom SVG
+Color: Light blue/white with gradient effect
+Style: Semi-transparent, frosted glass effect
+STAR DECORATIONS:
+
+5 yellow stars around trophy
+Icon: Ionicons "star"
+Size: 24px
+Color: Yellow (#FBBF24)
+Positions:
+Top-left (60px from trophy)
+Top-right (60px from trophy)
+Bottom-left (80px from trophy)
+Bottom-right (80px from trophy)
+Top-center (40px above trophy)
+SCORE OVERVIEW CARD:
+
+Background: Light Blue (#DBEAFE or #EFF6FF)
+Border: 2px solid White or light blue
+Border radius: 16px
+Margin: -40px horizontal 16px, 16px top (overlap celebration section)
+Padding: 20px
+Shadow: elevation 3
+CONTENT:
+
+Trophy icon (left):
+MaterialCommunityIcons "trophy"
+Size: 32px
+Color: Blue #3B82F6
+"Score Overview" label:
+Font: 16pt Inter Medium
+Color: Black #1F2937
+Divider: Vertical line (|)
+Color: Gray #9CA3AF
+Height: 24px
+Margin: 0px 12px
+Score display (right):
+"101/120" (32pt Inter Bold, Coral/Orange #F97316 or #FB923C)
+Large, prominent
+STATS CARD (Breakdown):
+
+Background: Blue (#3B82F6)
+Border radius: 12px
+Margin: 16px horizontal, 16px top
+Padding: 20px
+Layout: 3 columns (equal width)
+COLUMNS:
+
+a) Correct:
+
+Label: "correct" (14pt Inter Regular, White with opacity 0.9)
+Value: "101" (28pt Inter Bold, White)
+Align: center
+b) Incorrect (Middle):
+
+Vertical dividers on both sides (white, opacity 0.3, 1px)
+Label: "incorrect" (14pt Inter Regular, White with opacity 0.9)
+Value: "12" (28pt Inter Bold, White)
+Align: center
+c) Skipped:
+
+Label: "skipped" (14pt Inter Regular, White with opacity 0.9)
+Value: "7" (28pt Inter Bold, White)
+Align: center
+REVIEW ANSWERS LINK:
+
+Margin: 16px horizontal, 16px top
+Layout: Horizontal (icon + text)
+Padding: 12px
+COMPONENTS:
+
+Eye icon: Ionicons "eye-outline"
+Size: 20px
+Color: Blue #3B82F6
+Text: "Review Answers" (14pt Inter Medium, Blue #3B82F6)
+Gap: 8px between icon and text
+On tap: Navigate to answer review screen
+ACTION BUTTONS (Bottom):
+
+Container margin: 24px horizontal, 24px top
+Layout: Horizontal, equal width, gap 12px
+RETAKE Button:
+
+Background: Coral/Red (#F87171 or #EF4444)
+Border radius: 8px
+Padding: 16px vertical
+Width: 48%
+Text: "Retake" (16pt Inter Medium, White)
+Shadow: elevation 2
+On tap: Restart quiz with same questions
+NEXT LESSON Button:
+
+Background: Blue (#3B82F6)
+Border radius: 8px
+Padding: 16px vertical
+Width: 48%
+Text: "Next lesson" (16pt Inter Medium, White)
+Shadow: elevation 2
+On tap: Navigate to next lesson or topics list
+EXACT COLORS:
+
+Light Blue BG: #DBEAFE or #EFF6FF
+Blue (stats card, button): #3B82F6
+Coral/Orange (score): #F97316 or #FB923C
+Coral/Red (retake button): #EF4444 or #F87171
+Yellow (stars): #FBBF24
+Black text: #1F2937
+Gray text: #9CA3AF
+White: #FFFFFF
+TYPOGRAPHY (Inter Font):
+
+Header: 18pt Inter Medium
+Score Overview label: 16pt Inter Medium
+Score number: 32pt Inter Bold
+Stats labels: 14pt Inter Regular
+Stats values: 28pt Inter Bold
+Review link: 14pt Inter Medium
+Button text: 16pt Inter Medium
+FUNCTIONALITY:
+
+Receive props from QuizScreen:
+
+totalQuestions: 120
+correctAnswers: 101
+incorrectAnswers: 12
+skippedQuestions: 7
+timeSpent: seconds
+answers: array of user answers with correctness
+Calculate percentage:
+
+scorePercentage = (correctAnswers / totalQuestions) * 100
+Display: "101/120" format
+Save to practice_sessions:
+
+await supabase.from('practice_sessions').insert({
+  user_id: userId,
+  topic_id: topicId,
+  questions_attempted: totalQuestions,
+  correct_answers: correctAnswers,
+  score_percentage: scorePercentage,
+  time_spent_seconds: timeSpent,
+  completed_at: new Date(),
+});
+Show celebration animation (optional):
+
+Confetti effect using react-native-confetti-cannon
+Trophy scale animation
+Stars fade-in animation
+CONDITIONAL MESSAGING:
+
+If scorePercentage >= 80%:
+Add "Excellent!" badge (green, top of trophy)
+If scorePercentage >= 60% && < 80%:
+Add "Good Job!" badge (yellow)
+If scorePercentage < 60%:
+Add "Keep Practicing!" badge (gray)
+FILES TO CREATE:
+
+src/screens/results/QuizResultsScreen.tsx
+src/components/results/TrophyCelebration.tsx
+src/components/results/StatsCard.tsx

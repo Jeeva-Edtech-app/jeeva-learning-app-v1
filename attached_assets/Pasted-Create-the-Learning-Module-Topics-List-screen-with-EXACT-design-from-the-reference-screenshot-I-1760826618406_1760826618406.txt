@@ -1,0 +1,149 @@
+Create the Learning Module Topics List screen with EXACT design from the reference screenshot.
+
+⚠️ IMPORTANT: Use Inter font family throughout
+
+SCREEN STRUCTURE:
+
+1. HEADER:
+   - Back arrow button (left, 24px, black #1F2937)
+   - "Learning Module" title (18pt Inter Medium, black #1F2937)
+   - Background: White (#FFFFFF)
+   - Height: 56px + safe area
+
+2. HERO CARD (Top Banner):
+   - Background: Blue gradient (#1E40AF or #2563EB)
+   - Border radius: 16px
+   - Margin: 16px (left, right, top)
+   - Padding: 24px
+   - Content:
+     * "LEARNING MODE" (white, 20pt Inter Bold, uppercase)
+     * "Lets crack NMC CBT with advanced learning methodology" (white, 14pt Inter Regular)
+
+3. SECTION HEADER:
+   - "Topics" label
+     * Font: 16pt Inter Bold
+     * Color: Black #1F2937
+     * Margin: 24px top, 16px left/right, 12px bottom
+
+4. TOPICS LIST (Vertical Cards):
+   - Each topic card:
+     * Background: White (#FFFFFF)
+     * Border: 1px solid Light Gray (#E5E7EB)
+     * Border radius: 12px
+     * Margin: 8px horizontal, 6px vertical
+     * Padding: 16px
+     * Shadow: subtle elevation 1
+   
+   CARD LAYOUT (Each Topic):
+   
+   TOP ROW:
+   - Topic title:
+     * Font: 18pt Inter Bold
+     * Color: Black #1F2937
+     * Example: "The NMC Code"
+   - Chevron icon (right):
+     * Ionicons "chevron-forward"
+     * Size: 20px
+     * Color: Gray #9CA3AF
+   
+   MIDDLE ROW:
+   - Description/subtitle:
+     * Font: 13pt Inter Regular
+     * Color: Gray #9CA3AF
+     * Example: "Patient dignity, consent, advocacy"
+     * Margin top: 4px
+   
+   BOTTOM ROW (Horizontal layout):
+   - Lessons badge:
+     * Background: Light Gray (#F3F4F6)
+     * Border radius: 6px
+     * Padding: 6px 12px
+     * Text: "Lessons: 4" (12pt Inter Medium, Black #1F2937)
+   
+   - Two book icons (right side):
+     * Blue book icon: MaterialCommunityIcons "book" (#3B82F6)
+     * Red/Pink book icon: MaterialCommunityIcons "book" (#EF4444)
+     * Size: 18px each
+     * Spacing: 8px between icons
+     * Purpose: Indicate content types (reading + video/audio)
+
+5. TOPICS DATA (NMC Code Module):
+   Fetch from modules/topics tables or use these examples:
+   
+   Topic 1:
+   - Title: "The NMC Code"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 2:
+   - Title: "Mental Capacity Act"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 3:
+   - Title: "Safeguarding"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 4:
+   - Title: "Consent & Confidentiality"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 5:
+   - Title: "Equality & Diversity"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 6:
+   - Title: "Duty of Candour"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+   
+   Topic 7:
+   - Title: "Cultural Adaptation"
+   - Description: "Patient dignity, consent, advocacy"
+   - Lessons: 4
+
+6. EXACT COLORS:
+   - Primary Blue (hero): #1E40AF or #2563EB
+   - Blue icon: #3B82F6
+   - Red/Pink icon: #EF4444
+   - Black text: #1F2937
+   - Gray text: #9CA3AF
+   - Light gray background: #F3F4F6
+   - Border gray: #E5E7EB
+   - White: #FFFFFF
+
+7. TYPOGRAPHY (Inter Font):
+   - Header: 18pt Inter Medium
+   - Hero title: 20pt Inter Bold
+   - Hero subtitle: 14pt Inter Regular
+   - Section label: 16pt Inter Bold
+   - Topic title: 18pt Inter Bold
+   - Topic description: 13pt Inter Regular
+   - Lessons badge: 12pt Inter Medium
+
+8. FUNCTIONALITY:
+   - Fetch topics from database:
+     ```typescript
+     const topics = await supabase
+       .from('topics')
+       .select('*, lessons(count)')
+       .eq('module_id', moduleId)
+       .eq('is_active', true)
+       .order('display_order');
+     ```
+   
+   - On topic card tap:
+     * Navigate to LessonsListScreen
+     * Pass: topicId, topicTitle
+   
+   - Trial mode check:
+     * If trial user and topic index > 0: Show lock icon, show upgrade prompt on tap
+     * If subscribed: Allow full access
+
+9. FILE TO CREATE:
+   - src/screens/learning/LearningTopicsScreen.tsx
+
+Show me the Learning Module Topics List screen with all NMC Code topics.
