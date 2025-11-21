@@ -401,14 +401,28 @@ supabase/
 - 48 tables across learning, analytics, user, notification, and billing domains
 - 200+ indexes for query optimization
 - All foreign key relationships validated
-- ~1 record per table for baseline data (testing)
+- ✅ **NEW**: COMPREHENSIVE seed data v2 ready:
+  - 3 Modules (Practice, Learning, Mock Exam)
+  - 11 Topics total (2 Practice + 8 Learning + 1 Mock)
+  - 32 Lessons with video/audio URLs
+  - 20+ questions per module type
+  - Question options with correct answers
+  - learning_progress table for 80% unlock tracking
 
 ### 🔄 Next Steps (For User)
-1. Seed realistic data into tables (mock lessons, questions, options)
-2. Deploy app to iOS/Android with EAS Build
-3. Configure Stripe webhook endpoints
-4. Set up email notification templates
-5. Test push notifications end-to-end
+1. **CRITICAL**: Apply migration `supabase/migrations/001_create_learning_schema_v2_comprehensive.sql` in Supabase SQL Editor
+   - This includes: learning_progress table, all 32 lessons, 200+ questions, complete seed data
+   - See `docs/DATABASE_ANALYSIS_AND_FIX_PLAN.md` for analysis of what was missing and fixed
+2. Restart Expo app and verify Learning module loads with lessons
+3. Test sequential unlock logic (80% pass requirement)
+4. Deploy app to iOS/Android with EAS Build
+5. Configure Stripe webhook endpoints
+6. Set up email notification templates
+7. Test push notifications end-to-end
+
+### 📄 Recent Documentation
+- `docs/DATABASE_ANALYSIS_AND_FIX_PLAN.md` - Analysis of what was missing vs. requirements
+- `supabase/migrations/001_create_learning_schema_v2_comprehensive.sql` - Complete migration with all fixes
 
 ---
 
