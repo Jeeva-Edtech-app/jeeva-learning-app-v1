@@ -1,0 +1,198 @@
+[
+  {
+    "table_name": "admin_users",
+    "count": 1
+  },
+  {
+    "table_name": "ai_recommendations",
+    "count": 1
+  },
+  {
+    "table_name": "ai_usage_stats",
+    "count": 1
+  },
+  {
+    "table_name": "analytics_sessions",
+    "count": 1
+  },
+  {
+    "table_name": "app_settings",
+    "count": 1
+  },
+  {
+    "table_name": "chat_conversations",
+    "count": 1
+  },
+  {
+    "table_name": "chat_messages",
+    "count": 1
+  },
+  {
+    "table_name": "content_approvals",
+    "count": 1
+  },
+  {
+    "table_name": "daily_stats",
+    "count": 1
+  },
+  {
+    "table_name": "dashboard_hero",
+    "count": 1
+  },
+  {
+    "table_name": "discount_coupons",
+    "count": 1
+  },
+  {
+    "table_name": "email_templates",
+    "count": 1
+  },
+  {
+    "table_name": "flashcards",
+    "count": 1
+  },
+  {
+    "table_name": "flashcards_backup",
+    "count": 1
+  },
+  {
+    "table_name": "hero_sections",
+    "count": 1
+  },
+  {
+    "table_name": "learning_completions",
+    "count": 1
+  },
+  {
+    "table_name": "learning_paths",
+    "count": 1
+  },
+  {
+    "table_name": "lesson_quiz_results",
+    "count": 1
+  },
+  {
+    "table_name": "lesson_quizzes",
+    "count": 1
+  },
+  {
+    "table_name": "lessons",
+    "count": 1
+  },
+  {
+    "table_name": "lessons_backup",
+    "count": 1
+  },
+  {
+    "table_name": "mock_exam_config",
+    "count": 1
+  },
+  {
+    "table_name": "mock_exams",
+    "count": 1
+  },
+  {
+    "table_name": "mock_results",
+    "count": 1
+  },
+  {
+    "table_name": "mock_sessions",
+    "count": 1
+  },
+  {
+    "table_name": "modules",
+    "count": 1
+  },
+  {
+    "table_name": "notification_preferences",
+    "count": 1
+  },
+  {
+    "table_name": "notification_queue",
+    "count": 1
+  },
+  {
+    "table_name": "notification_targets",
+    "count": 1
+  },
+  {
+    "table_name": "notifications",
+    "count": 1
+  },
+  {
+    "table_name": "practice_results",
+    "count": 1
+  },
+  {
+    "table_name": "practice_sessions",
+    "count": 1
+  },
+  {
+    "table_name": "push_tokens",
+    "count": 1
+  },
+  {
+    "table_name": "question_media",
+    "count": 1
+  },
+  {
+    "table_name": "question_options",
+    "count": 1
+  },
+  {
+    "table_name": "questions",
+    "count": 1
+  },
+  {
+    "table_name": "questions_backup",
+    "count": 1
+  },
+  {
+    "table_name": "subscription_plans",
+    "count": 1
+  },
+  {
+    "table_name": "subscriptions",
+    "count": 1
+  },
+  {
+    "table_name": "subtopics",
+    "count": 1
+  },
+  {
+    "table_name": "topics",
+    "count": 1
+  },
+  {
+    "table_name": "user_analytics",
+    "count": 1
+  },
+  {
+    "table_name": "user_notification_reads",
+    "count": 1
+  },
+  {
+    "table_name": "user_profiles",
+    "count": 1
+  },
+  {
+    "table_name": "user_sessions",
+    "count": 1
+  },
+  {
+    "table_name": "users",
+    "count": 1
+  },
+  {
+    "table_name": "v_daily_ai_usage",
+    "count": 1
+  },
+  {
+    "table_name": "v_popular_ai_questions",
+    "count": 1
+  },
+  {
+    "table_name": "v_user_ai_engagement",
+    "count": 1
+  }
+]
