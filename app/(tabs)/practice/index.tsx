@@ -229,7 +229,9 @@ export default function PracticeModuleScreen() {
                     selected={selectedSubdivision?.id === option.id}
                     isLocked={isLocked}
                     onPress={() => {
-                      if (!isLocked) {
+                      if (isLocked) {
+                        setSelectedLockedTopic(option.id);
+                      } else {
                         setSelectedSubdivision(option);
                       }
                     }}

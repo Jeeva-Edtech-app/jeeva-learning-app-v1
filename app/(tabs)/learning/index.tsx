@@ -306,7 +306,7 @@ export default function LearningOverviewScreen() {
 
         <View style={styles.topicsStack}>
           {topicsWithStatus.map((topic) => {
-            const trialLocked = isContentLocked('learning', topic.title);
+            const trialLocked = isContentLocked('learning', topic.id);
             return (
               <TopicCard
                 key={topic.id}
